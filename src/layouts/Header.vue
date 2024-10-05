@@ -1,7 +1,14 @@
 <template>
   <header>
-    <div class="logo">Logo</div>
-    <h3 class="title">漾春</h3>
+    <div class="menu">
+      <Button>
+        <Icon class="icon" name="menu" />
+      </Button>
+    </div>
+    <div class="logo">
+      Logo
+      <h3 class="title">漾春</h3>
+    </div>
     <nav>
       <ul>
         <li class="active">首页</li>
@@ -54,17 +61,48 @@ header {
   align-items: center;
   color: var(--text);
   top: 0;
+  z-index: 2;
 
-  .title {
-    margin-left: 10px;
-    font-weight: bold;
-    letter-spacing: 1px;
+  @media (max-width: 768px) {
+    padding: 10px 5%;
+  }
+
+  .menu {
+    display: none;
+
+    @media (max-width: 660px) {
+      display: block;
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+  }
+
+  .logo {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+
+    .title {
+      margin-left: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 660px) {
+      display: none;
+    }
   }
 
   nav {
     margin-left: 5%;
     display: flex;
     align-items: center;
+
+    @media (max-width: 660px) {
+      display: none;
+    }
 
     ul {
       display: flex;
@@ -115,11 +153,14 @@ header {
       border-radius: 4px;
       font-size: 12px;
       padding: 0 5px;
+
+      @media (max-width: 1024px) {
+        display: none;
+      }
     }
 
     &:hover {
       --color: var(--text);
-      transform: scale(1.05);
     }
   }
 

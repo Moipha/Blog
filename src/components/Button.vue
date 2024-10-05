@@ -17,7 +17,7 @@ button {
   outline: none;
   border: 1px solid var(--border);
   cursor: pointer;
-  background-color: var(--bg);
+  background-color: transparent;
   color: var(--text);
   padding: 10px;
   border-radius: 10px;

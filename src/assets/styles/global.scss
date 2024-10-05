@@ -12,6 +12,7 @@
   --text: black;
   --light-text: #353535;
   --border: #e5e5e5;
+  --cover: linear-gradient(744deg, rgb(230, 204, 101), #709ac5 60%, #9162c1);
 }
 
 [data-theme='dark'] {
@@ -19,6 +20,7 @@
   --text: white;
   --light-text: #a3a3a3;
   --border: #262626;
+  --cover: linear-gradient(744deg, #996633, #336699 60%, #663399);
 }
 
 body {

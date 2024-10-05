@@ -38,5 +38,6 @@ defineProps({
 <style lang="scss" scoped>
 img {
   object-fit: cover;
+  z-index: 1;
 }
 </style>
