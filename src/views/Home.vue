@@ -1,11 +1,11 @@
 <template>
-  <section>
+  <section class="top">
     <div class="bg">
       <div class="wave"></div>
       <div class="wave"></div>
       <div class="wave"></div>
     </div>
-    <div class="top">
+    <div class="top-content">
       <div class="info">
         <Avatar :src="avatar" shape="circle" :size="100"></Avatar>
         <div class="introduce">
@@ -35,7 +35,13 @@
           </Button>
         </a>
       </div>
+      <Icon class="arrow" name="down" />
     </div>
+  </section>
+  <section class="footer">
+    <div class="route">导航</div>
+    <div class="visit">访问记录</div>
+    <div class="contact">联系方式</div>
   </section>
 </template>
 
@@ -46,7 +52,7 @@ import Button from '@/components/Button.vue'
 </script>
 
 <style lang="scss" scoped>
-section {
+.top {
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -65,7 +71,7 @@ section {
     .wave {
       scale: 1.2;
       border-radius: 40%;
-      animation: wave 3000ms infinite linear;
+      animation: wave 5000ms infinite linear;
       position: absolute;
       width: calc(80vw + 1000px);
       height: calc(120vh + 1000px);
@@ -82,16 +88,16 @@ section {
       }
 
       &:nth-child(2) {
-        animation-duration: 4000ms;
+        animation-duration: 6000ms;
       }
 
       &:nth-child(3) {
-        animation-duration: 5000ms;
+        animation-duration: 7000ms;
       }
     }
   }
 
-  .top {
+  .top-content {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,7 +156,7 @@ section {
       z-index: 1;
       color: var(--text);
       display: flex;
-      gap: 1vw;
+      gap: clamp(5px, 1vw, 10px);
 
       .btn {
         padding: 7.5px !important;
@@ -158,6 +164,24 @@ section {
         .icon {
           font-size: 25px;
         }
+      }
+    }
+
+    .arrow {
+      position: absolute;
+      bottom: 3vh;
+      z-index: 5;
+      font-size: 40px;
+      color: var(--light-text);
+      transition: 0.2s ease all;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 660px) {
+        font-size: calc(20px + 2.75vw);
       }
     }
   }
@@ -171,5 +195,13 @@ section {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50vh;
+  color: var(--light-text);
 }
 </style>

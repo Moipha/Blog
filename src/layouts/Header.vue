@@ -1,5 +1,11 @@
 <template>
-  <header>
+  <header
+    :style="{
+      backdropFilter: isTop ? 'none' : 'blur(10px)',
+      backgroundColor: isTop ? 'transparent' : 'var(--bg)',
+      borderWidth: isTop ? 0 : '0 0 1px 0'
+    }"
+  >
     <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
       <Button class="close" @click="showLeft = false">
         <Icon name="close" />
@@ -57,6 +63,14 @@ const { theme } = storeToRefs(useSettingStore())
 
 // 侧边栏
 const showLeft = ref(false)
+
+// 滚动条是否在顶部
+const isTop = ref(true)
+
+// 监听滚动条
+window.addEventListener('scroll', () => {
+  isTop.value = window.pageYOffset < 64 ? true : false
+})
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +84,9 @@ header {
   color: var(--text);
   top: 0;
   z-index: 10;
+  transition: 0.4s background ease;
+  border-style: solid;
+  border-color: var(--border);
 
   @media (max-width: 768px) {
     padding: 10px 5%;
@@ -117,13 +134,12 @@ header {
       list-style: none;
 
       li {
-        margin: 0 10px;
+        margin: 0;
         cursor: pointer;
         color: var(--light-text);
         transition: all 0.2s ease;
         font-size: 14px;
         padding: 8px 16px;
-        margin: 0;
 
         &:hover {
           color: var(--text);
@@ -174,7 +190,7 @@ header {
 
   .btn-container {
     display: flex;
-    gap: 10px;
+    gap: clamp(5px, 1vw, 10px);
     margin-left: 5%;
     align-items: center;
 
