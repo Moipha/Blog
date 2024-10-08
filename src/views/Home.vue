@@ -6,10 +6,34 @@
       <div class="wave"></div>
     </div>
     <div class="top">
-      <Avatar :src="avatar" shape="circle" :size="100"></Avatar>
-      <div class="introduce">
-        <p class="title">Hello，我是漾春，一名前端开发工程师</p>
-        <p class="subtitle">欢迎来到我的博客。我在这里记录我的日常</p>
+      <div class="info">
+        <Avatar :src="avatar" shape="circle" :size="100"></Avatar>
+        <div class="introduce">
+          <p class="title">Hello，我是漾春，一名前端开发工程师</p>
+          <p class="subtitle">欢迎来到我的博客。我在这里记录我的日常</p>
+        </div>
+      </div>
+      <div class="link">
+        <a target="_blank" href="https://github.com/moipha">
+          <Button class="btn">
+            <Icon class="icon" name="github" />
+          </Button>
+        </a>
+        <a target="_blank" href="https://space.bilibili.com/448336859">
+          <Button class="btn">
+            <Icon class="icon" name="bilibili" />
+          </Button>
+        </a>
+        <a target="_blank" href="https://blog.csdn.net/fafafafa_fa">
+          <Button class="btn">
+            <Icon class="icon" name="csdn" />
+          </Button>
+        </a>
+        <a target="_blank" href="mailto:chengfayang@henu.edu.cn">
+          <Button class="btn">
+            <Icon class="icon" name="mail" />
+          </Button>
+        </a>
       </div>
     </div>
   </section>
@@ -18,6 +42,7 @@
 <script setup>
 import Avatar from '@/components/Avatar.vue'
 import avatar from '@/assets/img/avatar.webp'
+import Button from '@/components/Button.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -70,45 +95,69 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     z-index: 2;
+    gap: 3vh;
 
-    @media (max-width: 660px) {
-      flex-direction: column;
-      gap: 5%;
-    }
-
-    .introduce {
-      margin-left: 5%;
+    .info {
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      color: var(--text);
-      position: relative;
-      z-index: 1;
+      align-items: center;
+      width: 100%;
 
       @media (max-width: 660px) {
-        align-items: center;
-        margin-left: 0;
+        flex-direction: column;
+        gap: 5vh;
+      }
+
+      .introduce {
+        margin-left: 5%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: var(--text);
+        position: relative;
+        z-index: 1;
+
+        @media (max-width: 660px) {
+          align-items: center;
+          margin-left: 0;
+
+          .title {
+            font-size: calc(10px + 1.4vw) !important;
+          }
+
+          .subtitle {
+            font-size: calc(8px + 1.12vw) !important;
+          }
+        }
 
         .title {
-          font-size: calc(10px + 1.4vw) !important;
+          font-size: 20px;
+          font-weight: bold;
         }
 
         .subtitle {
-          font-size: calc(8px + 1.12vw) !important;
+          font-size: 16px;
+          color: var(--light-text);
         }
       }
+    }
 
-      .title {
-        font-size: 20px;
-        font-weight: bold;
-      }
+    .link {
+      z-index: 1;
+      color: var(--text);
+      display: flex;
+      gap: 1vw;
 
-      .subtitle {
-        font-size: 16px;
-        color: var(--light-text);
+      .btn {
+        padding: 7.5px !important;
+
+        .icon {
+          font-size: 25px;
+        }
       }
     }
   }

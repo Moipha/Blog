@@ -1,6 +1,12 @@
 <template>
   <header>
-    <div class="menu">
+    <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
+      <Button class="close" @click="showLeft = false">
+        <Icon name="close" />
+      </Button>
+    </section>
+    <Mask v-model="showLeft" to="body" />
+    <div class="menu" @click="showLeft = true">
       <Button>
         <Icon class="icon" name="menu" />
       </Button>
@@ -27,9 +33,11 @@
         <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
         <Icon v-else class="icon" name="theme-light" />
       </Button>
-      <Button @click="openGithubLink">
-        <Icon class="icon" name="github" />
-      </Button>
+      <a href="https://github.com/Moipha/Blog" target="_blank">
+        <Button>
+          <Icon class="icon" name="github" />
+        </Button>
+      </a>
       <Button>
         <Icon class="icon" name="manager" />
       </Button>
@@ -39,16 +47,16 @@
 
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
+import Mask from '@/components/Mask.vue'
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
 const { changeTheme } = useSettingStore()
 const { theme } = storeToRefs(useSettingStore())
 
-// 打开github主页
-const openGithubLink = () => {
-  window.open('https://github.com/Moipha/Blog', '_blank')
-}
+// 侧边栏
+const showLeft = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -61,7 +69,7 @@ header {
   align-items: center;
   color: var(--text);
   top: 0;
-  z-index: 2;
+  z-index: 10;
 
   @media (max-width: 768px) {
     padding: 10px 5%;
@@ -172,6 +180,23 @@ header {
 
     .icon {
       font-size: 20px;
+    }
+  }
+
+  .left {
+    width: 320px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--bg);
+    transition: all 0.3s ease;
+
+    .close {
+      font-size: 20px;
+      position: absolute;
+      top: 10px;
+      right: 20px;
     }
   }
 }
