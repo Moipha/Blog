@@ -1,16 +1,32 @@
 import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useSettingStore = defineStore('setting', () => {
-  const theme = ref(null)
-  function changeTheme() {
-    theme.value = theme.value === 'dark' ? 'light' : 'dark'
+export const useSettingStore = defineStore(
+  'setting',
+  () => {
+    /**
+     * 主题
+     */
+    const theme = ref(null)
+    function changeTheme() {
+      theme.value = theme.value === 'dark' ? 'light' : 'dark'
+    }
+    // 监听主题变动
+    watch(theme, (val) => {
+      document.documentElement.dataset.theme = val
+    })
+
+    return { theme, changeTheme }
+  },
+  {
+    persist: {
+      enabled: true,
+      strategies: [
+        {
+          key: 'setting',
+          storage: localStorage
+        }
+      ]
+    }
   }
-  // 监听主题变动
-  watch(theme, (val) => {
-    document.documentElement.dataset.theme = val
-    localStorage.setItem('theme', val)
-  })
-  theme.value = localStorage.getItem('theme') || 'dark'
-  return { theme, changeTheme }
-})
+)

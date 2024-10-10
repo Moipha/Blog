@@ -1,5 +1,5 @@
 <template>
-  <section class="top">
+  <section>
     <div class="bg">
       <div class="wave"></div>
       <div class="wave"></div>
@@ -38,11 +38,6 @@
       <Icon class="arrow" name="down" />
     </div>
   </section>
-  <section class="footer">
-    <div class="route">导航</div>
-    <div class="visit">访问记录</div>
-    <div class="contact">联系方式</div>
-  </section>
 </template>
 
 <script setup>
@@ -52,7 +47,7 @@ import Button from '@/components/Button.vue'
 </script>
 
 <style lang="scss" scoped>
-.top {
+section {
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -195,13 +190,5 @@ import Button from '@/components/Button.vue'
   100% {
     transform: rotate(360deg);
   }
-}
-
-.footer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 50vh;
-  color: var(--light-text);
 }
 </style>

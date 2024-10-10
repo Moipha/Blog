@@ -23,10 +23,15 @@
     </div>
     <nav>
       <ul>
-        <li class="active">首页</li>
-        <li>博客</li>
-        <li>代码</li>
-        <li>关于</li>
+        <RouterLink
+          v-for="item in items"
+          :key="item.name"
+          :to="item.link"
+          :class="{ active: activeItem === item.link, link: true }"
+          @click="activeItem = item.name"
+        >
+          {{ item.label }}
+        </RouterLink>
       </ul>
     </nav>
     <div class="search">
@@ -57,9 +62,11 @@ import Mask from '@/components/Mask.vue'
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const { changeTheme } = useSettingStore()
 const { theme } = storeToRefs(useSettingStore())
+const router = useRouter()
 
 // 侧边栏
 const showLeft = ref(false)
@@ -71,6 +78,17 @@ const isTop = ref(true)
 window.addEventListener('scroll', () => {
   isTop.value = window.pageYOffset < 64 ? true : false
 })
+
+// 导航栏渲染
+const items = [
+  { name: 'home', link: '/home', label: '主页' },
+  { name: 'blog', link: '/blog', label: '博客' },
+  { name: 'code', link: '/code', label: '代码' },
+  { name: 'about', link: '/about', label: '关于' }
+]
+// 根据当前路由判断选项是否为激活状态
+const activeItem = ref()
+activeItem.value = router.currentRoute.value.fullPath
 </script>
 
 <style lang="scss" scoped>
@@ -133,13 +151,14 @@ header {
       display: flex;
       list-style: none;
 
-      li {
+      .link {
         margin: 0;
         cursor: pointer;
         color: var(--light-text);
         transition: all 0.2s ease;
         font-size: 14px;
         padding: 8px 16px;
+        text-decoration: none;
 
         &:hover {
           color: var(--text);
