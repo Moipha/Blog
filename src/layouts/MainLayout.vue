@@ -1,8 +1,8 @@
 <template>
   <main>
-    <Header></Header>
+    <Header />
     <section>
-      <RouterView></RouterView>
+      <RouterView />
     </section>
     <Footer />
   </main>

@@ -6,6 +6,7 @@
       borderWidth: isTop ? 0 : '0 0 1px 0'
     }"
   >
+    <!-- 移动端 -->
     <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
       <Button class="close" @click="showLeft = false">
         <Icon name="close" />
@@ -17,10 +18,11 @@
         <Icon class="icon" name="menu" />
       </Button>
     </div>
-    <div class="logo">
+    <!-- pc端 -->
+    <RouterLink to="/home" class="logo" @click="activeItem = '/home'">
       Logo
       <h3 class="title">漾春</h3>
-    </div>
+    </RouterLink>
     <nav>
       <ul>
         <RouterLink
@@ -28,7 +30,7 @@
           :key="item.name"
           :to="item.link"
           :class="{ active: activeItem === item.link, link: true }"
-          @click="activeItem = item.name"
+          @click="activeItem = item.link"
         >
           {{ item.label }}
         </RouterLink>
@@ -49,9 +51,12 @@
           <Icon class="icon" name="github" />
         </Button>
       </a>
-      <Button>
-        <Icon class="icon" name="manager" />
-      </Button>
+
+      <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
+        <Button>
+          <Icon class="icon" name="manager" />
+        </Button>
+      </a>
     </div>
   </header>
 </template>
@@ -124,8 +129,9 @@ header {
 
   .logo {
     display: flex;
-    cursor: pointer;
     align-items: center;
+    color: var(--text);
+    text-decoration: none;
 
     .title {
       margin-left: 10px;

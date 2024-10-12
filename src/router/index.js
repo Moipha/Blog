@@ -40,8 +40,29 @@ const router = createRouter({
           component: () => import('@/views/About.vue')
         }
       ]
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      redirect: '/admin/home',
+      component: () => import('@/layouts/admin/AdminLayout.vue'),
+      children: [
+        {
+          path: 'home',
+          name: 'admin-home',
+          component: () => import('@/views/admin/Home.vue')
+        }
+      ]
     }
-  ]
+  ],
+  // 设置切换路由后的滚动行为
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 export default router

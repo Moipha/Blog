@@ -7,31 +7,16 @@
     </div>
     <div class="top-content">
       <div class="info">
-        <Avatar :src="avatar" shape="circle" :size="100"></Avatar>
+        <Avatar :src="avatar" shape="circle" :size="100" />
         <div class="introduce">
           <p class="title">Hello，我是漾春，一名前端开发工程师</p>
           <p class="subtitle">欢迎来到我的博客。我在这里记录我的日常</p>
         </div>
       </div>
       <div class="link">
-        <a target="_blank" href="https://github.com/moipha">
+        <a v-for="contact of contacts" :key="contact.icon" target="_blank" :href="contact.url">
           <Button class="btn">
-            <Icon class="icon" name="github" />
-          </Button>
-        </a>
-        <a target="_blank" href="https://space.bilibili.com/448336859">
-          <Button class="btn">
-            <Icon class="icon" name="bilibili" />
-          </Button>
-        </a>
-        <a target="_blank" href="https://blog.csdn.net/fafafafa_fa">
-          <Button class="btn">
-            <Icon class="icon" name="csdn" />
-          </Button>
-        </a>
-        <a target="_blank" href="mailto:chengfayang@henu.edu.cn">
-          <Button class="btn">
-            <Icon class="icon" name="mail" />
+            <Icon class="icon" :name="contact.icon" />
           </Button>
         </a>
       </div>
@@ -44,6 +29,25 @@
 import Avatar from '@/components/Avatar.vue'
 import avatar from '@/assets/img/avatar.webp'
 import Button from '@/components/Button.vue'
+
+const contacts = [
+  {
+    url: 'https://github.com/moipha',
+    icon: 'github'
+  },
+  {
+    url: 'https://space.bilibili.com/448336859',
+    icon: 'bilibili'
+  },
+  {
+    url: 'https://blog.csdn.net/fafafafa_fa',
+    icon: 'csdn'
+  },
+  {
+    url: 'mailto:chengfayang@henu.edu.cn',
+    icon: 'mail'
+  }
+]
 </script>
 
 <style lang="scss" scoped>
