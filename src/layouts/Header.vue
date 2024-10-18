@@ -3,7 +3,7 @@
     :style="{
       backdropFilter: isTop ? 'none' : 'blur(10px)',
       backgroundColor: isTop ? 'transparent' : 'var(--bg)',
-      borderWidth: isTop ? 0 : '0 0 1px 0'
+      borderColor: isTop ? 'transparent' : 'var(--border)'
     }"
   >
     <!-- 移动端 -->
@@ -30,7 +30,6 @@
           :key="item.name"
           :to="item.link"
           :class="{ active: activeItem === item.link, link: true }"
-          @click="activeItem = item.link"
         >
           {{ item.label }}
         </RouterLink>
@@ -66,8 +65,9 @@ import Button from '@/components/Button.vue'
 import Mask from '@/components/Mask.vue'
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import bus from '@/utils/bus'
 
 const { changeTheme } = useSettingStore()
 const { theme } = storeToRefs(useSettingStore())
@@ -94,6 +94,14 @@ const items = [
 // 根据当前路由判断选项是否为激活状态
 const activeItem = ref()
 activeItem.value = router.currentRoute.value.fullPath
+
+bus.on('change-nav', (route) => {
+  activeItem.value = route
+})
+
+onBeforeUnmount(() => {
+  bus.off('change-nav')
+})
 </script>
 
 <style lang="scss" scoped>
@@ -109,7 +117,7 @@ header {
   z-index: 10;
   transition: 0.4s background ease;
   border-style: solid;
-  border-color: var(--border);
+  border-width: 0 0 1px 0;
 
   @media (max-width: 768px) {
     padding: 10px 5%;

@@ -1,5 +1,15 @@
 <template>
   <header>
+    <nav>
+      <template v-if="$route.name !== '首页'">
+        <RouterLink class="item" to="/admin">首页</RouterLink>
+        <span class="split"> / </span>
+        <a>{{ $route.name }}</a>
+      </template>
+      <template v-else>
+        <a to="/admin">首页</a>
+      </template>
+    </nav>
     <Button class="theme" @click="changeTheme">
       <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
       <Icon v-else class="icon" name="theme-light" />
@@ -26,7 +36,6 @@ header {
   height: 42px;
   display: flex;
   align-items: center;
-  padding: 0 10px;
 
   .theme {
     margin: 0 1vw 0 auto;
@@ -39,6 +48,31 @@ header {
     .avatar {
       display: flex;
       margin: auto;
+    }
+  }
+
+  nav {
+    align-self: flex-end;
+
+    .item {
+      color: var(--light-text);
+      transition: 0.1s color;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--text);
+      }
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 14px;
+      cursor: default;
+    }
+
+    .split {
+      margin: 0 0.5vw;
+      cursor: default;
     }
   }
 }

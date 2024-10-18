@@ -7,7 +7,7 @@ export const useSettingStore = defineStore(
     /**
      * 主题
      */
-    const theme = ref(null)
+    const theme = ref('dark')
     function changeTheme() {
       theme.value = theme.value === 'dark' ? 'light' : 'dark'
     }

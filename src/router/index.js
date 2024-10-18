@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import bus from '@/utils/bus'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,8 +50,28 @@ const router = createRouter({
       children: [
         {
           path: 'home',
-          name: 'admin-home',
+          name: '首页',
           component: () => import('@/views/admin/Home.vue')
+        },
+        {
+          path: 'blogs',
+          name: '博客',
+          component: () => import('@/views/admin/Blogs.vue')
+        },
+        {
+          path: 'codes',
+          name: '代码',
+          component: () => import('@/views/admin/Codes.vue')
+        },
+        {
+          path: 'tags',
+          name: '标签',
+          component: () => import('@/views/admin/Tags.vue')
+        },
+        {
+          path: 'graphs',
+          name: '统计',
+          component: () => import('@/views/admin/Graphs.vue')
         }
       ]
     }
@@ -62,6 +83,16 @@ const router = createRouter({
     } else {
       return { top: 0 }
     }
+  }
+})
+
+router.beforeEach((to, from) => {
+  if (to.path === from.path) return
+  if (to.path.startsWith('/admin')) {
+    // 修改active nav
+    bus.emit('change-admin-nav', to.path)
+  } else {
+    bus.emit('change-nav', to.path)
   }
 })
 

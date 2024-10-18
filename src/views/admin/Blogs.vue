@@ -1,15 +1,11 @@
 <template>
-  <div class="container">
-    <!-- <h1>首页</h1> -->
-  </div>
+  <div class="container"></div>
 </template>
 
 <script lang="ts" setup></script>
 
 <style lang="scss" scoped>
 .container {
-  h1 {
-    font-size: 30px;
-  }
+  display: flex;
 }
 </style>

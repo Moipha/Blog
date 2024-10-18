@@ -5,34 +5,18 @@
       <p class="text">后台管理</p>
     </div>
     <ul>
-      <li>
-        <Button class="btn"><Icon name="home" /></Button>
-        首页
-      </li>
-      <li>
+      <RouterLink
+        v-for="item of nav"
+        :key="item.name"
+        :to="'/admin' + item.path"
+        :class="{ active: active === item.path }"
+        class="item"
+      >
         <Button class="btn">
-          <Icon name="graph" />
+          <Icon :name="item.icon" />
         </Button>
-        统计
-      </li>
-      <li>
-        <Button class="btn">
-          <Icon name="tag" />
-        </Button>
-        标签
-      </li>
-      <li>
-        <Button class="btn">
-          <Icon name="blog" />
-        </Button>
-        博客
-      </li>
-      <li>
-        <Button class="btn">
-          <Icon name="code" />
-        </Button>
-        代码
-      </li>
+        <span>{{ item.name }}</span>
+      </RouterLink>
     </ul>
     <Button class="exit">
       <Icon name="exit" />
@@ -43,6 +27,29 @@
 
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
+import { onBeforeUnmount, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import bus from '@/utils/bus'
+
+const router = useRouter()
+
+// 当前选项
+const active = ref('/home')
+const nav = [
+  { name: '首页', icon: 'home', path: '/home' },
+  { name: '统计', icon: 'graph', path: '/graphs' },
+  { name: '标签', icon: 'tag', path: '/tags' },
+  { name: '博客', icon: 'blog', path: '/blogs' },
+  { name: '代码', icon: 'code', path: '/codes' }
+]
+active.value = router.currentRoute.value.path.slice(6)
+
+bus.on('change-admin-nav', (route) => {
+  active.value = route.slice(6)
+})
+onBeforeUnmount(() => {
+  bus.off('change-admin-nav')
+})
 </script>
 
 <style lang="scss" scoped>
@@ -67,21 +74,45 @@ aside {
   }
 
   ul {
-    color: var(--bg);
     display: flex;
     flex-direction: column;
-    gap: 3vh;
+    gap: 0vh;
 
-    li {
+    .item {
+      padding: 10px 20px;
       list-style: none;
-      font-size: 16px;
-      font-weight: bold;
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
+      color: var(--bg);
 
       &:hover {
         cursor: pointer;
+
+        span {
+          &::before {
+            width: 100%;
+          }
+        }
+      }
+
+      span {
+        position: relative;
+        font-size: 16px;
+        font-weight: bold;
+
+        &::before {
+          transition: all 0.2s ease;
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 3px;
+          background-color: var(--bg);
+          border-radius: 4px;
+        }
       }
 
       .btn {
@@ -90,6 +121,18 @@ aside {
         border-color: var(--hover);
         font-size: 16px;
       }
+    }
+
+    .active {
+      .btn {
+        background-color: var(--bg);
+        color: var(--text);
+        border-color: var(--bg);
+      }
+
+      // span::before {
+      //   width: 100%;
+      // }
     }
   }
 
