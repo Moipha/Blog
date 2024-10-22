@@ -1,16 +1,14 @@
 {
   "compilerOptions": {  
-    "target": "ES6",  
-    "module": "ES2020",  
-    "strict": true,  
+    "module": "ESNext",  
+    "target": "ESNext",  
+    "moduleResolution": "node",  
     "esModuleInterop": true,  
     "skipLibCheck": true,  
-    "forceConsistentCasingInFileNames": true,  
-    "outDir": "./dist",  
-    "rootDir": "./src",  
-    // "resolveJsonModule": true,  
-    "isolatedModules": true  
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },  
-  "include": ["src/**/*"],  
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
