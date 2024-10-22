@@ -1,4 +1,5 @@
 /* eslint-env node */
+// @ts-ignore
 require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
