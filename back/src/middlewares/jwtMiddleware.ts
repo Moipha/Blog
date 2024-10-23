@@ -1,9 +1,10 @@
 /**
  * jwt 验证中间件
  */
-import { Request, Response, NextFunction } from 'express'
+import express from 'express'
+import jwt from 'jsonwebtoken'
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default (req: express.Request, res: express.Response, next: express.NextFunction): any => {
   // 如果是放行的路径和方法，则直接放行
   const pass = [
     '/images',
@@ -18,7 +19,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
     return next()
   }
 
-  const jwt = require('jsonwebtoken')
   const { SECRET_KEY } = process.env
 
   // 从请求头中获取JWT

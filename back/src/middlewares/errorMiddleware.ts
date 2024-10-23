@@ -1,9 +1,9 @@
 /**
  * 全局异常处理中间件
  */
-import { NextFunction, Request, Response } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
-export default (err: Error, req: Request, res: Response, next: NextFunction) => {
+export default (err: Error, req: Request, res: Response, next: NextFunction): any => {
   // 记录日志
   console.error(err.stack)
 

@@ -1,10 +1,11 @@
 import express from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import path from 'path'
 import db from './db/index.ts'
 import cors from 'cors'
 import { fileURLToPath } from 'url'
 
-const PORT: number = 27017
+const PORT: number = 8080
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // 启动数据库连接
@@ -20,17 +21,21 @@ db(
     app.use(express.json())
     app.use(express.urlencoded({ extended: false }))
     // jwt验证中间件
-    app.use(() => import('./middlewares/jwtMiddleware.ts') as any)
-    // // github验证
-    // app.use('/auth/github', require('./routers/GithubAuth'))
-    // // 配置路由
-    // app.use('/user', require('./routers/UserRouter'))
-    // app.use('/msg', require('./routers/MessageRouter'))
-    // app.use('/friendship', require('./routers/FriendshipRouter'))
-    // app.use('/read', require('./routers/ReadRouter'))
+    // app.use(async (req: Request, res: Response, next: NextFunction) => {
+    //   const { default: jwtMiddleware } = await import('./middlewares/jwtMiddleware.ts')
+    //   jwtMiddleware(req, res, next)
+    // })
+    // 路由
+    app.use('/tag', async (req: Request, res: Response, next: NextFunction) => {
+      const { default: TagRouter } = await import('./routers/TagRouter.ts')
+      TagRouter(req, res, next)
+    })
 
     // 全局错误处理
-    app.use(() => import('./middlewares/errorMiddleware.ts') as any)
+    app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
+      const { default: errorMiddleware } = await import('./middlewares/errorMiddleware.ts')
+      errorMiddleware(err, req, res, next)
+    })
 
     // 启动服务器
     app.listen(PORT, () => {

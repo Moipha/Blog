@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 export default (success: () => void, error: () => void) => {
   // const { DB_HOST, DB_PORT, DB_NAME } = process.env
-  const { DB_HOST, DB_PORT, DB_NAME } = { DB_HOST: '127.0.0.1', DB_PORT: 27017, DB_NAME: 'chat' }
+  const { DB_HOST, DB_PORT, DB_NAME } = { DB_HOST: '127.0.0.1', DB_PORT: 27017, DB_NAME: 'blog' }
   if (typeof error !== 'function') {
     error = () => {
       console.log('数据库连接失败...')
