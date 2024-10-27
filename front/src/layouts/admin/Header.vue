@@ -24,7 +24,7 @@
 import avatar from '@/assets/img/avatar.webp'
 import Avatar from '@/components/Avatar.vue'
 import Button from '@/components/Button.vue'
-import { useSettingStore } from '@/stores/setting'
+import { useSettingStore } from '../../stores/setting'
 import { storeToRefs } from 'pinia'
 
 const { changeTheme } = useSettingStore()
@@ -36,6 +36,7 @@ header {
   height: 42px;
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 
   .theme {
     margin: 0 1vw 0 auto;
@@ -66,7 +67,7 @@ header {
 
     a {
       text-decoration: none;
-      font-size: 14px;
+      font-size: 15px;
       cursor: default;
     }
 

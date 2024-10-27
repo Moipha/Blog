@@ -1,8 +1,16 @@
-class Api {
-  test() {
-    return 'test'
+import Tag from './Tag'
+
+interface Api {
+  tag: {
+    get: Function
+    create: Function
+    update: Function
+    delete: Function
   }
 }
 
-const instance = new Api()
-export default instance
+const api: Api = {
+  tag: Tag
+}
+
+export default api

@@ -11,7 +11,9 @@ router.post(
   '/',
   [
     body('name').notEmpty().withMessage('未提供标签名称'),
-    body('type').isIn(['blog', 'code', 'general']).withMessage('提供的标签类型无效')
+    body('type')
+      .isIn(['blog', 'code', 'general'])
+      .withMessage('提供的标签类型无效')
   ],
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
@@ -21,10 +23,43 @@ router.post(
 )
 
 // 获取标签列表
-router.get('/', async (req: express.Request, res: express.Response): Promise<void> => {
-  if (!argsCheck(req, res)) return
-  const tags = await service.list()
-  res.status(200).json(Result.success(tags))
-})
+router.get(
+  '/',
+  [
+    query('type')
+      .isIn(['blog', 'code', 'general', ''])
+      .withMessage('提供的标签类型无效')
+  ],
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    const tags = await service.list(req.query as { type: string; name: string })
+    res.status(200).json(Result.success(tags))
+  }
+)
+
+// 更新标签
+router.put(
+  '/',
+  [
+    body('name').notEmpty().withMessage('未提供标签名称'),
+    body('type')
+      .isIn(['blog', 'code', 'general'])
+      .withMessage('提供的标签类型无效')
+  ],
+  (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    service.update(req.body)
+    res.status(200).json(Result.success())
+  }
+)
+router.delete(
+  '/',
+  [query('id').isMongoId().withMessage('提供的标签ID无效')],
+  (req: express.Request, res: express.Response): void => {
+    if (!argsCheck(req, res)) return
+    service.delete(req.query.id as string)
+    res.status(200).json(Result.success())
+  }
+)
 
 export default router
