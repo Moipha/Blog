@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 defineProps({
   name: {
-    type: String,
-    default: 'github'
+    type: String
+  },
+  url: {
+    type: String
   }
 })
 
@@ -33,7 +35,8 @@ const map: { [key: string]: string } = {
 </script>
 
 <template>
-  <div class="icon" v-html="map[name]"></div>
+  <div :class="$attrs.class" v-if="!url" class="icon" v-html="map[name]"></div>
+  <img :class="$attrs.class" v-else :src="url" />
 </template>
 
 <style lang="scss" scoped>

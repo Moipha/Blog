@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 defineProps({
   modelValue: {
-    type: String || Number
+    type: String
   },
   label: {
     type: String || undefined,
@@ -9,6 +9,9 @@ defineProps({
   },
   placeholder: {
     type: String
+  },
+  decorator: {
+    type: Function || undefined
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -17,11 +20,17 @@ const emit = defineEmits(['update:modelValue'])
 <template>
   <div class="container">
     <label v-if="label">{{ label }}</label>
-    <input
+    <textarea
+      rows="6"
       :placeholder="placeholder"
       :value="modelValue"
       @input="
-        emit('update:modelValue', ($event.target as HTMLInputElement).value)
+        emit(
+          'update:modelValue',
+          decorator
+            ? decorator(($event.target as HTMLInputElement).value)
+            : ($event.target as HTMLInputElement).value
+        )
       "
     />
   </div>
@@ -38,15 +47,17 @@ const emit = defineEmits(['update:modelValue'])
     margin-top: 15px;
   }
 
-  input {
+  textarea {
     border-radius: 10px;
     outline: none;
     background-color: var(--bg);
     border: 1.5px solid var(--border);
     color: var(--text);
     padding: 10px;
-    height: 40px;
     transition: border 0.2s ease;
+    font-family: microsoft yahei;
+    resize: vertical;
+    min-height: 40px;
 
     &:focus {
       border-color: var(--hover);

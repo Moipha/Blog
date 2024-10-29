@@ -9,12 +9,25 @@ class TagService {
   }
 
   // 获取标签列表
-  async list(query: { type: string; name: string }): Promise<ITag[]> {
+  async list(query: {
+    type: string
+    name: string
+    pageSize: number
+    pageNum: number
+  }): Promise<[ITag[], number]> {
+    // 分页查询
     const tags = await TagModel.find({
       type: query.type === '' ? { $exists: true } : query.type,
       name: { $regex: query.name, $options: 'i' }
     })
-    return tags
+      .skip((query.pageNum - 1) * query.pageSize)
+      .limit(query.pageSize)
+    // 获取总数
+    const total = await TagModel.countDocuments({
+      type: query.type === '' ? { $exists: true } : query.type,
+      name: { $regex: query.name, $options: 'i' }
+    })
+    return [tags, total]
   }
   async update(body: any): Promise<void> {
     await TagModel.updateOne(

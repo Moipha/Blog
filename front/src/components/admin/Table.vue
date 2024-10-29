@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-import { provide, ref, VNodeChild, render, defineComponent } from 'vue'
+import { provide, ref, VNodeChild, defineComponent } from 'vue'
 
 defineProps({
   data: {
     type: Array as () => { _id: string; [key: string]: any }[],
     required: true
+  },
+  height: {
+    type: String,
+    default: 'auto'
   }
 })
 
@@ -48,17 +52,21 @@ const VNode = defineComponent({
         <th
           v-for="column in columns"
           :key="column.prop"
-          :style="{ minWidth: column.width + 'px' }"
+          :style="{ width: column.width + 'px' }"
           scope="col"
         >
           {{ column.label }}
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody :style="{ maxHeight: height }">
       <slot></slot>
       <tr v-for="item in data" :key="item._id">
-        <td v-for="column in columns" :key="column.prop">
+        <td
+          v-for="column in columns"
+          :key="column.prop"
+          :style="{ width: column.width + 'px' }"
+        >
           <template v-if="column.slots">
             <VNode :content="column.slots(item) as any" />
           </template>
@@ -66,24 +74,57 @@ const VNode = defineComponent({
         </td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td :colspan="columns.length">
+          <slot name="footer" />
+        </td>
+      </tr>
+    </tfoot>
   </table>
 </template>
 
 <style lang="scss" scoped>
 table {
+  --table-border: 1.5px solid var(--border);
   width: 100%;
   margin-top: 40px;
   border-spacing: 0;
-  border: 1.5px solid var(--border);
+  border: var(--table-border);
   border-radius: 10px;
+
+  tbody,
+  thead,
+  tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  tbody {
+    display: block;
+    overflow-y: scroll;
+    scrollbar-color: var(--hover) var(--border);
+    scrollbar-width: thin;
+    scroll-snap-type: y;
+
+    tr {
+      scroll-snap-align: start;
+
+      &:first-child td {
+        border-top: none;
+      }
+    }
+  }
 
   thead {
     color: var(--light-text);
+    border-bottom: var(--table-border);
   }
 
   td {
     height: 56px;
-    border-top: 1.5px solid var(--border);
+    border-top: var(--table-border);
     text-align: center;
   }
 
@@ -107,6 +148,15 @@ table {
     .btn {
       height: 40px;
       padding: 10px 11px;
+    }
+  }
+
+  tfoot tr {
+    &:hover {
+      background-color: var(--bg);
+    }
+    td {
+      height: auto;
     }
   }
 }

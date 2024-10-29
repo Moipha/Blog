@@ -1,15 +1,11 @@
 <script lang="ts" setup>
-defineProps({
-  modelValue: {
-    type: String
-  }
-})
+const select = defineModel()
 
-const emits = defineEmits(['update:modelValue', 'change'])
+const emits = defineEmits(['change'])
 
 // 改变值
 function onChange(e: Event) {
-  emits('update:modelValue', (e.target as HTMLSelectElement).value)
+  select.value = (e.target as HTMLSelectElement).value
   emits('change')
 }
 </script>
@@ -30,7 +26,7 @@ select {
   color: var(--text);
   padding: 10px;
   height: 40px;
-  transition: all 0.2s ease;
+  transition: border 0.2s ease;
 
   &:focus {
     border-color: var(--hover);

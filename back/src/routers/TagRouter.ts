@@ -28,12 +28,14 @@ router.get(
   [
     query('type')
       .isIn(['blog', 'code', 'general', ''])
-      .withMessage('提供的标签类型无效')
+      .withMessage('提供的标签类型无效'),
+    query('pageSize').isInt().withMessage('提供的页大小无效'),
+    query('pageNum').isInt().withMessage('提供的页数无效')
   ],
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    const tags = await service.list(req.query as { type: string; name: string })
-    res.status(200).json(Result.success(tags))
+    const [tag, total] = await service.list(req.query as any)
+    res.status(200).json(Result.success({ record: tag, total }))
   }
 )
 

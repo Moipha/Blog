@@ -1,18 +1,35 @@
 <script lang="ts" setup>
 import Table from '@/components/admin/Table.vue'
 import TableColumn from '@/components/admin/TableColumn.vue'
+import Pagination from '@/components/admin/Pagination.vue'
 import Input from '@/components/admin/Input.vue'
+import Textarea from '@/components/admin/Textarea.vue'
 import Button from '@/components/admin/Button.vue'
 import Select from '@/components/admin/Select.vue'
 import Dialog from '@/layouts/admin/Dialog.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import api from '@/api'
 import { Res, Tag } from '@/type'
+import iconToUrl from '@/utils/iconUtil'
+import format from '@/utils/timeFormatUtil'
 
 // 查询条件
 const condition = ref<{ type: string; name: string }>({
   type: '',
   name: ''
+})
+
+// 分页相关
+const pageSize = ref<number>(10)
+const pageNum = ref<number>(1)
+const total = ref<number>(0)
+
+// 切换页码重新查询
+watch(pageNum, () => {
+  search()
+})
+watch(pageSize, () => {
+  search()
 })
 
 // 标签列表
@@ -21,9 +38,14 @@ const tags = ref<Tag[]>([])
 // 查询对应条件的标签
 function search() {
   api.tag.get(
-    condition.value,
+    {
+      ...condition.value,
+      pageSize: pageSize.value,
+      pageNum: pageNum.value
+    },
     (res: Res) => {
-      tags.value = res.data
+      tags.value = res.data.record
+      total.value = res.data.total
     },
     (err: Error) => {
       console.log(err)
@@ -33,11 +55,6 @@ function search() {
 
 // 发送请求
 search()
-
-// 处理空值
-function format(str: string) {
-  return str === undefined || str === '' ? 'N/A' : str
-}
 
 // 重置
 function reset() {
@@ -64,7 +81,7 @@ function openDialog() {
 }
 
 // 新标签
-const newTag = ref<Tag>({} as Tag)
+const newTag = ref<Tag>({ type: 'blog' } as Tag)
 
 // 新建标签
 function createTag() {
@@ -74,6 +91,7 @@ function createTag() {
       alert('标签创建成功')
       search()
       dialog.value = false
+      newTag.value = { type: 'blog' } as Tag
     },
     (err: Error) => {
       alert('标签创建失败' + err)
@@ -149,16 +167,27 @@ function deleteTag() {
       <Button @click="reset" label="重置" icon="reset" />
       <Button @click="openDialog" label="新建标签" icon="add" />
     </form>
-    <Table :data="tags">
+    <Table class="table" height="calc(100vh - 340px)" :data="tags">
       <TableColumn label="名称" prop="name" :width="100" />
       <TableColumn label="类型" prop="type" :width="40">
-        <template #="item"> {{ map[item.type] }} </template>
+        <template #="item">
+          {{ map[item.type] }}
+        </template>
       </TableColumn>
       <TableColumn label="图标" prop="icon" :width="60">
-        <template #="item"> {{ format(item.icon) }} </template>
+        <template #="item">
+          <div class="table-icon-container">
+            <Icon v-if="item.icon" class="table-icon" :url="item.icon" />
+            <span v-else>N/A</span>
+          </div>
+        </template>
       </TableColumn>
-      <TableColumn label="创建时间" prop="createdTime" :width="200" />
-      <TableColumn label="更新时间" prop="updatedTime" :width="200" />
+      <TableColumn label="创建时间" prop="createdTime" :width="200">
+        <template #="item">{{ format(item.createdTime) }}</template>
+      </TableColumn>
+      <TableColumn label="更新时间" prop="updatedTime" :width="200">
+        <template #="item">{{ format(item.updatedTime) }}</template>
+      </TableColumn>
       <TableColumn label="操作" #="item" :width="100">
         <div class="action">
           <Button
@@ -179,30 +208,16 @@ function deleteTag() {
           />
         </div>
       </TableColumn>
+      <template #footer>
+        <Pagination
+          v-model:current-page="pageNum"
+          v-model:page-size="pageSize"
+          :total="total"
+        />
+      </template>
     </Table>
-    <!-- <table>
-      <thead>
-        <tr>
-          <th>名称</th>
-          <th>类型</th>
-          <th>图标</th>
-          <th>创建时间</th>
-          <th>更新时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="tag of tags" :key="tag._id">
-          <td>{{ tag.name }}</td>
-          <td>{{ map[tag.type] }}</td>
-          <td>{{ format(tag.icon) }}</td>
-          <td>{{ tag.createdTime }}</td>
-          <td>{{ tag.updatedTime }}</td>
-          <td class="action"></td>
-        </tr>
-      </tbody>
-    </table> -->
   </div>
+  <!-- 窗口：添加 -->
   <Dialog v-model="dialog" title="新增标签">
     <Input placeholder="请输入名称" label="名称" v-model="newTag.name" />
     <label class="dialog-label">类型</label>
@@ -211,13 +226,24 @@ function deleteTag() {
       <option value="code">片段</option>
       <option value="general">通用</option>
     </Select>
-    <Input
-      placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
-      label="图标"
-      v-model="newTag.icon"
-    />
+    <div class="icon-container">
+      <Textarea
+        class="textarea"
+        placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
+        label="图标"
+        v-model="newTag.icon"
+        :decorator="iconToUrl"
+      />
+      <div class="effects">
+        <label class="dialog-label">效果</label>
+        <div class="icon-container">
+          <Icon class="temp-icon" :url="iconToUrl(newTag.icon)"></Icon>
+        </div>
+      </div>
+    </div>
     <Button class="dialog-btn" @click="createTag">创建</Button>
   </Dialog>
+  <!-- 窗口：修改 -->
   <Dialog v-model="dialog2" title="修改标签">
     <Input placeholder="请输入名称" label="名称" v-model="curTag.name" />
     <label class="dialog-label">类型</label>
@@ -228,13 +254,24 @@ function deleteTag() {
         通用
       </option>
     </Select>
-    <Input
-      placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
-      label="图标"
-      v-model="curTag.icon"
-    />
+    <div class="icon-container">
+      <Textarea
+        class="textarea"
+        placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
+        label="图标"
+        v-model="curTag.icon"
+        :decorator="iconToUrl"
+      />
+      <div class="effects">
+        <label class="dialog-label">效果</label>
+        <div class="icon-container">
+          <Icon class="temp-icon" :url="iconToUrl(curTag.icon)"></Icon>
+        </div>
+      </div>
+    </div>
     <Button class="dialog-btn" @click="editTag">修改</Button>
   </Dialog>
+  <!-- 窗口：确认删除 -->
   <Dialog v-model="dialog3" title="确认删除">
     <p class="delete-text">你确定要删除标签 {{ dTag.name }} 吗？</p>
     <div class="btn-group">
@@ -264,34 +301,10 @@ function deleteTag() {
     }
   }
 
-  table {
-    width: 100%;
-    margin-top: 40px;
-    border-spacing: 0;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
+  .table {
+    margin-top: 20px;
+    font-family: consolas;
 
-    thead {
-      color: var(--light-text);
-    }
-
-    td {
-      height: 56px;
-      border-top: 1.5px solid var(--border);
-      text-align: center;
-    }
-
-    th {
-      height: 40px;
-    }
-
-    tr {
-      transition: 0.1s all ease;
-
-      &:hover {
-        background-color: var(--table-hover);
-      }
-    }
     .action {
       display: flex;
       align-items: center;
@@ -301,6 +314,15 @@ function deleteTag() {
       .btn {
         height: 40px;
         padding: 10px 11px;
+      }
+    }
+    .table-icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .table-icon {
+        width: 20px;
       }
     }
   }
@@ -324,5 +346,30 @@ function deleteTag() {
   justify-content: flex-end;
   margin-top: 20px;
   gap: 10px;
+}
+
+.icon-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 10px;
+
+  .effects {
+    display: flex;
+    flex-direction: column;
+
+    .icon-container {
+      aspect-ratio: 1;
+      background-color: var(--bg);
+      border: 1.5px solid var(--border);
+      display: flex;
+      border-radius: 10px;
+
+      .temp-icon {
+        width: 40px;
+        height: 40px;
+        margin: auto;
+      }
+    }
+  }
 }
 </style>
