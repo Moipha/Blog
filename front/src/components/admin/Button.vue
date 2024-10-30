@@ -24,8 +24,7 @@ defineProps({
 <template>
   <button
     :style="{ backgroundColor: bgColor, color: textColor, '--hc': hoverColor }"
-    type="button"
-  >
+    type="button">
     <Icon v-if="icon" class="icon" :name="icon" />
     <slot>{{ label }}</slot>
   </button>
@@ -42,6 +41,7 @@ button {
   align-items: center;
   gap: 5px;
   transition: 0.2s all ease;
+  text-wrap: nowrap;
 
   .icon {
     font-size: 18px;

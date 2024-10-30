@@ -4,6 +4,7 @@ import path from 'path'
 import db from './db/index.ts'
 import cors from 'cors'
 import { fileURLToPath } from 'url'
+import 'express-async-errors'
 
 const PORT: number = 8080
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -25,17 +26,29 @@ db(
     //   const { default: jwtMiddleware } = await import('./middlewares/jwtMiddleware.ts')
     //   jwtMiddleware(req, res, next)
     // })
+
     // 路由
     app.use('/tag', async (req: Request, res: Response, next: NextFunction) => {
       const { default: TagRouter } = await import('./routers/TagRouter.ts')
       TagRouter(req, res, next)
     })
+    app.use(
+      '/blog',
+      async (req: Request, res: Response, next: NextFunction) => {
+        const { default: BlogRouter } = await import('./routers/BlogRouter.ts')
+        BlogRouter(req, res, next)
+      }
+    )
 
     // 全局错误处理
-    app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
-      const { default: errorMiddleware } = await import('./middlewares/errorMiddleware.ts')
-      errorMiddleware(err, req, res, next)
-    })
+    app.use(
+      async (err: Error, req: Request, res: Response, next: NextFunction) => {
+        const { default: errorMiddleware } = await import(
+          './middlewares/errorMiddleware.ts'
+        )
+        errorMiddleware(err, req, res, next)
+      }
+    )
 
     // 启动服务器
     app.listen(PORT, () => {

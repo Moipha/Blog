@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import type { ITag } from '../types'
 
 /**
  * 标签模型
@@ -14,5 +15,5 @@ const TagSchema = new Schema({
 })
 
 // 创建文档模型
-const Tag = model('tag', TagSchema)
+const Tag = model<ITag>('tag', TagSchema)
 export default Tag

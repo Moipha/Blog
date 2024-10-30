@@ -1,4 +1,5 @@
 import Tag from './Tag'
+import Blog from './Blog'
 
 interface Api {
   tag: {
@@ -7,10 +8,17 @@ interface Api {
     update: Function
     delete: Function
   }
+  blog: {
+    get: Function
+    create: Function
+    update: Function
+    delete: Function
+  }
 }
 
 const api: Api = {
-  tag: Tag
+  tag: Tag,
+  blog: Blog
 }
 
 export default api

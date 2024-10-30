@@ -155,8 +155,7 @@ function deleteTag() {
         class="input"
         @keydown.enter="search"
         v-model="condition.name"
-        placeholder="请输入名称"
-      />
+        placeholder="请输入名称" />
       <Select class="select" @change="search" v-model="condition.type">
         <option value="">请选择类型</option>
         <option value="blog">博客</option>
@@ -167,7 +166,11 @@ function deleteTag() {
       <Button @click="reset" label="重置" icon="reset" />
       <Button @click="openDialog" label="新建标签" icon="add" />
     </form>
-    <Table class="table" height="calc(100vh - 340px)" :data="tags">
+    <Table
+      class="table"
+      height="calc(100vh - 340px)"
+      width="calc(80vw - 270px + max(0, 20vw - 200px))"
+      :data="tags">
       <TableColumn label="名称" prop="name" :width="100" />
       <TableColumn label="类型" prop="type" :width="40">
         <template #="item">
@@ -196,24 +199,21 @@ function deleteTag() {
             bg-color="var(--bg)"
             @click="openEditTag(item)"
             class="btn"
-            icon="edit"
-          />
+            icon="edit" />
           <Button
             text-color="var(--error)"
             hover-color="var(--border)"
             bg-color="var(--bg)"
             @click="openDeleteTag(item)"
             class="btn"
-            icon="delete"
-          />
+            icon="delete" />
         </div>
       </TableColumn>
       <template #footer>
         <Pagination
           v-model:current-page="pageNum"
           v-model:page-size="pageSize"
-          :total="total"
-        />
+          :total="total" />
       </template>
     </Table>
   </div>
@@ -232,10 +232,9 @@ function deleteTag() {
         placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
         label="图标"
         v-model="newTag.icon"
-        :decorator="iconToUrl"
-      />
+        :decorator="iconToUrl" />
       <div class="effects">
-        <label class="dialog-label">效果</label>
+        <label class="dialog-label">预览</label>
         <div class="icon-container">
           <Icon class="temp-icon" :url="iconToUrl(newTag.icon)"></Icon>
         </div>
@@ -260,10 +259,9 @@ function deleteTag() {
         placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
         label="图标"
         v-model="curTag.icon"
-        :decorator="iconToUrl"
-      />
+        :decorator="iconToUrl" />
       <div class="effects">
-        <label class="dialog-label">效果</label>
+        <label class="dialog-label">预览</label>
         <div class="icon-container">
           <Icon class="temp-icon" :url="iconToUrl(curTag.icon)"></Icon>
         </div>

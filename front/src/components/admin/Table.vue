@@ -9,6 +9,10 @@ defineProps({
   height: {
     type: String,
     default: 'auto'
+  },
+  width: {
+    type: String,
+    default: 'auto'
   }
 })
 
@@ -52,9 +56,8 @@ const VNode = defineComponent({
         <th
           v-for="column in columns"
           :key="column.prop"
-          :style="{ width: column.width + 'px' }"
-          scope="col"
-        >
+          :style="{ width: column.width + 'px', minWidth: column.width + 'px' }"
+          scope="col">
           {{ column.label }}
         </th>
       </tr>
@@ -65,8 +68,10 @@ const VNode = defineComponent({
         <td
           v-for="column in columns"
           :key="column.prop"
-          :style="{ width: column.width + 'px' }"
-        >
+          :style="{
+            width: column.width + 'px',
+            minWidth: column.width + 'px'
+          }">
           <template v-if="column.slots">
             <VNode :content="column.slots(item) as any" />
           </template>
@@ -103,7 +108,7 @@ table {
 
   tbody {
     display: block;
-    overflow-y: scroll;
+    overflow: scroll;
     scrollbar-color: var(--hover) var(--border);
     scrollbar-width: thin;
     scroll-snap-type: y;

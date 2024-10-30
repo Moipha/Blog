@@ -1,52 +1,47 @@
 import express from 'express'
 import { body, query } from 'express-validator'
 import argsCheck from '../utils/argsCheck.ts'
-import service from '../services/TagService.ts'
+import service from '../services/BlogService.ts'
 import Result from '../types/Result.ts'
 
 const router = express.Router()
 
-// 新增标签
+// 新增文章
 router.post(
   '/',
   [
-    body('name').notEmpty().withMessage('未提供标签名称'),
-    body('type')
-      .isIn(['blog', 'code', 'general'])
-      .withMessage('提供的标签类型无效')
+    body('title').notEmpty().withMessage('未提供标题'),
+    body('content').notEmpty().withMessage('未提供内容'),
+    body('author').notEmpty().withMessage('未提供作者'),
+    body('tags').optional().isArray().withMessage('提供的标签无效')
   ],
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    const newTag = await service.add(req.body)
-    res.status(200).json(Result.success(newTag))
+    const newBlog = await service.add(req.body)
+    res.status(200).json(Result.success(newBlog))
   }
 )
-
-// 获取标签列表
+// 获取分页数据
 router.get(
   '/',
   [
-    query('type')
-      .isIn(['blog', 'code', 'general', ''])
-      .withMessage('提供的标签类型无效'),
+    query('tags').optional().isArray().withMessage('提供的标签无效'),
     query('pageSize').isInt().withMessage('提供的页大小无效'),
     query('pageNum').isInt().withMessage('提供的页数无效')
   ],
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    const [tag, total] = await service.list(req.query as any)
-    res.status(200).json(Result.success({ record: tag, total }))
+    const [blogs, total] = await service.list(req.query as any)
+    res.status(200).json(Result.success({ record: blogs, total }))
   }
 )
-
-// 更新标签
+// 更新文章
 router.put(
   '/',
   [
-    body('name').notEmpty().withMessage('未提供标签名称'),
-    body('type')
-      .isIn(['blog', 'code', 'general'])
-      .withMessage('提供的标签类型无效')
+    body('title').notEmpty().withMessage('未提供标题'),
+    body('tags').isArray().withMessage('提供的标签无效'),
+    body('content').notEmpty().withMessage('未提供内容')
   ],
   (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
@@ -54,10 +49,10 @@ router.put(
     res.status(200).json(Result.success())
   }
 )
-// 删除标签
+// 删除文章
 router.delete(
   '/',
-  [query('id').isMongoId().withMessage('提供的标签ID无效')],
+  [query('id').isMongoId().withMessage('提供的文章ID无效')],
   (req: express.Request, res: express.Response): void => {
     if (!argsCheck(req, res)) return
     service.delete(req.query.id as string)

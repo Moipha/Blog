@@ -1,12 +1,13 @@
-import { Tag } from '@/type'
+import { Blog } from '@/type'
 import request from '@/utils/request'
 
-const baseURL = '/tag'
-class TagApi {
+const baseURL = '/blog'
+
+class BlogApi {
   async get(
     condition: {
-      type: string
-      name: string
+      tags: string[]
+      title: string
       pageNum: number
       pageSize: number
     },
@@ -25,7 +26,7 @@ class TagApi {
     }
   }
   async create(
-    data: { name: string; type: string; icon?: string },
+    data: { title: string; author: string; content: string; tags: string[] },
     callback: Function,
     errorCallback: Function
   ) {
@@ -40,7 +41,7 @@ class TagApi {
       errorCallback(e)
     }
   }
-  async update(data: Tag, callback: Function, errorCallback: Function) {
+  async update(data: Blog, callback: Function, errorCallback: Function) {
     try {
       const res = await request.put(baseURL, data)
       if (res.data.code === 200) {
@@ -66,4 +67,4 @@ class TagApi {
   }
 }
 
-export default new TagApi()
+export default new BlogApi()

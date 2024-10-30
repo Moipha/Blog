@@ -74,8 +74,7 @@ function onEnterJump() {
             :key="num"
             :class="{
               active: num == currentPage
-            }"
-          >
+            }">
             {{ num }}
           </div>
           <div @click="changePage(true)" class="block">></div>
@@ -86,8 +85,7 @@ function onEnterJump() {
             @keydown.enter="onEnterJump"
             v-model="jumpTo"
             class="input"
-            type="number"
-          />
+            type="number" />
           <span>页</span>
         </div>
       </template>

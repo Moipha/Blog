@@ -3,7 +3,12 @@
  */
 import type { Request, Response, NextFunction } from 'express'
 
-export default (err: Error, req: Request, res: Response, next: NextFunction): any => {
+export default (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
   // 记录日志
   console.error(err.stack)
 

@@ -10,8 +10,7 @@
         :key="item.name"
         :to="'/admin' + item.path"
         :class="{ active: active === item.path }"
-        class="item"
-      >
+        class="item">
         <Button class="btn">
           <Icon :name="item.icon" />
         </Button>
@@ -44,7 +43,7 @@ const nav = [
 ]
 active.value = router.currentRoute.value.path.slice(6)
 
-bus.on('change-admin-nav', (route) => {
+bus.on('change-admin-nav', (route: string) => {
   active.value = route.slice(6)
 })
 onBeforeUnmount(() => {
