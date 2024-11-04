@@ -1,7 +1,11 @@
 import type { BlogVO, IBlog, ITag } from '../types'
-import TagService from '../services/TagService'
+import TagService from '../services/TagService.ts'
 
-export async function iToVO(blog: IBlog): Promise<BlogVO> {
+export async function iToVO(blog: IBlog[]): Promise<BlogVO[]> {
+  return Promise.all(blog.map((item) => fn(item)))
+}
+
+async function fn(blog: IBlog): Promise<BlogVO> {
   const res = {
     title: blog.title,
     author: blog.author,

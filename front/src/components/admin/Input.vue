@@ -9,6 +9,13 @@ defineProps({
   },
   placeholder: {
     type: String
+  },
+  noBorder: {
+    type: Boolean,
+    default: false
+  },
+  icon: {
+    type: String
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -18,12 +25,16 @@ const emit = defineEmits(['update:modelValue'])
   <div class="container">
     <label v-if="label">{{ label }}</label>
     <input
+      :style="{
+        border: noBorder ? 'none' : '',
+        paddingLeft: icon ? '36px' : ''
+      }"
       :placeholder="placeholder"
       :value="modelValue"
       @input="
         emit('update:modelValue', ($event.target as HTMLInputElement).value)
-      "
-    />
+      " />
+    <Icon v-if="icon" :name="icon" class="icon" />
   </div>
 </template>
 
@@ -51,6 +62,13 @@ const emit = defineEmits(['update:modelValue'])
     &:focus {
       border-color: var(--hover);
     }
+  }
+
+  .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 </style>

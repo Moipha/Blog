@@ -48,6 +48,14 @@ class TagService {
     const tag = await TagModel.findOne({ _id: id })
     return tag
   }
+
+  // 获取指定类型的全部标签
+  async getAllTagsByTypes(types: string[]): Promise<ITag[]> {
+    const tags = await TagModel.find({ type: { $in: types } }).sort({
+      createdTime: -1
+    })
+    return tags
+  }
 }
 
 export default new TagService()

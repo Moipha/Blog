@@ -92,10 +92,19 @@ function onEnterJump() {
 
       <div class="container">
         <span>每页条数</span>
-        <Select class="select" v-model="pageSize">
-          <option :value="10">10</option>
-          <option :value="20">20</option>
-          <option :value="30">30</option>
+        <Select
+          :style="{
+            height: '30px',
+            padding: '0 5px',
+            borderRadius: '4px'
+          }"
+          width="60px"
+          v-model="pageSize"
+          :options="[
+            { value: 10, label: '10' },
+            { value: 20, label: '20' },
+            { value: 30, label: '30' }
+          ]">
         </Select>
       </div>
     </div>
@@ -106,7 +115,7 @@ function onEnterJump() {
 .footer {
   display: flex;
   height: 50px;
-  padding: 0 15px;
+  padding-right: 10px;
   font-family: consolas;
   color: var(--light-text);
   font-size: 14px;
@@ -159,11 +168,6 @@ function onEnterJump() {
         background-color: var(--text);
         color: var(--bg);
       }
-    }
-    .select {
-      height: 30px;
-      padding: 0 5px;
-      border-radius: 4px;
     }
   }
 }

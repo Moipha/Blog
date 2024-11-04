@@ -11,7 +11,6 @@ const router = createRouter({
       children: [
         {
           path: '/home',
-          name: 'home',
           component: () => import('@/views/Home.vue')
         },
         {
@@ -19,58 +18,75 @@ const router = createRouter({
           children: [
             {
               path: ':id',
-              name: 'blog',
               component: () => import('@/views/Blog.vue'),
               props: true
             },
             {
               path: '',
-              name: 'blogs',
               component: () => import('@/views/Blogs.vue')
             }
           ]
         },
         {
           path: '/code',
-          name: 'code',
           component: () => import('@/views/Code.vue')
         },
         {
           path: '/about',
-          name: 'about',
           component: () => import('@/views/About.vue')
         }
       ]
     },
     {
       path: '/admin',
-      name: 'admin',
+      meta: {
+        title: '首页'
+      },
       redirect: '/admin/home',
       component: () => import('@/layouts/admin/AdminLayout.vue'),
       children: [
         {
           path: 'home',
-          name: '首页',
           component: () => import('@/views/admin/Home.vue')
         },
         {
           path: 'blogs',
-          name: '博客',
-          component: () => import('@/views/admin/Blogs.vue')
+          meta: {
+            title: '博客'
+          },
+          children: [
+            {
+              path: '',
+              component: () => import('@/views/admin/Blogs.vue')
+            },
+            {
+              path: 'create',
+              meta: {
+                title: '新建博客'
+              },
+              component: () => import('@/views/admin/CreateBlog.vue')
+            }
+          ]
         },
         {
           path: 'codes',
-          name: '代码',
+          meta: {
+            title: '代码'
+          },
           component: () => import('@/views/admin/Codes.vue')
         },
         {
           path: 'tags',
-          name: '标签',
+          meta: {
+            title: '标签'
+          },
           component: () => import('@/views/admin/Tags.vue')
         },
         {
           path: 'graphs',
-          name: '统计',
+          meta: {
+            title: '统计'
+          },
           component: () => import('@/views/admin/Graphs.vue')
         }
       ]

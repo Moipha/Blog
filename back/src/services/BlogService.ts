@@ -1,5 +1,6 @@
 import BlogModel from '../models/BlogModel.ts'
 import type { BlogDTO, BlogVO, IBlog } from '../types/index.ts'
+import { iToVO } from '../utils/BlogUtil.ts'
 
 class BlogService {
   // 新建博客
@@ -8,13 +9,13 @@ class BlogService {
     return blog
   }
 
-  // 获取标签列表
+  // 获取博客列表
   async list(query: {
     tags: [] | undefined
     title: string
     pageSize: number
     pageNum: number
-  }): Promise<[IBlog[], number]> {
+  }): Promise<[BlogVO[], number]> {
     // 分页查询
     const blogs = await BlogModel.find({
       tags: query.tags ? { $in: query.tags } : { $exists: true },
@@ -28,7 +29,8 @@ class BlogService {
       tags: query.tags ? { $in: query.tags } : { $exists: true },
       title: { $regex: query.title, $options: 'i' }
     })
-    return [blogs, total]
+    const res = await iToVO(blogs)
+    return [res, total]
   }
   // 更新博客
   async update(body: any): Promise<void> {

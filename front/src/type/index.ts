@@ -25,3 +25,11 @@ export interface Blog {
   createdTime: Date
   updatedTime: Date
 }
+
+export interface BlogDTO {
+  title: string
+  author: string
+  content: string
+  enable: boolean
+  tags: string[]
+}

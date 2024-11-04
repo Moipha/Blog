@@ -1,14 +1,45 @@
+<script lang="ts" setup>
+import avatar from '@/assets/img/avatar.webp'
+import Avatar from '@/components/Avatar.vue'
+import Button from '@/components/Button.vue'
+import { useSettingStore } from '../../stores/setting'
+import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const { changeTheme } = useSettingStore()
+const { theme } = storeToRefs(useSettingStore())
+
+// 面包屑
+const route = useRoute()
+const breadcrumbs = computed(() => {
+  const items = []
+  route.matched.forEach((route) => {
+    if (route.meta && route.meta.title) {
+      items.push(route)
+    }
+  })
+  return items
+})
+</script>
+
 <template>
   <header>
     <nav>
-      <template v-if="$route.name !== '首页'">
-        <RouterLink class="item" to="/admin">首页</RouterLink>
-        <span class="split"> / </span>
-        <a>{{ $route.name }}</a>
-      </template>
-      <template v-else>
-        <a to="/admin">首页</a>
-      </template>
+      <div
+        class="container"
+        v-for="(item, index) of breadcrumbs"
+        :key="item.path">
+        <RouterLink
+          class="item"
+          :class="{
+            normal: index == breadcrumbs.length - 1
+          }"
+          :to="item.path"
+          >{{ item.meta.title }}</RouterLink
+        >
+        <span v-if="index !== breadcrumbs.length - 1" class="split"> > </span>
+      </div>
     </nav>
     <Button class="theme" @click="changeTheme">
       <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
@@ -19,17 +50,6 @@
     </Button>
   </header>
 </template>
-
-<script lang="ts" setup>
-import avatar from '@/assets/img/avatar.webp'
-import Avatar from '@/components/Avatar.vue'
-import Button from '@/components/Button.vue'
-import { useSettingStore } from '../../stores/setting'
-import { storeToRefs } from 'pinia'
-
-const { changeTheme } = useSettingStore()
-const { theme } = storeToRefs(useSettingStore())
-</script>
 
 <style lang="scss" scoped>
 header {
@@ -53,27 +73,38 @@ header {
   }
 
   nav {
+    display: flex;
+    align-items: center;
     align-self: flex-end;
 
-    .item {
-      color: var(--light-text);
-      transition: 0.1s color;
-      cursor: pointer;
+    .container {
+      height: 25px;
 
-      &:hover {
+      .item {
+        color: var(--light-text);
+        transition: 0.1s color;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 15px;
+
+        &:hover {
+          color: var(--text);
+        }
+      }
+
+      .normal {
+        cursor: default;
         color: var(--text);
       }
-    }
 
-    a {
-      text-decoration: none;
-      font-size: 15px;
-      cursor: default;
-    }
-
-    .split {
-      margin: 0 0.5vw;
-      cursor: default;
+      .split {
+        margin-left: 0.5vw;
+        margin-right: 1vw;
+        cursor: default;
+        font-family: consolas;
+        color: var(--light-text);
+        font-size: 16px;
+      }
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <aside>
-    <div class="logo">
+    <RouterLink class="logo" to="/">
       <h1>logo</h1>
       <p class="text">后台管理</p>
-    </div>
+    </RouterLink>
     <ul>
       <RouterLink
         v-for="item of nav"
@@ -53,7 +53,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 aside {
-  width: 20vw;
+  width: 15vw;
   min-width: 200px;
   height: 100vh;
   color: var(--bg);
@@ -65,6 +65,9 @@ aside {
 
   .logo {
     text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--bg);
 
     .text {
       font-weight: bold;

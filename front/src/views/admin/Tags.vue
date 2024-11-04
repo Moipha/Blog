@@ -12,6 +12,7 @@ import api from '@/api'
 import { Res, Tag } from '@/type'
 import iconToUrl from '@/utils/iconUtil'
 import format from '@/utils/timeFormatUtil'
+import CreateTag from '@/layouts/admin/CreateTag.vue'
 
 // 查询条件
 const condition = ref<{ type: string; name: string }>({
@@ -73,31 +74,9 @@ const map = {
 }
 
 /**
- * 弹窗：新建标签
+ * 弹窗：添加标签
  */
 const dialog = ref<boolean>(false)
-function openDialog() {
-  dialog.value = true
-}
-
-// 新标签
-const newTag = ref<Tag>({ type: 'blog' } as Tag)
-
-// 新建标签
-function createTag() {
-  api.tag.create(
-    newTag.value,
-    (res: Res) => {
-      alert('标签创建成功')
-      search()
-      dialog.value = false
-      newTag.value = { type: 'blog' } as Tag
-    },
-    (err: Error) => {
-      alert('标签创建失败' + err)
-    }
-  )
-}
 
 /**
  * 弹窗：修改标签
@@ -156,17 +135,23 @@ function deleteTag() {
         @keydown.enter="search"
         v-model="condition.name"
         placeholder="请输入名称" />
-      <Select class="select" @change="search" v-model="condition.type">
-        <option value="">请选择类型</option>
-        <option value="blog">博客</option>
-        <option value="code">片段</option>
-        <option value="general">通用</option>
-      </Select>
+      <Select
+        width="18vw"
+        :style="{ marginRight: '5px' }"
+        @change="search"
+        v-model="condition.type"
+        :options="[
+          { label: '请选择类型', value: '' },
+          { label: '博客', value: 'blog' },
+          { label: '片段', value: 'code' },
+          { label: '通用', value: 'general' }
+        ]" />
       <Button @click="search" label="搜索" icon="admin-search" />
       <Button @click="reset" label="重置" icon="reset" />
-      <Button @click="openDialog" label="新建标签" icon="add" />
+      <Button @click="dialog = true" label="新建标签" icon="add" />
     </form>
     <Table
+      align="left"
       class="table"
       height="calc(100vh - 340px)"
       width="calc(80vw - 270px + max(0, 20vw - 200px))"
@@ -217,42 +202,19 @@ function deleteTag() {
       </template>
     </Table>
   </div>
-  <!-- 窗口：添加 -->
-  <Dialog v-model="dialog" title="新增标签">
-    <Input placeholder="请输入名称" label="名称" v-model="newTag.name" />
-    <label class="dialog-label">类型</label>
-    <Select v-model="newTag.type">
-      <option value="blog">博客</option>
-      <option value="code">片段</option>
-      <option value="general">通用</option>
-    </Select>
-    <div class="icon-container">
-      <Textarea
-        class="textarea"
-        placeholder="请输入 SVG字符串、data:url字符串 或 图片地址"
-        label="图标"
-        v-model="newTag.icon"
-        :decorator="iconToUrl" />
-      <div class="effects">
-        <label class="dialog-label">预览</label>
-        <div class="icon-container">
-          <Icon class="temp-icon" :url="iconToUrl(newTag.icon)"></Icon>
-        </div>
-      </div>
-    </div>
-    <Button class="dialog-btn" @click="createTag">创建</Button>
-  </Dialog>
+  <CreateTag @callback="search" v-model="dialog"></CreateTag>
   <!-- 窗口：修改 -->
   <Dialog v-model="dialog2" title="修改标签">
     <Input placeholder="请输入名称" label="名称" v-model="curTag.name" />
     <label class="dialog-label">类型</label>
-    <Select v-model="curTag.type">
-      <option :selected="curTag.type === 'blog'" value="blog">博客</option>
-      <option :selected="curTag.type === 'code'" value="code">片段</option>
-      <option :selected="curTag.type === 'general'" value="general">
-        通用
-      </option>
-    </Select>
+    <Select
+      v-model="curTag.type"
+      width="100%"
+      :options="[
+        { label: '博客', value: 'blog' },
+        { label: '片段', value: 'code' },
+        { label: '通用', value: 'general' }
+      ]" />
     <div class="icon-container">
       <Textarea
         class="textarea"
@@ -262,12 +224,15 @@ function deleteTag() {
         :decorator="iconToUrl" />
       <div class="effects">
         <label class="dialog-label">预览</label>
-        <div class="icon-container">
+        <div class="icon-wrapper">
           <Icon class="temp-icon" :url="iconToUrl(curTag.icon)"></Icon>
         </div>
       </div>
     </div>
-    <Button class="dialog-btn" @click="editTag">修改</Button>
+    <Button class="dialog-btn" @click="editTag">
+      <Icon class="icon" name="edit" />
+      <span>修改</span>
+    </Button>
   </Dialog>
   <!-- 窗口：确认删除 -->
   <Dialog v-model="dialog3" title="确认删除">
@@ -291,7 +256,6 @@ function deleteTag() {
     margin-top: 20px;
     gap: 10px;
 
-    .select,
     .input {
       width: 18vw;
       min-width: 200px;
@@ -306,7 +270,6 @@ function deleteTag() {
     .action {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 10px;
 
       .btn {
@@ -317,7 +280,7 @@ function deleteTag() {
     .table-icon-container {
       display: flex;
       align-items: center;
-      justify-content: center;
+      padding-left: 5px;
 
       .table-icon {
         width: 20px;
@@ -333,8 +296,14 @@ function deleteTag() {
   width: 80px;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-left: auto;
   margin-top: 40px;
+  font-size: 14px;
+
+  .icon {
+    font-size: 18px;
+  }
 }
 .delete-text {
   margin-top: 10px;
@@ -355,7 +324,7 @@ function deleteTag() {
     display: flex;
     flex-direction: column;
 
-    .icon-container {
+    .icon-wrapper {
       aspect-ratio: 1;
       background-color: var(--bg);
       border: 1.5px solid var(--border);

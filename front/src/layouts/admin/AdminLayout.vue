@@ -20,7 +20,8 @@ main {
 
   section {
     min-height: 100vh;
-    width: 100%;
+    flex: 1;
+    overflow-x: auto;
     color: var(--text);
     background-color: var(--bg);
     border-radius: 50px 0 0 0;

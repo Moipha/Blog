@@ -48,9 +48,9 @@ router.put(
       .isIn(['blog', 'code', 'general'])
       .withMessage('提供的标签类型无效')
   ],
-  (req: express.Request, res: express.Response): Promise<void> => {
+  async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    service.update(req.body)
+    await service.update(req.body)
     res.status(200).json(Result.success())
   }
 )
@@ -58,10 +58,20 @@ router.put(
 router.delete(
   '/',
   [query('id').isMongoId().withMessage('提供的标签ID无效')],
-  (req: express.Request, res: express.Response): void => {
+  async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    service.delete(req.query.id as string)
+    await service.delete(req.query.id as string)
     res.status(200).json(Result.success())
+  }
+)
+
+router.get(
+  '/get-all',
+  [query('types').isArray().withMessage('提供的标签类型无效')],
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    const tags = await service.getAllTagsByTypes(req.query.types as any)
+    res.status(200).json(Result.success(tags))
   }
 )
 

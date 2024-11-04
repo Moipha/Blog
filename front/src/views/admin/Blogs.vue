@@ -4,11 +4,14 @@ import TableColumn from '@/components/admin/TableColumn.vue'
 import Input from '@/components/admin/Input.vue'
 import Button from '@/components/admin/Button.vue'
 import Pagination from '@/components/admin/Pagination.vue'
+import Tag from '@/components/admin/Tag.vue'
+import Switch from '@/components/admin/Switch.vue'
 
 import { ref, watch } from 'vue'
 import { Blog, Res } from '@/type'
 import format from '@/utils/timeFormatUtil'
 import api from '@/api'
+import router from '@/router'
 
 // 博客
 const blogs = ref<Blog[]>([])
@@ -54,6 +57,13 @@ search()
 // 重置查询条件
 function reset() {
   condition.value = { title: '', tags: [] }
+  search()
+}
+
+// 跳转到博客页面
+function jumpToBlog(id: string) {
+  const { href } = router.resolve({ path: `/blog/${id}` })
+  window.open(href, '_blank')
 }
 </script>
 
@@ -68,18 +78,34 @@ function reset() {
         placeholder="请输入标题" />
       <Button @click="search" label="搜索" icon="admin-search" />
       <Button @click="reset" label="重置" icon="reset" />
-      <Button @click="" label="新建博客" icon="add" />
+      <RouterLink to="/admin/blogs/create" class="link">
+        <Button label="新建博客" icon="add" />
+      </RouterLink>
     </form>
-    <Table class="table" height="calc(100vh - 340px)" :data="blogs">
-      <TableColumn label="标题" prop="title" :width="200" />
+    <Table
+      class="table"
+      height="calc(100vh - 340px)"
+      :data="blogs"
+      align="left">
+      <TableColumn label="标题" prop="title" :width="150" />
       <TableColumn label="作者" prop="author" :width="80" />
-      <TableColumn label="标签" prop="tags" :width="100">
+      <TableColumn label="标签" prop="tags" :width="180">
         <template #="item">
-          <span v-for="tag in item.tags" :key="tag">{{ tag }}</span>
+          <div class="tag-container">
+            <Tag
+              :icon="tag.icon"
+              :label="tag.name"
+              v-for="tag in item.tags"
+              :key="tag._id" />
+          </div>
         </template>
       </TableColumn>
-      <TableColumn label="启用状态" prop="icon" :width="80">
-        <template #="item"> // TODO radio </template>
+      <TableColumn label="发布状态" prop="icon" :width="80">
+        <template #="item">
+          <div class="switch-container">
+            <Switch v-model="item.enable" />
+          </div>
+        </template>
       </TableColumn>
       <TableColumn label="创建时间" prop="createdTime" :width="240">
         <template #="item">{{ format(item.createdTime) }}</template>
@@ -90,11 +116,12 @@ function reset() {
       <TableColumn label="操作" #="item" :width="150">
         <div class="action">
           <Button
+            @click="jumpToBlog(item._id)"
             text-color="var(--text)"
             hover-color="var(--border)"
             bg-color="var(--bg)"
             class="btn"
-            icon="edit" />
+            icon="eye" />
           <Button
             text-color="var(--text)"
             hover-color="var(--border)"
@@ -136,6 +163,10 @@ function reset() {
       min-width: 200px;
       margin-right: 10px;
     }
+
+    .link {
+      text-decoration: none;
+    }
   }
 
   .table {
@@ -145,8 +176,7 @@ function reset() {
     .action {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      gap: 5px;
 
       .btn {
         height: 40px;
@@ -161,6 +191,18 @@ function reset() {
       .table-icon {
         width: 20px;
       }
+    }
+
+    .tag-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .switch-container {
+      display: flex;
+      align-items: center;
+      width: fit-content;
     }
   }
 }

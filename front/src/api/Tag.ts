@@ -64,6 +64,18 @@ class TagApi {
       errorCallback(e)
     }
   }
+  async getAll(types: string[], callback: Function, errorCallback: Function) {
+    try {
+      const res = await request.get(baseURL + '/get-all', { params: { types } })
+      if (res.data.code === 200) {
+        callback(res.data)
+      } else {
+        errorCallback({ message: res.data.msg })
+      }
+    } catch (e) {
+      errorCallback(e)
+    }
+  }
 }
 
 export default new TagApi()

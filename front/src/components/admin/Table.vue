@@ -13,9 +13,14 @@ defineProps({
   width: {
     type: String,
     default: 'auto'
+  },
+  align: {
+    type: String as () => 'center' | 'left' | 'right' | 'justify' | 'char',
+    default: 'center'
   }
 })
 
+// 列
 const columns = ref<
   {
     prop: string
@@ -25,6 +30,7 @@ const columns = ref<
   }[]
 >([])
 
+// 注册列
 function registerColumn(
   prop: string,
   label: string,
@@ -37,6 +43,7 @@ function registerColumn(
 // 提供注册列方法上下文
 provide('registerColumn', registerColumn)
 
+// 渲染td插槽内容
 const VNode = defineComponent({
   props: {
     content: {
@@ -57,7 +64,8 @@ const VNode = defineComponent({
           v-for="column in columns"
           :key="column.prop"
           :style="{ width: column.width + 'px', minWidth: column.width + 'px' }"
-          scope="col">
+          scope="col"
+          :align="align">
           {{ column.label }}
         </th>
       </tr>
@@ -71,7 +79,8 @@ const VNode = defineComponent({
           :style="{
             width: column.width + 'px',
             minWidth: column.width + 'px'
-          }">
+          }"
+          :align="align">
           <template v-if="column.slots">
             <VNode :content="column.slots(item) as any" />
           </template>
@@ -106,12 +115,18 @@ table {
     width: 100%;
   }
 
-  tbody {
+  tbody,
+  thead {
     display: block;
-    overflow: scroll;
     scrollbar-color: var(--hover) var(--border);
     scrollbar-width: thin;
     scroll-snap-type: y;
+    scrollbar-gutter: stable;
+  }
+
+  tbody {
+    display: block;
+    overflow-y: auto;
 
     tr {
       scroll-snap-align: start;
@@ -123,6 +138,8 @@ table {
   }
 
   thead {
+    display: block;
+    overflow-x: auto;
     color: var(--light-text);
     border-bottom: var(--table-border);
   }
@@ -130,11 +147,15 @@ table {
   td {
     height: 56px;
     border-top: var(--table-border);
-    text-align: center;
   }
 
   th {
     height: 40px;
+  }
+
+  th:nth-of-type(1),
+  td:nth-of-type(1) {
+    padding-left: 15px;
   }
 
   tr {
