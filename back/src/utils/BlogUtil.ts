@@ -11,6 +11,7 @@ async function fn(blog: IBlog): Promise<BlogVO> {
     author: blog.author,
     content: blog.content,
     enable: blog.enable,
+    desc: blog.desc,
     createdTime: blog.createdTime,
     updatedTime: blog.updatedTime,
     tags: [] as ITag[],

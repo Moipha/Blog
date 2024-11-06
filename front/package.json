@@ -11,7 +11,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@bytemd/plugin-gfm": "^1.21.0",
+    "@bytemd/vue-next": "^1.21.0",
     "axios": "^1.7.7",
+    "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",

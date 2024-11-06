@@ -43,6 +43,7 @@ router.get(
 router.put(
   '/',
   [
+    body('_id').isMongoId().withMessage('提供的标签ID无效'),
     body('name').notEmpty().withMessage('未提供标签名称'),
     body('type')
       .isIn(['blog', 'code', 'general'])

@@ -99,7 +99,7 @@ function createTag() {
     .icon-wrapper {
       aspect-ratio: 1;
       background-color: var(--bg);
-      border: 1.5px solid var(--border);
+      border: var(--normal-border);
       display: flex;
       border-radius: 10px;
 

@@ -10,6 +10,10 @@ defineProps({
   placeholder: {
     type: String
   },
+  rows: {
+    type: Number,
+    default: 6
+  },
   decorator: {
     type: Function || undefined
   }
@@ -21,7 +25,7 @@ const emit = defineEmits(['update:modelValue'])
   <div class="container">
     <label v-if="label">{{ label }}</label>
     <textarea
-      rows="6"
+      :rows="rows"
       :placeholder="placeholder"
       :value="modelValue"
       @input="
@@ -31,8 +35,7 @@ const emit = defineEmits(['update:modelValue'])
             ? decorator(($event.target as HTMLInputElement).value)
             : ($event.target as HTMLInputElement).value
         )
-      "
-    />
+      " />
   </div>
 </template>
 
@@ -51,7 +54,7 @@ const emit = defineEmits(['update:modelValue'])
     border-radius: 10px;
     outline: none;
     background-color: var(--bg);
-    border: 1.5px solid var(--border);
+    border: var(--normal-border);
     color: var(--text);
     padding: 10px;
     transition: border 0.2s ease;

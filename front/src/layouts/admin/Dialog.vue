@@ -46,7 +46,7 @@ section {
   max-width: 580px;
   min-width: 400px;
   border-radius: 20px;
-  border: 1.5px solid var(--border);
+  border: var(--normal-border);
   padding: 20px 30px;
   position: fixed;
   top: 50%;

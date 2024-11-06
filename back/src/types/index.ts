@@ -27,6 +27,7 @@ export interface IBlog extends Document {
   tags: string[]
   content: string
   enable: boolean
+  desc: string
   createdTime: Date
   updatedTime: Date
 }
@@ -36,6 +37,7 @@ export interface BlogDTO {
   author: string
   tags: string[]
   content: string
+  desc: string
 }
 
 export interface BlogVO {
@@ -45,6 +47,7 @@ export interface BlogVO {
   tags: ITag[]
   content: string
   enable: boolean
+  desc: string
   createdTime: Date
   updatedTime: Date
 }

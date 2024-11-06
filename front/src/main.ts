@@ -5,8 +5,14 @@ import '@/assets/styles/global.scss'
 import Icon from '@/components/Icon.vue'
 import App from './App.vue'
 import router from './router'
+// pinia持久化插件
 import piniaPersist from 'pinia-plugin-persist'
+// md编辑器插件
+import 'bytemd/dist/index.css'
+import '@/assets/styles/github-markdown.css'
 
+
+// 创建app
 const app = createApp(App)
 
 // 使用pinia持久化插件

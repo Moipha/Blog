@@ -22,14 +22,17 @@ export interface Blog {
   content: string
   enable: boolean
   tags: Tag[]
+  desc: string
   createdTime: Date
   updatedTime: Date
 }
 
 export interface BlogDTO {
+  _id?: string
   title: string
   author: string
   content: string
   enable: boolean
   tags: string[]
+  desc: string
 }

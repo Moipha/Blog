@@ -23,8 +23,12 @@ request.interceptors.response.use(
       // 如果token过期，跳转到登录页面
       router.push('/login')
     }
-    console.error('错误的响应: ' + err)
-    return Promise.reject(err)
+    console.error('错误的响应: ' + err.response.data.msg)
+    for (let item of err.response.data.data) {
+      console.error(item.msg)
+    }
+
+    return Promise.reject(err.response.data)
   }
 )
 // 请求拦截器

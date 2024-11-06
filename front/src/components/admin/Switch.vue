@@ -1,11 +1,23 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
 const enable = defineModel()
+const inputRef = ref<HTMLInputElement | null>(null)
+
+const toggleInput = () => {
+  if (inputRef.value) {
+    enable.value = !enable.value
+  }
+}
 </script>
 
 <template>
   <div class="toggle-switch">
-    <input v-model="enable" class="toggle-input" id="toggle" type="checkbox" />
-    <label class="toggle-label" for="toggle"></label>
+    <input
+      v-model="enable"
+      ref="inputRef"
+      class="toggle-input"
+      type="checkbox" />
+    <label class="toggle-label" @click="toggleInput"></label>
   </div>
 </template>
 

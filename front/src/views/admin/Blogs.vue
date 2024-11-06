@@ -6,13 +6,15 @@ import Button from '@/components/admin/Button.vue'
 import Pagination from '@/components/admin/Pagination.vue'
 import Tag from '@/components/admin/Tag.vue'
 import Switch from '@/components/admin/Switch.vue'
+import Confirm from '@/layouts/admin/Confirm.vue'
 
 import { ref, watch } from 'vue'
 import { Blog, Res } from '@/type'
 import format from '@/utils/timeFormatUtil'
 import api from '@/api'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 // 博客
 const blogs = ref<Blog[]>([])
 
@@ -47,8 +49,8 @@ function search() {
       blogs.value = res.data.record
       total.value = res.data.total
     },
-    (err: Error) => {
-      console.log(err)
+    (err: Res) => {
+      alert(err.msg)
     }
   )
 }
@@ -64,6 +66,23 @@ function reset() {
 function jumpToBlog(id: string) {
   const { href } = router.resolve({ path: `/blog/${id}` })
   window.open(href, '_blank')
+}
+
+// 删除窗口
+const dialogDelete = ref<boolean>(false)
+// 将要删除的博客
+const delBlog = ref<Blog>({} as Blog)
+// 删除博客
+function deleteBlog() {
+  api.blog.delete(delBlog.value._id, (res: Res) => {
+    alert('删除成功')
+    search()
+  })
+}
+// 打开删除窗口
+function openDelete(blog: Blog) {
+  delBlog.value = blog
+  dialogDelete.value = true
 }
 </script>
 
@@ -123,12 +142,19 @@ function jumpToBlog(id: string) {
             class="btn"
             icon="eye" />
           <Button
+            @click="
+              router.push({
+                name: 'editBlog',
+                params: { id: item._id }
+              })
+            "
             text-color="var(--text)"
             hover-color="var(--border)"
             bg-color="var(--bg)"
             class="btn"
             icon="edit" />
           <Button
+            @click="openDelete(item)"
             text-color="var(--error)"
             hover-color="var(--border)"
             bg-color="var(--bg)"
@@ -144,6 +170,15 @@ function jumpToBlog(id: string) {
       </template>
     </Table>
   </div>
+  <Confirm v-model="dialogDelete" @callback="deleteBlog" title="确认删除">
+    <p>
+      <span>你确定要删除博客</span>
+      <i :style="{ margin: '0 5px', fontWeight: 'bold' }">{{
+        delBlog.title
+      }}</i>
+      <span>吗？</span>
+    </p>
+  </Confirm>
 </template>
 
 <style lang="scss" scoped>
@@ -195,8 +230,9 @@ function jumpToBlog(id: string) {
 
     .tag-container {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 5px;
+      gap: 2px 5px;
     }
 
     .switch-container {

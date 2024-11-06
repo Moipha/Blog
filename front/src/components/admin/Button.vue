@@ -34,7 +34,7 @@ defineProps({
 button {
   font-size: 14px;
   padding: 10px 15px;
-  border: 1.5px solid var(--border);
+  border: var(--normal-border);
   border-radius: 10px;
   cursor: pointer;
   display: flex;

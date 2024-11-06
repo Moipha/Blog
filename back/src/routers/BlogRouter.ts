@@ -1,5 +1,5 @@
 import express from 'express'
-import { body, query } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import argsCheck from '../utils/argsCheck.ts'
 import service from '../services/BlogService.ts'
 import Result from '../types/Result.ts'
@@ -39,6 +39,7 @@ router.get(
 router.put(
   '/',
   [
+    body('_id').isMongoId().withMessage('提供的文章ID无效'),
     body('title').notEmpty().withMessage('未提供标题'),
     body('tags').isArray().withMessage('提供的标签无效'),
     body('content').notEmpty().withMessage('未提供内容')
@@ -57,6 +58,17 @@ router.delete(
     if (!argsCheck(req, res)) return
     service.delete(req.query.id as string)
     res.status(200).json(Result.success())
+  }
+)
+
+// 根据id获取文章
+router.get(
+  '/:id',
+  [param('id').isMongoId().withMessage('提供的文章ID无效')],
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    const blog = await service.getById(req.params.id)
+    res.status(200).json(Result.success(blog))
   }
 )
 

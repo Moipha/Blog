@@ -18,7 +18,7 @@ defineProps({
   align-items: center;
   background-color: var(--text);
   color: var(--bg);
-  border: 1.5px solid var(--border);
+  border: var(--normal-border);
   border-radius: 10px;
   padding: 0 8px;
   font-size: 12px;

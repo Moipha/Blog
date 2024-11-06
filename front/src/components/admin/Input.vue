@@ -16,6 +16,10 @@ defineProps({
   },
   icon: {
     type: String
+  },
+  readonly: {
+    type: Boolean,
+    default: false
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -25,6 +29,7 @@ const emit = defineEmits(['update:modelValue'])
   <div class="container">
     <label v-if="label">{{ label }}</label>
     <input
+      :readonly="readonly"
       :style="{
         border: noBorder ? 'none' : '',
         paddingLeft: icon ? '36px' : ''
@@ -53,14 +58,21 @@ const emit = defineEmits(['update:modelValue'])
     border-radius: 10px;
     outline: none;
     background-color: var(--bg);
-    border: 1.5px solid var(--border);
+    border: var(--normal-border);
     color: var(--text);
     padding: 10px;
     height: 40px;
     transition: border 0.2s ease;
 
-    &:focus {
+    &:not([readonly]):focus {
       border-color: var(--hover);
+    }
+
+    &[readonly] {
+      opacity: 0.5;
+      &:hover {
+        cursor: not-allowed;
+      }
     }
   }
 

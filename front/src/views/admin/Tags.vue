@@ -7,12 +7,14 @@ import Textarea from '@/components/admin/Textarea.vue'
 import Button from '@/components/admin/Button.vue'
 import Select from '@/components/admin/Select.vue'
 import Dialog from '@/layouts/admin/Dialog.vue'
+import CreateTag from '@/layouts/admin/CreateTag.vue'
+import Confirm from '@/layouts/admin/Confirm.vue'
+
 import { ref, watch } from 'vue'
 import api from '@/api'
 import { Res, Tag } from '@/type'
 import iconToUrl from '@/utils/iconUtil'
 import format from '@/utils/timeFormatUtil'
-import CreateTag from '@/layouts/admin/CreateTag.vue'
 
 // 查询条件
 const condition = ref<{ type: string; name: string }>({
@@ -48,8 +50,8 @@ function search() {
       tags.value = res.data.record
       total.value = res.data.total
     },
-    (err: Error) => {
-      console.log(err)
+    (err: Res) => {
+      alert(err.msg)
     }
   )
 }
@@ -176,7 +178,7 @@ function deleteTag() {
       <TableColumn label="更新时间" prop="updatedTime" :width="200">
         <template #="item">{{ format(item.updatedTime) }}</template>
       </TableColumn>
-      <TableColumn label="操作" #="item" :width="100">
+      <TableColumn label="操作" #="item" :width="75">
         <div class="action">
           <Button
             text-color="var(--text)"
@@ -235,13 +237,13 @@ function deleteTag() {
     </Button>
   </Dialog>
   <!-- 窗口：确认删除 -->
-  <Dialog v-model="dialog3" title="确认删除">
-    <p class="delete-text">你确定要删除标签 {{ dTag.name }} 吗？</p>
-    <div class="btn-group">
-      <Button @click="deleteTag">确定删除</Button>
-      <Button @click="dialog3 = false">取消</Button>
-    </div>
-  </Dialog>
+  <Confirm v-model="dialog3" title="确认删除" @callback="deleteTag">
+    <p>
+      <span>你确定要删除标签</span>
+      <i style="font-weight: bold; margin: 0 5px">{{ dTag.name }}</i>
+      <span>吗？</span>
+    </p>
+  </Confirm>
 </template>
 
 <style lang="scss" scoped>
@@ -305,15 +307,6 @@ function deleteTag() {
     font-size: 18px;
   }
 }
-.delete-text {
-  margin-top: 10px;
-}
-.btn-group {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  gap: 10px;
-}
 
 .icon-container {
   display: grid;
@@ -327,7 +320,7 @@ function deleteTag() {
     .icon-wrapper {
       aspect-ratio: 1;
       background-color: var(--bg);
-      border: 1.5px solid var(--border);
+      border: var(--normal-border);
       display: flex;
       border-radius: 10px;
 

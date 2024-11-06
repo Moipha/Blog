@@ -3,7 +3,9 @@
     <Aside />
     <section>
       <Header />
-      <RouterView />
+      <div class="right-wrapper">
+        <RouterView />
+      </div>
     </section>
   </main>
 </template>
@@ -19,13 +21,21 @@ main {
   display: flex;
 
   section {
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     flex: 1;
     overflow-x: auto;
     color: var(--text);
     background-color: var(--bg);
     border-radius: 50px 0 0 0;
-    padding: 20px 20px 0 50px;
+  }
+  .right-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 0 50px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--hover) var(--border);
   }
 }
 </style>

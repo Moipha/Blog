@@ -100,7 +100,7 @@ const VNode = defineComponent({
 
 <style lang="scss" scoped>
 table {
-  --table-border: 1.5px solid var(--border);
+  --table-border: var(--normal-border);
   width: 100%;
   margin-top: 40px;
   border-spacing: 0;

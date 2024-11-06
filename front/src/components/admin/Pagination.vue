@@ -151,7 +151,7 @@ function onEnterJump() {
       .block {
         height: 30px;
         aspect-ratio: 1;
-        border: 1.5px solid var(--border);
+        border: var(--normal-border);
         border-radius: 4px;
         display: flex;
         justify-content: center;

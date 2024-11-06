@@ -65,6 +65,15 @@ const router = createRouter({
                 title: '新建博客'
               },
               component: () => import('@/views/admin/CreateBlog.vue')
+            },
+            {
+              path: 'edit/:id',
+              name: 'editBlog',
+              meta: {
+                title: '编辑博客'
+              },
+              component: () => import('@/views/admin/EditBlog.vue'),
+              props: true
             }
           ]
         },

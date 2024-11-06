@@ -53,10 +53,11 @@ const breadcrumbs = computed(() => {
 
 <style lang="scss" scoped>
 header {
-  height: 42px;
+  height: 62px;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  padding: 20px 20px 0 50px;
 
   .theme {
     margin: 0 1vw 0 auto;

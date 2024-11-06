@@ -1,10 +1,14 @@
-// TODO 1. 乱成一锅粥了 有空优化一下格式 2. 太多any了 有时间处理一下类型问题
-
 <script lang="ts" setup>
+// TODO
+/**
+ * - [ ] 乱成一锅粥了 有空优化一下格式
+ * - [ ] 太多any了 处理一下类型问题
+ * - [✔] 回显问题
+ */
 import Input from '@/components/admin/Input.vue'
 import Tag from '@/components/admin/Tag.vue'
 
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   options: {
@@ -37,16 +41,18 @@ const input = ref<HTMLElement>()
 // 返回选值
 const choice = defineModel<string | number | string[]>()
 
-// 当前选中的选项
-const selectedOption = ref<string | object[]>()
-if (props.multiple) {
-  selectedOption.value = []
-  choice.value = []
-} else {
-  selectedOption.value = props.options[0] ? (props.options[0] as any).label : ''
-  choice.value = props.options[0] ? (props.options[0] as any).value : ''
-}
-
+// 已选中的选项对象
+const selectedOption: object | object[] = computed(() => {
+  if (props.multiple) {
+    return props.options
+      .filter((item: any) =>
+        (choice.value as string[]).includes(item.value._id)
+      )
+      .map((item: any) => item.value)
+  } else {
+    return props.options.find((item: any) => item.value === choice.value)
+  }
+})
 // 显示下拉菜单
 const isMenuVisible = ref<boolean>(false)
 
@@ -55,15 +61,14 @@ function toggleMenu() {
   isMenuVisible.value = !isMenuVisible.value
 }
 
-// 进行选择
+// 单选模式选择
 function selectOption(option: { label: string; value: number | string }) {
-  selectedOption.value = option.label
   choice.value = option.value
   emits('change')
   isMenuVisible.value = false
 }
 
-// 添加点击事件
+// 点击事件
 onMounted(() => {
   document.addEventListener('click', handleClick)
 })
@@ -85,7 +90,7 @@ function handleClick(e: Event) {
 const filter = ref<string>('')
 const filteredOptions = ref([])
 
-// 选择多选选项
+// 多选模式选择
 function selectMultiple(option: { label: string; value: { _id: string } }) {
   const optionId = option.value._id
 
@@ -95,12 +100,6 @@ function selectMultiple(option: { label: string; value: { _id: string } }) {
   if (choiceIndex > -1) {
     // 如果已选中，取消选择
     ;(choice.value as string[]).splice(choiceIndex, 1)
-    const selectedIndex = (selectedOption.value as object[]).findIndex(
-      (item: any) => item._id === optionId
-    )
-    if (selectedIndex > -1) {
-      ;(selectedOption.value as object[]).splice(selectedIndex, 1)
-    }
   } else {
     // 如果未选中，则添加到选择项
     if ((choice.value as string[]).length >= 5) {
@@ -108,14 +107,12 @@ function selectMultiple(option: { label: string; value: { _id: string } }) {
       return
     }
     ;(choice.value as string[]).push(optionId)
-    ;(selectedOption.value as object[]).push(option.value)
   }
 }
 
 // 清除多选项
 function clearOption() {
   choice.value = []
-  selectedOption.value = []
 }
 
 // 输入框改变则重新进行过滤
@@ -146,7 +143,7 @@ watch(
       :data-show="isMenuVisible"
       class="input">
       <span
-        v-if="!selectedOption || selectedOption.length === 0"
+        v-if="!selectedOption || (selectedOption as object[]).length === 0"
         class="placeholder"
         >{{ placeholder }}</span
       >
@@ -159,7 +156,7 @@ watch(
             <span>{{ (item as any).name }}</span>
           </Tag>
         </template>
-        <span v-else>{{ selectedOption }}</span>
+        <span v-else>{{ (selectedOption as any).label }}</span>
       </div>
       <Icon
         v-if="multiple"
@@ -225,7 +222,7 @@ watch(
     outline: none;
     transition: 0.2s ease all;
     cursor: pointer;
-    border: solid 1.5px var(--border);
+    border: var(--normal-border);
     border-radius: 10px;
     background-color: var(--bg);
     color: var(--text);
@@ -277,12 +274,11 @@ watch(
 .drop-menu {
   position: absolute;
   background-color: var(--bg);
-  border: solid 1.5px var(--border);
+  border: var(--normal-border);
   border-radius: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   margin-top: 5px;
-  padding: 4px;
   overflow: hidden;
 
   .option-container {
@@ -290,7 +286,7 @@ watch(
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--light-text) var(--table-hover);
-    padding-top: 5px;
+    padding: 4px;
 
     .option {
       color: black;
@@ -330,7 +326,7 @@ watch(
     }
   }
   .hr {
-    border-top: 1.5px solid var(--border);
+    border-top: var(--normal-border);
     transform: scale(1.1, 1);
   }
 }

@@ -12,6 +12,7 @@ const BlogSchema = new Schema({
   tags: { type: Array, required: true }, // 标签
   content: { type: String, required: true }, // 文章内容
   enable: { type: Boolean, default: true }, // 可见状态
+  desc: { type: String, default: '' }, // 描述
   createdTime: { type: Date, default: () => Date.now() },
   updatedTime: { type: Date, default: () => Date.now() }
 })

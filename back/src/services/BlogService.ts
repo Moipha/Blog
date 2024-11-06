@@ -43,6 +43,13 @@ class BlogService {
   async delete(id: string): Promise<void> {
     await BlogModel.deleteOne({ _id: id })
   }
+
+  // 根据id获取博客
+  async getById(id: string): Promise<BlogVO> {
+    const blog = await BlogModel.findById(id)
+    const res = (await iToVO([blog]))[0]
+    return res
+  }
 }
 
 export default new BlogService()

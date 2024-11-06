@@ -14,6 +14,7 @@ interface Api {
     create: Function
     update: Function
     delete: Function
+    getById: Function
   }
 }
 

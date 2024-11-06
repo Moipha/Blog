@@ -1,16 +1,30 @@
 <template>
   <section>
-    {{ id }}
+    {{ blog }}
   </section>
 </template>
 
 <script lang="ts" setup>
-defineProps({
+import api from '@/api'
+import { Blog, Res } from '@/type'
+import { ref } from 'vue'
+
+const props = defineProps({
   id: {
     type: String,
     default: ''
   }
 })
+
+const blog = ref<Blog>({} as Blog)
+
+// 获取博客详情
+function getBlog() {
+  api.blog.getById(props.id, (res: Res) => {
+    blog.value = res.data
+  })
+}
+getBlog()
 </script>
 
 <style lang="scss" scoped>

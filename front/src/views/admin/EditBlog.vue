@@ -11,16 +11,39 @@ import { Editor } from '@bytemd/vue-next'
 import gfm from '@bytemd/plugin-gfm'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import api from '@/api'
 import { Blog, BlogDTO, Res, Tag } from '@/type'
-import { useTempStore } from '@/stores/temp'
-import { storeToRefs } from 'pinia'
 import * as _ from 'lodash'
 import { useRouter } from 'vue-router'
 
-// store
-const { newBlog } = storeToRefs(useTempStore())
+const props = defineProps({
+  id: String
+})
+// 根据路径中的id获取博客信息
+function getBlog() {
+  api.blog.getById(props.id, (res: Res) => {
+    blog.value = {
+      _id: res.data._id || '',
+      title: res.data.title || '',
+      content: res.data.content || '',
+      tags: [...res.data.tags.map((item) => item._id)],
+      enable: res.data.enable || true,
+      author: res.data.author || 'Moipha',
+      desc: res.data.desc || ''
+    }
+  })
+}
+getBlog()
+// 新建博客
+const blog = ref<BlogDTO>({
+  title: '',
+  content: '',
+  tags: [],
+  enable: true,
+  author: 'Moipha',
+  desc: ''
+} as BlogDTO)
 
 // router
 const router = useRouter()
@@ -47,16 +70,6 @@ function getTags() {
 }
 getTags()
 
-// 新建的博客
-const blog = ref<BlogDTO>({
-  enable: true,
-  tags: [],
-  author: 'Moipha'
-} as BlogDTO)
-if (newBlog.value) {
-  blog.value = _.cloneDeep(newBlog.value)
-}
-
 // 编辑器插件
 const plugins = [gfm()]
 function handleChange(v: string) {
@@ -68,41 +81,24 @@ function reset() {
   blog.value = { enable: true, tags: [], author: 'Moipha' } as BlogDTO
   // 清除编辑器内容
   handleChange('')
-  // 清除store中的缓存
-  newBlog.value = { tags: [], enable: true, author: 'Moipha' } as BlogDTO
 }
 
 // 重置弹窗
 const dialogReset = ref<boolean>(false)
 
-// 临时保存
-function save() {
-  newBlog.value = _.cloneDeep(blog.value)
-  alert('保存成功')
-}
-
-// 上传博客
-function upload() {
-  api.blog.create(
+// 修改博客
+function edit() {
+  api.blog.update(
     blog.value,
     (res: Res) => {
-      alert('创建成功')
-      // 清除缓存
-      newBlog.value = { tags: [], enable: true, author: 'Moipha' } as BlogDTO
-      createdBlog.value = res.data
-      dialogCreate.value = true
+      alert('修改成功')
+      router.push('/admin/blogs')
     },
     (err: Res) => {
       alert(err.msg)
     }
   )
 }
-
-// 上传成功回调窗口
-const dialogCreate = ref<boolean>(false)
-
-// 刚创建的博客信息
-const createdBlog = ref<Blog>({} as Blog)
 </script>
 
 <template>
@@ -145,9 +141,9 @@ const createdBlog = ref<Blog>({} as Blog)
       placeholder="请输入内容..."
       @change="handleChange" />
     <div class="btn-container">
+      <Button @click="router.push('/admin/blogs')" icon="exit" label="取消" />
       <Button @click="dialogReset = true" icon="reset" label="重写" />
-      <Button @click="save" icon="save" label="临时保存" />
-      <Button @click="upload" icon="upload" label="创建" />
+      <Button @click="edit" icon="edit" label="修改" />
     </div>
   </form>
   <CreateTag v-model="dialog" @callback="getTags" />
@@ -157,19 +153,6 @@ const createdBlog = ref<Blog>({} as Blog)
       <i :style="{ fontWeight: 'bold', margin: '0 5px' }">重置所有内容</i>
       <span>吗？</span>
     </p>
-  </Confirm>
-  <Confirm v-model="dialogCreate" title="创建成功">
-    <template #default>
-      <p>博客创建成功</p>
-    </template>
-    <template #btn>
-      <Button @click="router.push('/blog/' + createdBlog._id)" icon="eye"
-        >查看详情</Button
-      >
-      <Button @click="router.push('/admin/blogs')" icon="exit"
-        >返回博客管理</Button
-      >
-    </template>
   </Confirm>
 </template>
 
