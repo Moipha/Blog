@@ -23,6 +23,7 @@ defineProps({
   padding: 0 8px;
   font-size: 12px;
   gap: 3px;
+  cursor: default;
 
   &:hover {
     background-color: var(--hover);

@@ -25,6 +25,7 @@ router.post(
 router.get(
   '/',
   [
+    query('title').isString().withMessage('提供的标题无效'),
     query('tags').optional().isArray().withMessage('提供的标签无效'),
     query('pageSize').isInt().withMessage('提供的页大小无效'),
     query('pageNum').isInt().withMessage('提供的页数无效')

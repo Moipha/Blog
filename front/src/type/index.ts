@@ -11,8 +11,8 @@ export interface Tag {
   name: string
   type: TagType
   icon?: string
-  createdTime: Date
-  updatedTime: Date
+  createdTime: string
+  updatedTime: string
 }
 
 export interface Blog {
@@ -23,8 +23,8 @@ export interface Blog {
   enable: boolean
   tags: Tag[]
   desc: string
-  createdTime: Date
-  updatedTime: Date
+  createdTime: string
+  updatedTime: string
 }
 
 export interface BlogDTO {

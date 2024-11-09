@@ -11,10 +11,9 @@ import { Editor } from '@bytemd/vue-next'
 import gfm from '@bytemd/plugin-gfm'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import api from '@/api'
-import { Blog, BlogDTO, Res, Tag } from '@/type'
-import * as _ from 'lodash'
+import { BlogDTO, Res, Tag } from '@/type'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -27,7 +26,7 @@ function getBlog() {
       _id: res.data._id || '',
       title: res.data.title || '',
       content: res.data.content || '',
-      tags: [...res.data.tags.map((item) => item._id)],
+      tags: [...res.data.tags.map((item: { _id: any }) => item._id)],
       enable: res.data.enable || true,
       author: res.data.author || 'Moipha',
       desc: res.data.desc || ''
@@ -104,11 +103,7 @@ function edit() {
 <template>
   <form onsubmit="return false">
     <Input v-model="blog.title" label="标题" placeholder="请输入标题" />
-    <Input
-      readonly
-      v-model="blog.author"
-      label="作者"
-      placeholder="请输入作者" />
+    <Input readonly v-model="blog.author" label="作者" placeholder="请输入作者" />
     <label>标签</label>
     <div class="select-container">
       <Select
@@ -125,11 +120,7 @@ function edit() {
         icon="add"
         :style="{ width: 'fit-content' }" />
     </div>
-    <Textarea
-      v-model="blog.desc"
-      label="描述"
-      placeholder="请输入描述"
-      :rows="4" />
+    <Textarea v-model="blog.desc" label="描述" placeholder="请输入描述" :rows="4" />
     <label>是否发布</label>
     <Switch class="switch" v-model="blog.enable" />
     <label>内容</label>
@@ -229,7 +220,7 @@ form {
       border-color: var(--text);
     }
     ::v-deep(.cm-s-default .cm-header) {
-      color: #663399;
+      color: #336699;
     }
     ::v-deep(.bytemd-toolbar) {
       border-radius: 10px 10px 0 0;
@@ -238,6 +229,9 @@ form {
     ::v-deep(.bytemd-preview) {
       scrollbar-width: thin;
       scrollbar-color: var(--hover) var(--border);
+    }
+    ::v-deep(.bytemd-preview) {
+      background-color: var(--content);
     }
   }
 }

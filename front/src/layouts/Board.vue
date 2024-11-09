@@ -1,0 +1,36 @@
+<script lang="ts" setup>
+import { onMounted, onUnmounted, ref } from 'vue'
+
+// 上边距
+const marginTop = ref<number>(64 - window.scrollY * 0.2 > 0 ? 64 - window.scrollY * 0.2 : 0)
+
+// 滚动事件处理函数
+function handleScroll() {
+  marginTop.value = 64 - window.scrollY * 0.2 > 0 ? 64 - window.scrollY * 0.2 : 0
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+</script>
+
+<template>
+  <div class="board" :style="{ marginTop: marginTop + 'px' }">
+    <slot />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.board {
+  margin: 0 auto;
+  padding: 5vh 5vw 10vh;
+  background-color: var(--content);
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+</style>

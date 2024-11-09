@@ -8,6 +8,7 @@
 }
 
 [data-theme='light'] {
+  // manager
   --bg: white;
   --text: black;
   --light-text: #555555;
@@ -16,9 +17,18 @@
   --hover: #262626;
   --table-hover: #fafafa;
   --error: #ff6261;
+  // blog
+  --back: #eee;
+  --content: #fff;
+  --nav: #fafafab2;
+  --content-hover: #e3e3e3;
+  --white: white;
+  --brightness: 0.8;
+  --active: #336699;
 }
 
 [data-theme='dark'] {
+  // manager
   --bg: black;
   --text: white;
   --light-text: #a3a3a3;
@@ -27,6 +37,14 @@
   --hover: #e5e5e5;
   --table-hover: #151515;
   --error: #ff6261;
+  // blog
+  --back: #181c27;
+  --content: #252d38;
+  --nav: #1f3144b2;
+  --content-hover: #364151;
+  --white: #eee;
+  --brightness: 0.5;
+  --active: #77cdff;
 }
 
 body {
@@ -35,9 +53,8 @@ body {
   background: var(--color-background);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -46,6 +63,7 @@ body {
 }
 html {
   // 滚动条
-  scrollbar-color: var(--border) var(--bg);
+  scrollbar-color: var(--content-hover) var(--back);
+  scrollbar-width: thin;
   --normal-border: 1.5px solid var(--border);
 }

@@ -1,65 +1,3 @@
-<template>
-  <header
-    :style="{
-      backdropFilter: isTop ? 'none' : 'blur(10px)',
-      backgroundColor: isTop ? 'transparent' : 'var(--bg)',
-      borderColor: isTop ? 'transparent' : 'var(--border)'
-    }"
-  >
-    <!-- 移动端 -->
-    <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
-      <Button class="close" @click="showLeft = false">
-        <Icon name="close" />
-      </Button>
-    </section>
-    <Mask v-model="showLeft" to="body" />
-    <div class="menu" @click="showLeft = true">
-      <Button>
-        <Icon class="icon" name="menu" />
-      </Button>
-    </div>
-    <!-- pc端 -->
-    <RouterLink to="/home" class="logo" @click="activeItem = '/home'">
-      Logo
-      <h3 class="title">漾春</h3>
-    </RouterLink>
-    <nav>
-      <ul>
-        <RouterLink
-          v-for="item in items"
-          :key="item.name"
-          :to="item.link"
-          :class="{ active: activeItem === item.link, link: true }"
-        >
-          {{ item.label }}
-        </RouterLink>
-      </ul>
-    </nav>
-    <div class="search">
-      <Icon class="icon" name="search" />
-      <span class="text">搜索</span>
-      <span class="label">Ctrl K</span>
-    </div>
-    <div class="btn-container">
-      <Button @click="changeTheme">
-        <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
-        <Icon v-else class="icon" name="theme-light" />
-      </Button>
-      <a href="https://github.com/Moipha/Blog" target="_blank">
-        <Button>
-          <Icon class="icon" name="github" />
-        </Button>
-      </a>
-
-      <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
-        <Button>
-          <Icon class="icon" name="manager" />
-        </Button>
-      </a>
-    </div>
-  </header>
-</template>
-
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
 import Mask from '@/components/Mask.vue'
@@ -104,10 +42,71 @@ onBeforeUnmount(() => {
 })
 </script>
 
+<template>
+  <header
+    :style="{
+      backdropFilter: isTop ? 'none' : 'blur(3px)',
+      backgroundColor: isTop ? 'transparent' : 'var(--nav)',
+      borderColor: isTop ? 'transparent' : 'var(--border)',
+      height: isTop ? '72px' : '48px'
+    }">
+    <!-- 移动端 -->
+    <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
+      <Button class="close" @click="showLeft = false">
+        <Icon name="close" />
+      </Button>
+    </section>
+    <Mask v-model="showLeft" to="body" />
+    <div class="menu" @click="showLeft = true">
+      <Button>
+        <Icon class="icon" name="menu" />
+      </Button>
+    </div>
+    <!-- pc端 -->
+    <RouterLink to="/home" class="logo" @click="activeItem = '/home'">
+      Logo
+      <h3 class="title">漾春</h3>
+    </RouterLink>
+    <nav>
+      <ul>
+        <RouterLink
+          v-for="item in items"
+          :key="item.name"
+          :to="item.link"
+          :class="{ active: activeItem === item.link, link: true }">
+          {{ item.label }}
+        </RouterLink>
+      </ul>
+    </nav>
+    <div class="search">
+      <Icon class="icon" name="search" />
+      <span class="text">搜索</span>
+      <span class="label">Ctrl K</span>
+    </div>
+    <div class="btn-container">
+      <Button @click="changeTheme">
+        <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
+        <Icon v-else class="icon" name="theme-light" />
+      </Button>
+      <a href="https://github.com/Moipha/Blog" target="_blank">
+        <Button>
+          <Icon class="icon" name="github" />
+        </Button>
+      </a>
+
+      <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
+        <Button>
+          <Icon class="icon" name="manager" />
+        </Button>
+      </a>
+    </div>
+  </header>
+</template>
+
 <style lang="scss" scoped>
 header {
   position: fixed;
-  height: 64px;
+  height: 72px;
   width: 100%;
   padding: 10px 10%;
   display: flex;
@@ -115,9 +114,10 @@ header {
   color: var(--text);
   top: 0;
   z-index: 10;
-  transition: 0.4s background ease;
+  transition: 0.4s all ease;
   border-style: solid;
   border-width: 0 0 1px 0;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 
   @media (max-width: 768px) {
     padding: 10px 5%;
@@ -238,7 +238,7 @@ header {
     position: fixed;
     left: 0;
     top: 0;
-    background-color: var(--bg);
+    background-color: var(--back);
     transition: all 0.3s ease;
 
     .close {

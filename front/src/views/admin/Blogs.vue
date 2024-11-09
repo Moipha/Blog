@@ -10,9 +10,9 @@ import Confirm from '@/layouts/admin/Confirm.vue'
 
 import { ref, watch } from 'vue'
 import { Blog, Res } from '@/type'
-import format from '@/utils/timeFormatUtil'
 import api from '@/api'
 import { useRouter } from 'vue-router'
+import dayjs from 'dayjs'
 
 const router = useRouter()
 // 博客
@@ -101,21 +101,13 @@ function openDelete(blog: Blog) {
         <Button label="新建博客" icon="add" />
       </RouterLink>
     </form>
-    <Table
-      class="table"
-      height="calc(100vh - 340px)"
-      :data="blogs"
-      align="left">
-      <TableColumn label="标题" prop="title" :width="150" />
+    <Table class="table" height="calc(100vh - 340px)" :data="blogs" align="left">
+      <TableColumn label="标题" prop="title" :width="250" />
       <TableColumn label="作者" prop="author" :width="80" />
-      <TableColumn label="标签" prop="tags" :width="180">
+      <TableColumn label="标签" prop="tags" :width="220">
         <template #="item">
           <div class="tag-container">
-            <Tag
-              :icon="tag.icon"
-              :label="tag.name"
-              v-for="tag in item.tags"
-              :key="tag._id" />
+            <Tag :icon="tag.icon" :label="tag.name" v-for="tag in item.tags" :key="tag._id" />
           </div>
         </template>
       </TableColumn>
@@ -126,11 +118,11 @@ function openDelete(blog: Blog) {
           </div>
         </template>
       </TableColumn>
-      <TableColumn label="创建时间" prop="createdTime" :width="240">
-        <template #="item">{{ format(item.createdTime) }}</template>
+      <TableColumn label="创建时间" prop="createdTime" :width="150">
+        <template #="item">{{ dayjs(item.createdTime).format('YYYY-MM-DD HH:mm') }}</template>
       </TableColumn>
-      <TableColumn label="更新时间" prop="updatedTime" :width="240">
-        <template #="item">{{ format(item.updatedTime) }}</template>
+      <TableColumn label="更新时间" prop="updatedTime" :width="150">
+        <template #="item">{{ dayjs(item.updatedTime).format('YYYY-MM-DD HH:mm') }}</template>
       </TableColumn>
       <TableColumn label="操作" #="item" :width="150">
         <div class="action">
@@ -163,19 +155,14 @@ function openDelete(blog: Blog) {
         </div>
       </TableColumn>
       <template #footer>
-        <Pagination
-          v-model:current-page="pageNum"
-          v-model:page-size="pageSize"
-          :total="total" />
+        <Pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :total="total" />
       </template>
     </Table>
   </div>
   <Confirm v-model="dialogDelete" @callback="deleteBlog" title="确认删除">
     <p>
       <span>你确定要删除博客</span>
-      <i :style="{ margin: '0 5px', fontWeight: 'bold' }">{{
-        delBlog.title
-      }}</i>
+      <i :style="{ margin: '0 5px', fontWeight: 'bold' }">{{ delBlog.title }}</i>
       <span>吗？</span>
     </p>
   </Confirm>

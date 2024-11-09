@@ -15,7 +15,7 @@ import Footer from '@/layouts/Footer.vue'
 
 <style lang="scss" scoped>
 main {
-  background-color: var(--bg);
+  background-color: var(--back);
 
   section {
     min-height: 100vh;

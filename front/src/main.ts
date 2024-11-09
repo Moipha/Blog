@@ -10,7 +10,9 @@ import piniaPersist from 'pinia-plugin-persist'
 // md编辑器插件
 import 'bytemd/dist/index.css'
 import '@/assets/styles/github-markdown.css'
-
+// lodash
+import _ from 'lodash'
+window._ = _
 
 // 创建app
 const app = createApp(App)

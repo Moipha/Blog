@@ -1,162 +1,129 @@
+<script lang="ts" setup>
+import Board from '@/layouts/Board.vue'
+import Cover from '@/layouts/Cover.vue'
+
+import api from '@/api'
+import { Blog, Res } from '@/type'
+import { ref } from 'vue'
+import dayjs from 'dayjs'
+import coverImg from '@/assets/img/3.jpg'
+
+// 分页信息
+const pageNum = ref<number>(1)
+const pageSize = ref<number>(20)
+const total = ref<number>(0)
+
+// 获取博客列表
+function getBlogs() {
+  api.blog.get({ pageSize: pageSize.value, pageNum: pageNum.value, title: '' }, (res: Res) => {
+    blogs.value = res.data.record
+    total.value = res.data.total
+  })
+}
+getBlogs()
+
+// 标签、标题、摘要、日期
+const blogs = ref<Blog[]>([])
+</script>
+
 <template>
   <section>
-    <h1>全部文章</h1>
-    <ul>
-      <RouterLink v-for="blog in blogs" :key="blog.id" class="blog" :to="'/blog/' + blog.id">
-        <h2>{{ blog.title }}</h2>
-        <span v-for="tag in blog.tags" :key="tag" class="tag">{{ tag }}&nbsp;</span>
-        <div class="summary">{{ blog.summary }}</div>
-        <div class="time">{{ blog.time }}</div>
-      </RouterLink>
-    </ul>
+    <Cover class="cover" :src="coverImg" height="60vh">
+      <h1>博客</h1>
+    </Cover>
+    <Board class="main">
+      <h1>
+        共计 <span class="num">{{ total }}</span
+        >篇博客
+      </h1>
+      <ul>
+        <RouterLink v-for="blog in blogs" :key="blog._id" class="blog" :to="`/blog/${blog._id}`">
+          <h2>{{ blog.title }}</h2>
+          <span v-for="tag in blog.tags" :key="tag._id" class="tag">{{ tag.name }}&nbsp;</span>
+          <div class="summary">{{ blog.desc }}</div>
+          <div class="time">{{ dayjs(blog.createdTime).format('MM-DD') }}</div>
+        </RouterLink>
+      </ul>
+    </Board>
   </section>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-// 标签、标题、摘要、日期
-const blogs = ref([
-  {
-    id: 1,
-    tags: ['js', 'vue'],
-    title: '标题1',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-05'
-  },
-  {
-    id: 2,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 3,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 4,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 5,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 6,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 7,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 8,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  },
-  {
-    id: 9,
-    tags: ['css', 'js'],
-    title: '标题2',
-    summary:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ipsa, rerum est reprehenderit, non culpa inventore similique quam eveniet consequuntur maxime illo ullam voluptatem reiciendis totam soluta natus laudantium! Id!',
-    time: '2024-09-01'
-  }
-])
-
-// 发送请求获取文章列表
-</script>
-
 <style lang="scss" scoped>
 section {
-  background-color: var(--bg);
+  background-color: var(--back);
   color: var(--text);
-  padding: 74px 12vw 0;
 
-  @media (max-width: 660px) {
-    padding: 74px 3vw 0;
-  }
-
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-
-    @media (max-width: 660px) {
-      margin-left: 20px;
+  .cover {
+    h1 {
+      font-size: 36px;
+      text-align: center;
     }
   }
 
-  ul {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5vh 5vw;
+  .main {
+    width: 76vw;
+    padding: 6vh 7vw;
+    margin: auto;
 
-    @media (max-width: 660px) {
-      grid-template-columns: 1fr;
-      gap: 5vh;
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+
+      @media (max-width: 660px) {
+        margin-left: 20px;
+      }
+
+      span {
+        margin: 0 5px;
+        font-weight: bold;
+      }
     }
 
-    .blog {
-      text-decoration: none;
-      transition: all 0.2s;
-      padding: 10px 20px;
-      border-radius: 12px;
-      color: var(--text);
+    ul {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vh 3vw;
 
-      &:hover {
-        background-color: var(--border);
+      @media (max-width: 660px) {
+        grid-template-columns: 1fr;
+        gap: 5vh;
       }
 
-      h2 {
-        margin-bottom: 5px;
-      }
+      .blog {
+        text-decoration: none;
+        transition: all 0.2s;
+        padding: 10px 20px;
+        border-radius: 12px;
+        color: var(--text);
 
-      .tag {
-        font-family: consolas;
-        color: var(--light-text);
-
-        &::before {
-          content: '#';
+        &:hover {
+          background-color: var(--content-hover);
         }
-      }
 
-      .summary {
-        color: var(--light-text);
-        font-size: 16px;
-        margin: 5px 0 10px;
-      }
+        h2 {
+          margin-bottom: 5px;
+        }
 
-      .time {
-        color: var(--light-text);
-        font-family: consolas;
+        .tag {
+          font-family: consolas;
+          color: var(--light-text);
+
+          &::before {
+            content: '#';
+          }
+        }
+
+        .summary {
+          color: var(--light-text);
+          font-size: 16px;
+          margin: 5px 0 10px;
+        }
+
+        .time {
+          color: var(--light-text);
+          font-family: consolas;
+        }
       }
     }
   }

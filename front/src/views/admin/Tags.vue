@@ -14,7 +14,7 @@ import { ref, watch } from 'vue'
 import api from '@/api'
 import { Res, Tag } from '@/type'
 import iconToUrl from '@/utils/iconUtil'
-import format from '@/utils/timeFormatUtil'
+import dayjs from 'dayjs'
 
 // 查询条件
 const condition = ref<{ type: string; name: string }>({
@@ -173,10 +173,10 @@ function deleteTag() {
         </template>
       </TableColumn>
       <TableColumn label="创建时间" prop="createdTime" :width="200">
-        <template #="item">{{ format(item.createdTime) }}</template>
+        <template #="item">{{ dayjs(item.createdTime).format('YYYY-MM-DD HH:mm') }}</template>
       </TableColumn>
       <TableColumn label="更新时间" prop="updatedTime" :width="200">
-        <template #="item">{{ format(item.updatedTime) }}</template>
+        <template #="item">{{ dayjs(item.updatedTime).format('YYYY-MM-DD HH:mm') }}</template>
       </TableColumn>
       <TableColumn label="操作" #="item" :width="75">
         <div class="action">
@@ -197,10 +197,7 @@ function deleteTag() {
         </div>
       </TableColumn>
       <template #footer>
-        <Pagination
-          v-model:current-page="pageNum"
-          v-model:page-size="pageSize"
-          :total="total" />
+        <Pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :total="total" />
       </template>
     </Table>
   </div>

@@ -16,7 +16,6 @@ import api from '@/api'
 import { Blog, BlogDTO, Res, Tag } from '@/type'
 import { useTempStore } from '@/stores/temp'
 import { storeToRefs } from 'pinia'
-import * as _ from 'lodash'
 import { useRouter } from 'vue-router'
 
 // store
@@ -54,7 +53,7 @@ const blog = ref<BlogDTO>({
   author: 'Moipha'
 } as BlogDTO)
 if (newBlog.value) {
-  blog.value = _.cloneDeep(newBlog.value)
+  blog.value = window._.cloneDeep(newBlog.value)
 }
 
 // 编辑器插件
@@ -77,7 +76,7 @@ const dialogReset = ref<boolean>(false)
 
 // 临时保存
 function save() {
-  newBlog.value = _.cloneDeep(blog.value)
+  newBlog.value = window._.cloneDeep(blog.value)
   alert('保存成功')
 }
 
@@ -108,11 +107,7 @@ const createdBlog = ref<Blog>({} as Blog)
 <template>
   <form onsubmit="return false">
     <Input v-model="blog.title" label="标题" placeholder="请输入标题" />
-    <Input
-      readonly
-      v-model="blog.author"
-      label="作者"
-      placeholder="请输入作者" />
+    <Input readonly v-model="blog.author" label="作者" placeholder="请输入作者" />
     <label>标签</label>
     <div class="select-container">
       <Select
@@ -129,11 +124,7 @@ const createdBlog = ref<Blog>({} as Blog)
         icon="add"
         :style="{ width: 'fit-content' }" />
     </div>
-    <Textarea
-      v-model="blog.desc"
-      label="描述"
-      placeholder="请输入描述"
-      :rows="4" />
+    <Textarea v-model="blog.desc" label="描述" placeholder="请输入描述" :rows="4" />
     <label>是否发布</label>
     <Switch class="switch" v-model="blog.enable" />
     <label>内容</label>
@@ -163,12 +154,8 @@ const createdBlog = ref<Blog>({} as Blog)
       <p>博客创建成功</p>
     </template>
     <template #btn>
-      <Button @click="router.push('/blog/' + createdBlog._id)" icon="eye"
-        >查看详情</Button
-      >
-      <Button @click="router.push('/admin/blogs')" icon="exit"
-        >返回博客管理</Button
-      >
+      <Button @click="router.push('/blog/' + createdBlog._id)" icon="eye">查看详情</Button>
+      <Button @click="router.push('/admin/blogs')" icon="exit">返回博客管理</Button>
     </template>
   </Confirm>
 </template>
@@ -246,7 +233,7 @@ form {
       border-color: var(--text);
     }
     ::v-deep(.cm-s-default .cm-header) {
-      color: #663399;
+      color: #336699;
     }
     ::v-deep(.bytemd-toolbar) {
       border-radius: 10px 10px 0 0;
@@ -255,6 +242,9 @@ form {
     ::v-deep(.bytemd-preview) {
       scrollbar-width: thin;
       scrollbar-color: var(--hover) var(--border);
+    }
+    ::v-deep(.bytemd-preview) {
+      background-color: var(--content);
     }
   }
 }
