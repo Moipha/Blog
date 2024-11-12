@@ -77,7 +77,7 @@ function locateHead(index: number) {
     if (targetElement) {
       const offsetTop = targetElement.getBoundingClientRect().top + window.scrollY
       window.scrollTo({
-        top: offsetTop - 80,
+        top: offsetTop - 48,
         behavior: 'smooth'
       })
     }
@@ -100,6 +100,7 @@ function locateHead(index: number) {
 <style lang="scss" scoped>
 .container {
   padding-left: 20px;
+  font-size: 15px;
 
   .option {
     list-style: none;
@@ -111,8 +112,8 @@ function locateHead(index: number) {
   @for $i from 1 through 3 {
     .level-#{$i} {
       margin-left: ($i - 1) * 10px;
-      font-size: calc(16px - ($i - 1) * 1.5px);
-      margin-bottom: calc(2px - ($i - 1) * 1px);
+      // font-size: calc(16px - ($i - 1) * 1.5px);
+      margin-bottom: 2px - ($i - 1) * 1px;
     }
   }
   .active {

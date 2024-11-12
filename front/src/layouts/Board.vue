@@ -27,7 +27,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .board {
   margin: 0 auto;
-  padding: 5vh 5vw 10vh;
+  padding: 5vh 5vw;
   background-color: var(--content);
   position: relative;
   border-radius: 10px;

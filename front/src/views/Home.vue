@@ -1,6 +1,13 @@
+<script setup>
+import Cover from '@/layouts/Cover.vue'
+
+import coverImg from '@/assets/img/2.jpg'
+</script>
+
 <template>
   <section>
-    <div class="bg">
+    <Cover class="cover" :src="coverImg" height="100vh" title="H！欢迎来到漾春的博客站点" />
+    <!-- <div class="bg">
       <div class="wave"></div>
       <div class="wave"></div>
       <div class="wave"></div>
@@ -21,34 +28,9 @@
         </a>
       </div>
       <Icon class="arrow" name="down" />
-    </div>
+    </div> -->
   </section>
 </template>
-
-<script setup>
-import Avatar from '@/components/Avatar.vue'
-import avatar from '@/assets/img/avatar.webp'
-import Button from '@/components/Button.vue'
-
-const contacts = [
-  {
-    url: 'https://github.com/moipha',
-    icon: 'github'
-  },
-  {
-    url: 'https://space.bilibili.com/448336859',
-    icon: 'bilibili'
-  },
-  {
-    url: 'https://blog.csdn.net/fafafafa_fa',
-    icon: 'csdn'
-  },
-  {
-    url: 'mailto:chengfayang@henu.edu.cn',
-    icon: 'mail'
-  }
-]
-</script>
 
 <style lang="scss" scoped>
 section {

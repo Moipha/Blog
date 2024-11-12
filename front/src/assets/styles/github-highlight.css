@@ -1,0 +1,126 @@
+/* 公共样式 */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+code.hljs {
+  padding: 3px 5px;
+}
+.hljs {
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  color: var(--highlight-color-keyword);
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  color: var(--highlight-color-entity);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--highlight-color-constant);
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: var(--highlight-color-string);
+}
+.hljs-built_in,
+.hljs-symbol {
+  color: var(--highlight-color-variable);
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  color: var(--highlight-color-comment);
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  color: var(--highlight-color-tag);
+}
+.hljs-subst {
+  color: var(--highlight-color-import);
+}
+.hljs-section {
+  color: var(--highlight-color-heading);
+  font-weight: bold;
+}
+.hljs-bullet {
+  color: var(--highlight-color-list);
+}
+.hljs-emphasis {
+  color: var(--highlight-text);
+  font-style: italic;
+}
+.hljs-strong {
+  color: var(--highlight-text);
+  font-weight: bold;
+}
+.hljs-addition {
+  color: var(--highlight-color-inserted-text);
+  background-color: var(--highlight-color-inserted-bg);
+}
+.hljs-deletion {
+  color: var(--highlight-color-deleted-text);
+  background-color: var(--highlight-color-deleted-bg);
+}
+
+/* 亮色主题 */
+[data-theme='light'] {
+  --highlight-bg: #ffffff;
+  --highlight-text: #24292e;
+  --highlight-color-keyword: #d73a49;
+  --highlight-color-entity: #6f42c1;
+  --highlight-color-constant: #005cc5;
+  --highlight-color-string: #032f62;
+  --highlight-color-variable: #e36209;
+  --highlight-color-comment: #6a737d;
+  --highlight-color-tag: #22863a;
+  --highlight-color-import: #24292e;
+  --highlight-color-heading: #005cc5;
+  --highlight-color-list: #735c0f;
+  --highlight-color-inserted-text: #22863a;
+  --highlight-color-inserted-bg: #f0fff4;
+  --highlight-color-deleted-text: #b31d28;
+  --highlight-color-deleted-bg: #ffeef0;
+}
+
+/* 暗色主题 */
+[data-theme='dark'] {
+  --highlight-bg: #0d1117;
+  --highlight-text: #c9d1d9;
+  --highlight-color-keyword: #ff7b72;
+  --highlight-color-entity: #d2a8ff;
+  --highlight-color-constant: #79c0ff;
+  --highlight-color-string: #a5d6ff;
+  --highlight-color-variable: #ffa657;
+  --highlight-color-comment: #8b949e;
+  --highlight-color-tag: #7ee787;
+  --highlight-color-import: #c9d1d9;
+  --highlight-color-heading: #1f6feb;
+  --highlight-color-list: #f2cc60;
+  --highlight-color-inserted-text: #aff5b4;
+  --highlight-color-inserted-bg: #033a16;
+  --highlight-color-deleted-text: #ffdcd7;
+  --highlight-color-deleted-bg: #67060c;
+}

@@ -28,8 +28,8 @@ const router = createRouter({
           ]
         },
         {
-          path: '/code',
-          component: () => import('@/views/Code.vue')
+          path: '/tags',
+          component: () => import('@/views/Tags.vue')
         },
         {
           path: '/about',

@@ -15,10 +15,12 @@ class BlogService {
     title: string
     pageSize: number
     pageNum: number
+    enable: boolean | undefined
   }): Promise<[BlogVO[], number]> {
     // 分页查询
     const blogs = await BlogModel.find({
       tags: query.tags ? { $in: query.tags } : { $exists: true },
+      enable: query.enable !== undefined ? { $eq: query.enable } : { $exists: true },
       title: { $regex: query.title, $options: 'i' }
     })
       .skip((query.pageNum - 1) * query.pageSize)
@@ -27,6 +29,7 @@ class BlogService {
     // 获取总数
     const total = await BlogModel.countDocuments({
       tags: query.tags ? { $in: query.tags } : { $exists: true },
+      enable: query.enable !== undefined ? { $eq: query.enable } : { $exists: true },
       title: { $regex: query.title, $options: 'i' }
     })
     const res = await iToVO(blogs)
@@ -34,10 +37,7 @@ class BlogService {
   }
   // 更新博客
   async update(body: any): Promise<void> {
-    await BlogModel.updateOne(
-      { _id: body._id },
-      { $set: { ...body, updatedTime: new Date() } }
-    )
+    await BlogModel.updateOne({ _id: body._id }, { $set: { ...body, updatedTime: new Date() } })
   }
   // 删除博客
   async delete(id: string): Promise<void> {

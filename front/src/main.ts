@@ -10,6 +10,7 @@ import piniaPersist from 'pinia-plugin-persist'
 // md编辑器插件
 import 'bytemd/dist/index.css'
 import '@/assets/styles/github-markdown.css'
+import '@/assets/styles/github-highlight.css'
 // lodash
 import _ from 'lodash'
 window._ = _

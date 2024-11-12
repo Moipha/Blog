@@ -26,7 +26,7 @@ window.addEventListener('scroll', () => {
 const items = [
   { name: 'home', link: '/home', label: '主页' },
   { name: 'blog', link: '/blog', label: '博客' },
-  { name: 'code', link: '/code', label: '代码' },
+  { name: 'tag', link: '/tags', label: '标签' },
   { name: 'about', link: '/about', label: '关于' }
 ]
 // 根据当前路由判断选项是否为激活状态
@@ -168,27 +168,26 @@ header {
       .link {
         margin: 0;
         cursor: pointer;
-        color: var(--light-text);
+        color: var(--text);
         transition: all 0.2s ease;
         font-size: 14px;
         padding: 8px 16px;
         text-decoration: none;
 
         &:hover {
-          color: var(--text);
-          font-weight: bold;
+          color: var(--active);
         }
       }
 
       .active {
-        color: var(--text);
+        color: var(--active);
         font-weight: bold;
       }
     }
   }
 
   .search {
-    --color: var(--light-text);
+    --color: var(--text);
     margin-left: auto;
     display: flex;
     align-items: center;

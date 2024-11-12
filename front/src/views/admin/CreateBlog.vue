@@ -9,6 +9,7 @@ import Textarea from '@/components/admin/Textarea.vue'
 import { Editor } from '@bytemd/vue-next'
 
 import gfm from '@bytemd/plugin-gfm'
+import highlight from '@bytemd/plugin-highlight'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
 import { ref } from 'vue'
@@ -57,7 +58,7 @@ if (newBlog.value) {
 }
 
 // 编辑器插件
-const plugins = [gfm()]
+const plugins = [gfm(), highlight()]
 function handleChange(v: string) {
   blog.value.content = v
 }

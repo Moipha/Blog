@@ -15,10 +15,13 @@ const total = ref<number>(0)
 
 // 获取博客列表
 function getBlogs() {
-  api.blog.get({ pageSize: pageSize.value, pageNum: pageNum.value, title: '' }, (res: Res) => {
-    blogs.value = res.data.record
-    total.value = res.data.total
-  })
+  api.blog.get(
+    { pageSize: pageSize.value, pageNum: pageNum.value, title: '', enable: true },
+    (res: Res) => {
+      blogs.value = res.data.record
+      total.value = res.data.total
+    }
+  )
 }
 getBlogs()
 
@@ -28,9 +31,7 @@ const blogs = ref<Blog[]>([])
 
 <template>
   <section>
-    <Cover class="cover" :src="coverImg" height="60vh">
-      <h1>博客</h1>
-    </Cover>
+    <Cover class="cover" :src="coverImg" height="60vh" title="博客" />
     <Board class="main">
       <h1>
         共计 <span class="num">{{ total }}</span
@@ -38,10 +39,8 @@ const blogs = ref<Blog[]>([])
       </h1>
       <ul>
         <RouterLink v-for="blog in blogs" :key="blog._id" class="blog" :to="`/blog/${blog._id}`">
-          <h2>{{ blog.title }}</h2>
-          <span v-for="tag in blog.tags" :key="tag._id" class="tag">{{ tag.name }}&nbsp;</span>
-          <div class="summary">{{ blog.desc }}</div>
-          <div class="time">{{ dayjs(blog.createdTime).format('MM-DD') }}</div>
+          <span class="time">{{ dayjs(blog.createdTime).format('MM-DD') }}</span>
+          <span>{{ blog.title }}</span>
         </RouterLink>
       </ul>
     </Board>
@@ -53,25 +52,19 @@ section {
   background-color: var(--back);
   color: var(--text);
 
-  .cover {
-    h1 {
-      font-size: 36px;
-      text-align: center;
-    }
-  }
-
   .main {
     width: 76vw;
     padding: 6vh 7vw;
     margin: auto;
 
+    @media (max-width: 660px) {
+      width: 100%;
+      padding: 30px 20px;
+    }
+
     h1 {
       font-size: 24px;
       font-weight: bold;
-
-      @media (max-width: 660px) {
-        margin-left: 20px;
-      }
 
       span {
         margin: 0 5px;
@@ -79,50 +72,38 @@ section {
       }
     }
 
+    .num {
+      margin: 0 10px 0 5px;
+    }
+
     ul {
       margin-top: 20px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5vh 3vw;
-
-      @media (max-width: 660px) {
-        grid-template-columns: 1fr;
-        gap: 5vh;
-      }
+      display: flex;
+      flex-flow: column;
 
       .blog {
+        display: flex;
         text-decoration: none;
         transition: all 0.2s;
         padding: 10px 20px;
-        border-radius: 12px;
+        border-radius: 6px;
         color: var(--text);
+        font-size: 16px;
+        gap: 3vw;
+
+        @media (max-width: 660px) {
+          padding: 10px 10px;
+          font-size: 14px;
+        }
 
         &:hover {
           background-color: var(--content-hover);
         }
 
-        h2 {
-          margin-bottom: 5px;
-        }
-
-        .tag {
-          font-family: consolas;
-          color: var(--light-text);
-
-          &::before {
-            content: '#';
-          }
-        }
-
-        .summary {
-          color: var(--light-text);
-          font-size: 16px;
-          margin: 5px 0 10px;
-        }
-
         .time {
           color: var(--light-text);
           font-family: consolas;
+          flex-shrink: 0;
         }
       }
     }

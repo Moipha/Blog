@@ -28,19 +28,14 @@ class BlogApi {
     condition: {
       tags: string[]
       title: string
+      enable: boolean
       pageNum: number
       pageSize: number
     },
     callback: Function,
     errorCallback: Function
   ) {
-    await this.requestHandler(
-      'get',
-      baseURL,
-      { params: condition },
-      callback,
-      errorCallback
-    )
+    await this.requestHandler('get', baseURL, { params: condition }, callback, errorCallback)
   }
 
   async create(
@@ -63,23 +58,11 @@ class BlogApi {
   }
 
   async delete(id: string, callback: Function, errorCallback: Function) {
-    await this.requestHandler(
-      'delete',
-      baseURL,
-      { params: { id } },
-      callback,
-      errorCallback
-    )
+    await this.requestHandler('delete', baseURL, { params: { id } }, callback, errorCallback)
   }
 
   async getById(id: string, callback: Function, errorCallback: Function) {
-    await this.requestHandler(
-      'get',
-      `${baseURL}/${id}`,
-      {},
-      callback,
-      errorCallback
-    )
+    await this.requestHandler('get', `${baseURL}/${id}`, {}, callback, errorCallback)
   }
 }
 

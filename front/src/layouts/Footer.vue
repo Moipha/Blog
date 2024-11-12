@@ -1,14 +1,25 @@
+<script lang="ts" setup>
+import img from '@/assets/img/gongan.png'
+
+import dayjs from 'dayjs'
+import { computed } from 'vue'
+
+// 定义启动时间
+const startTime = dayjs('2024-11-11 11:11:11')
+
+// 使用计算属性获取时间差
+const runningTime = computed(() => {
+  const now = dayjs()
+  const days = now.diff(startTime, 'day')
+  const hours = now.diff(startTime, 'hour') % 24
+  const minutes = now.diff(startTime, 'minute') % 60
+  return ` ${days} 天 ${hours} 小时 ${minutes} 分`
+})
+</script>
+
 <template>
   <footer>
-    <ul class="route">
-      <span>导航</span>
-      <li>首页</li>
-      <li>博客</li>
-      <li>代码</li>
-      <li>关于</li>
-    </ul>
-    <div class="visit">访问记录</div>
-    <div class="contact">联系方式</div>
+    <p class="time">本站已运行了{{ runningTime }}</p>
     <div class="ba">
       <a target="_blank" href="https://beian.miit.gov.cn/">
         <img :src="img" alt="备案" />
@@ -19,34 +30,30 @@
   </footer>
 </template>
 
-<script lang="ts" setup>
-import img from '@/assets/img/gongan.png'
-</script>
-
 <style lang="scss" scoped>
 footer {
   display: flex;
-  justify-content: space-around;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
   align-items: center;
-  height: 50vh;
+  height: 240px;
   color: var(--light-text);
   position: relative;
+  padding-bottom: 15px;
+  font-family: 'Microsoft YaHei';
+  gap: 8px;
+  user-select: none;
 
-  @media (max-width: 660px) {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 5vw;
+  .time {
+    font-size: 12px;
   }
 
   .ba {
     display: flex;
-    position: absolute;
-    z-index: 10;
     bottom: 20px;
     gap: 20px;
     align-items: center;
     font-size: 14px;
-    font-family: 'Microsoft YaHei';
 
     a {
       text-decoration: none;

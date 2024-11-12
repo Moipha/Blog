@@ -17,15 +17,15 @@
         <span>{{ item.name }}</span>
       </RouterLink>
     </ul>
-    <Button class="exit">
-      <Icon name="exit" />
+    <Btn class="exit" icon="exit">
       <span class="text">退出登录</span>
-    </Button>
+    </Btn>
   </aside>
 </template>
 
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
+import Btn from '@/components/admin/Button.vue'
 import { onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import bus from '@/utils/bus'

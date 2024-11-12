@@ -8,6 +8,7 @@ import Confirm from '@/layouts/admin/Confirm.vue'
 import Textarea from '@/components/admin/Textarea.vue'
 import { Editor } from '@bytemd/vue-next'
 
+import highlight from '@bytemd/plugin-highlight'
 import gfm from '@bytemd/plugin-gfm'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
@@ -70,7 +71,7 @@ function getTags() {
 getTags()
 
 // 编辑器插件
-const plugins = [gfm()]
+const plugins = [gfm(), highlight()]
 function handleChange(v: string) {
   blog.value.content = v
 }

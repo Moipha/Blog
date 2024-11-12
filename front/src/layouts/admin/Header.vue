@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import avatar from '@/assets/img/avatar.webp'
 import Avatar from '@/components/Avatar.vue'
-import Button from '@/components/Button.vue'
-import { useSettingStore } from '../../stores/setting'
+import Button from '@/components/admin/Button.vue'
+import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
@@ -26,10 +26,7 @@ const breadcrumbs = computed(() => {
 <template>
   <header>
     <nav>
-      <div
-        class="container"
-        v-for="(item, index) of breadcrumbs"
-        :key="item.path">
+      <div class="container" v-for="(item, index) of breadcrumbs" :key="item.path">
         <RouterLink
           class="item"
           :class="{
@@ -41,11 +38,18 @@ const breadcrumbs = computed(() => {
         <span v-if="index !== breadcrumbs.length - 1" class="split"> > </span>
       </div>
     </nav>
-    <Button class="theme" @click="changeTheme">
-      <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
-      <Icon v-else class="icon" name="theme-light" />
-    </Button>
-    <Button class="avatar-container">
+    <Button
+      class="theme"
+      @click="changeTheme"
+      :icon="theme === 'dark' ? 'theme-dark' : 'theme-light'"
+      bg-color="var(--bg)"
+      text-color="var(--text)"
+      hover-color="var(--border)" />
+    <Button
+      class="avatar-container"
+      bg-color="var(--bg)"
+      text-color="var(--text)"
+      hover-color="var(--border)">
       <Avatar class="avatar" :src="avatar" shape="circle" :size="25" />
     </Button>
   </header>
@@ -61,7 +65,13 @@ header {
 
   .theme {
     margin: 0 1vw 0 auto;
-    font-size: 20px;
+    padding: 10px;
+    aspect-ratio: 1;
+
+    * {
+      margin: auto;
+      font-size: 20px;
+    }
   }
 
   .avatar-container {
