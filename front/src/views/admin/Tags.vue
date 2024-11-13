@@ -27,14 +27,6 @@ const pageSize = ref<number>(10)
 const pageNum = ref<number>(1)
 const total = ref<number>(0)
 
-// 切换页码重新查询
-watch(pageNum, () => {
-  search()
-})
-watch(pageSize, () => {
-  search()
-})
-
 // 标签列表
 const tags = ref<Tag[]>([])
 
@@ -197,7 +189,11 @@ function deleteTag() {
         </div>
       </TableColumn>
       <template #footer>
-        <Pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :total="total" />
+        <Pagination
+          @callback="search"
+          v-model:current-page="pageNum"
+          v-model:page-size="pageSize"
+          :total="total" />
       </template>
     </Table>
   </div>

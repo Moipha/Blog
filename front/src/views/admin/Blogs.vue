@@ -29,14 +29,6 @@ const pageSize = ref<number>(10)
 const pageNum = ref<number>(1)
 const total = ref<number>(0)
 
-// 切换页码重新查询
-watch(pageNum, () => {
-  search()
-})
-watch(pageSize, () => {
-  search()
-})
-
 // 条件分页查询
 function search() {
   api.blog.get(
@@ -155,7 +147,11 @@ function openDelete(blog: Blog) {
         </div>
       </TableColumn>
       <template #footer>
-        <Pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :total="total" />
+        <Pagination
+          @callback="search"
+          v-model:current-page="pageNum"
+          v-model:page-size="pageSize"
+          :total="total" />
       </template>
     </Table>
   </div>

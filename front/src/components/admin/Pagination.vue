@@ -10,6 +10,9 @@ const props = defineProps({
     required: true
   }
 })
+
+const emits = defineEmits(['callback'])
+
 const pageSize = defineModel<number>('pageSize')
 const currentPage = defineModel<number>('currentPage')
 // 总页数
@@ -17,8 +20,18 @@ const totalPage = computed(() => {
   return Math.ceil(props.total / pageSize.value)
 })
 // 修改pageSize后将页码置为1
-watch(pageSize, () => {
-  currentPage.value = 1
+watch(pageSize, (n, o) => {
+  if (n !== o) {
+    currentPage.value = 1
+    emits('callback')
+  }
+})
+
+// 切换页码重新查询
+watch(currentPage, (n, o) => {
+  if (n !== o) {
+    emits('callback')
+  }
 })
 
 // 输入框跳转
@@ -55,11 +68,7 @@ function onEnterJump() {
     <div class="left">
       显示第<span>{{ currentPage * pageSize - pageSize + 1 }}</span
       >条<span>-</span>第
-      <span>{{
-        currentPage * pageSize > props.total
-          ? props.total
-          : currentPage * pageSize
-      }}</span
+      <span>{{ currentPage * pageSize > props.total ? props.total : currentPage * pageSize }}</span
       >条，共 <span>{{ total }}</span
       >条
     </div>
@@ -81,11 +90,7 @@ function onEnterJump() {
         </div>
         <div class="container">
           <span>跳转至</span>
-          <Input
-            @keydown.enter="onEnterJump"
-            v-model="jumpTo"
-            class="input"
-            type="number" />
+          <Input @keydown.enter="onEnterJump" v-model="jumpTo" class="input" type="number" />
           <span>页</span>
         </div>
       </template>
