@@ -20,11 +20,12 @@
   // blog
   --back: #eee;
   --content: #fff;
-  --nav: #fafafab2;
+  --nav: rgba(47, 65, 84, 0.7);
   --content-hover: #e3e3e3;
   --white: white;
   --brightness: 0.8;
-  --active: #336699;
+  --active: dodgerblue;
+  --scroll-thumb: rgba(47, 65, 84, 0.7);
 }
 
 [data-theme='dark'] {
@@ -43,8 +44,9 @@
   --nav: #1f3144b2;
   --content-hover: #364151;
   --white: #eee;
-  --brightness: 0.5;
+  --brightness: 0.6;
   --active: #77cdff;
+  --scroll-thumb: #364151;
 }
 
 body {
@@ -60,10 +62,32 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+
+  // 滚动条整体部分
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+    background-color: var(--back);
+  }
+  // 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+  // 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-thumb);
+    cursor: pointer;
+  }
+
+  // 边角，即两个滚动条的交汇处
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+  // 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+  &::-webkit-resizer {
+    display: none;
+  }
 }
 html {
-  // 滚动条
-  scrollbar-color: var(--content-hover) var(--back);
-  scrollbar-width: thin;
   --normal-border: 1.5px solid var(--border);
 }

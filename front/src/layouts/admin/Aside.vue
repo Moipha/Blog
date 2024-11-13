@@ -1,7 +1,7 @@
 <template>
   <aside>
     <RouterLink class="logo" to="/">
-      <h1>logo</h1>
+      <img :src="logo" alt="logo" />
       <p class="text">后台管理</p>
     </RouterLink>
     <ul>
@@ -26,9 +26,11 @@
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
 import Btn from '@/components/admin/Button.vue'
+
 import { onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import bus from '@/utils/bus'
+import logo from '@/assets/img/y.png'
 
 const router = useRouter()
 
@@ -68,6 +70,10 @@ aside {
     cursor: pointer;
     text-decoration: none;
     color: var(--bg);
+
+    img {
+      width: 70px;
+    }
 
     .text {
       font-weight: bold;

@@ -7,8 +7,7 @@
       clipPath: shape === 'circle' ? `circle(${size / 2}px)` : 'none',
       width: `${size}px`,
       height: `${size}px`
-    }"
-  />
+    }" />
 </template>
 
 <script lang="ts" setup>
@@ -27,7 +26,7 @@ defineProps({
   shape: {
     type: String,
     default: 'square',
-    validator: (value) => {
+    validator: (value: string) => {
       return ['square', 'circle'].includes(value)
     },
     required: false

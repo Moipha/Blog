@@ -1,14 +1,15 @@
 {
-  "compilerOptions": {  
-    "module": "ESNext",  
-    "target": "ESNext",  
-    "moduleResolution": "node",  
-    "esModuleInterop": true,  
-    "skipLibCheck": true,  
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true
-  },  
+    "noEmit": true,
+    "outDir": "dist"
+  },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

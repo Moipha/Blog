@@ -9,8 +9,7 @@ import { BlogDTO } from '@/type'
 export const useTempStore = defineStore(
   'temp',
   () => {
-    const newBlog = ref<BlogDTO>({ enable: true, tags: [] } as BlogDTO)
-
+    const newBlog = ref<BlogDTO>({ enable: true, tags: [], author: 'Moipha' } as BlogDTO)
     return { newBlog }
   },
   {

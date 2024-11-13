@@ -3,10 +3,12 @@ import type { Request, Response, NextFunction } from 'express'
 import path from 'path'
 import db from './db/index.ts'
 import cors from 'cors'
+import https from 'https'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
 import 'express-async-errors'
 
-const PORT: number = 8080
+const PORT: number = 8081
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // 启动数据库连接
@@ -32,26 +34,25 @@ db(
       const { default: TagRouter } = await import('./routers/TagRouter.ts')
       TagRouter(req, res, next)
     })
-    app.use(
-      '/blog',
-      async (req: Request, res: Response, next: NextFunction) => {
-        const { default: BlogRouter } = await import('./routers/BlogRouter.ts')
-        BlogRouter(req, res, next)
-      }
-    )
+    app.use('/blog', async (req: Request, res: Response, next: NextFunction) => {
+      const { default: BlogRouter } = await import('./routers/BlogRouter.ts')
+      BlogRouter(req, res, next)
+    })
 
     // 全局错误处理
-    app.use(
-      async (err: Error, req: Request, res: Response, next: NextFunction) => {
-        const { default: errorMiddleware } = await import(
-          './middlewares/errorMiddleware.ts'
-        )
-        errorMiddleware(err, req, res, next)
-      }
-    )
+    app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
+      const { default: errorMiddleware } = await import('./middlewares/errorMiddleware.ts')
+      errorMiddleware(err, req, res, next)
+    })
 
+    // 创建https服务器
+    const sslOptions = {
+      key: fs.readFileSync('./public/ssl/private.key'),
+      cert: fs.readFileSync('./public/ssl/public.pem')
+    }
+    const server = https.createServer(sslOptions, app)
     // 启动服务器
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Node 服务已在 ${PORT} 端口上运行`)
     })
   },

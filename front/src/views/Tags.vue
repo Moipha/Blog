@@ -2,7 +2,7 @@
 import Cover from '@/layouts/Cover.vue'
 import Board from '@/layouts/Board.vue'
 
-import coverImg from '@/assets/img/5.jpg'
+import coverImg from '@/assets/img/summer4.png'
 import api from '@/api'
 import { Res, Tag } from '@/type'
 import { ref } from 'vue'

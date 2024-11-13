@@ -63,6 +63,7 @@ watch(
     object-fit: cover;
     object-position: center;
     filter: brightness(var(--brightness));
+    transition: all 0.3s ease;
     -webkit-user-drag: none;
   }
 

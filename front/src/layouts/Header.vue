@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
 import Mask from '@/components/Mask.vue'
+
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import bus from '@/utils/bus'
+import logo from '@/assets/img/y.png'
 
 const { changeTheme } = useSettingStore()
 const { theme } = storeToRefs(useSettingStore())
@@ -47,7 +49,6 @@ onBeforeUnmount(() => {
     :style="{
       backdropFilter: isTop ? 'none' : 'blur(3px)',
       backgroundColor: isTop ? 'transparent' : 'var(--nav)',
-      borderColor: isTop ? 'transparent' : 'var(--border)',
       height: isTop ? '72px' : '48px'
     }">
     <!-- 移动端 -->
@@ -64,7 +65,7 @@ onBeforeUnmount(() => {
     </div>
     <!-- pc端 -->
     <RouterLink to="/home" class="logo" @click="activeItem = '/home'">
-      Logo
+      <img :src="logo" />
       <h3 class="title">漾春</h3>
     </RouterLink>
     <nav>
@@ -111,12 +112,10 @@ header {
   padding: 10px 10%;
   display: flex;
   align-items: center;
-  color: var(--text);
+  color: var(--white);
   top: 0;
   z-index: 10;
   transition: 0.4s all ease;
-  border-style: solid;
-  border-width: 0 0 1px 0;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 
   @media (max-width: 768px) {
@@ -129,26 +128,27 @@ header {
     @media (max-width: 660px) {
       display: block;
     }
-
-    .icon {
-      font-size: 20px;
-    }
   }
 
   .logo {
     display: flex;
     align-items: center;
-    color: var(--text);
+    color: var(--white);
     text-decoration: none;
+    gap: 5px;
 
     .title {
-      margin-left: 10px;
       font-weight: bold;
       letter-spacing: 1px;
     }
 
     @media (max-width: 660px) {
       display: none;
+    }
+
+    img {
+      width: 40px;
+      aspect-ratio: 1;
     }
   }
 
@@ -168,7 +168,7 @@ header {
       .link {
         margin: 0;
         cursor: pointer;
-        color: var(--text);
+        color: var(--white);
         transition: all 0.2s ease;
         font-size: 14px;
         padding: 8px 16px;
@@ -187,7 +187,7 @@ header {
   }
 
   .search {
-    --color: var(--text);
+    --color: var(--white);
     margin-left: auto;
     display: flex;
     align-items: center;
@@ -216,7 +216,7 @@ header {
     }
 
     &:hover {
-      --color: var(--text);
+      filter: brightness(0.8);
     }
   }
 
@@ -228,6 +228,7 @@ header {
 
     .icon {
       font-size: 20px;
+      color: var(--white);
     }
   }
 

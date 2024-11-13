@@ -4,10 +4,10 @@ import { useUserStore } from '../stores/user'
 import router from '@/router'
 
 const { token } = storeToRefs(useUserStore())
-const { VITE_PORT, VITE_IP } = import.meta.env
+const { VITE_PORT, VITE_IP, VITE_PROTOCOL } = import.meta.env
 
 const request = axios.create({
-  baseURL: `http://${VITE_IP}:${VITE_PORT}`,
+  baseURL: `${VITE_PROTOCOL}://${VITE_IP}:${VITE_PORT}`,
   timeout: 1000 * 5,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
