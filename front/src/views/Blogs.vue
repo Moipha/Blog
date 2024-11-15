@@ -61,7 +61,7 @@ const groupedBlogs = computed(() => {
 
 <template>
   <section>
-    <Cover class="cover" :src="coverImg" height="60vh" title="博客" />
+    <Cover class="cover" :src="coverImg" height="60vh" title="归档" />
     <Board class="main">
       <h1>
         共计 <span class="num">{{ total }}</span
@@ -99,11 +99,6 @@ section {
     width: 76vw;
     padding: 6vh 7vw;
     margin: auto;
-
-    @media (max-width: 660px) {
-      width: 100%;
-      padding: 30px 20px;
-    }
 
     h1 {
       font-size: 24px;

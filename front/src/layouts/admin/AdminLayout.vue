@@ -4,7 +4,11 @@
     <section>
       <Header />
       <div class="right-wrapper">
-        <RouterView />
+        <RouterView v-slot="{ Component }">
+          <KeepAlive>
+            <component :is="Component" />
+          </KeepAlive>
+        </RouterView>
       </div>
     </section>
   </main>

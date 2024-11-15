@@ -44,8 +44,16 @@ footer {
   gap: 8px;
   user-select: none;
 
+  @media (max-width: 660px) {
+    gap: 4px;
+  }
+
   .time {
     font-size: 12px;
+
+    @media (max-width: 660px) {
+      font-size: 10px;
+    }
   }
 
   .ba {
@@ -54,6 +62,10 @@ footer {
     gap: 20px;
     align-items: center;
     font-size: 14px;
+
+    @media (max-width: 660px) {
+      font-size: 12px;
+    }
 
     a {
       text-decoration: none;

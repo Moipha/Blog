@@ -32,5 +32,11 @@ onUnmounted(() => {
   position: relative;
   border-radius: 10px;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+
+  @media (max-width: 660px) {
+    width: 100% !important;
+    padding: 30px 20px;
+    border-radius: 0;
+  }
 }
 </style>

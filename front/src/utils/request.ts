@@ -24,6 +24,7 @@ request.interceptors.response.use(
       router.push('/login')
     }
     console.error('错误的响应: ' + err.response.data.msg)
+    alert('错误的响应: ' + err.response.data.msg)
     for (let item of err.response.data.data) {
       console.error(item.msg)
     }

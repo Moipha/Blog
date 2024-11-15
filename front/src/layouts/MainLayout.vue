@@ -2,7 +2,11 @@
   <main>
     <Header />
     <section>
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <KeepAlive>
+          <component :is="Component" />
+        </KeepAlive>
+      </RouterView>
     </section>
     <Footer />
   </main>

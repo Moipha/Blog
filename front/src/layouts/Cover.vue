@@ -1,42 +1,53 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onActivated, ref, watch } from 'vue'
 
 const props = defineProps({
   src: String,
   height: { type: String, default: '70vh' },
-  title: { type: String }
+  title: String
 })
 
-let timer = null
+// 图片加载
+const loaded = ref<boolean>(false)
 
 // 逐字输入的标题
 const temp = ref<string[]>([''])
-watch(
-  () => props.title,
-  (val) => {
-    if (timer) clearInterval(timer)
-    temp.value = []
+let timer = null
 
-    if (val && val.length !== 0) {
-      let time = 120
-      if (val.length > 15) time = 80
-      let index = 0
-      timer = setInterval(() => {
-        temp.value.push(val[index++])
-        if (index >= val.length) {
-          clearInterval(timer)
-          timer = null
-        }
-      }, time)
-    }
-  },
-  { immediate: true }
-)
+onActivated(() => {
+  temp.value = ['']
+  setTimeout(() => {
+    typeTitle(props.title)
+  }, 500)
+})
+// 键入标题
+function typeTitle(val: string) {
+  if (timer) clearInterval(timer)
+  temp.value = []
+
+  if (val && val.length !== 0) {
+    let time = 100
+    if (val.length > 15) time = 60
+    let index = 0
+    timer = setInterval(() => {
+      temp.value.push(val[index++])
+      if (index >= val.length) {
+        clearInterval(timer)
+        timer = null
+      }
+    }, time)
+  }
+}
 </script>
 
 <template>
   <div class="cover-bg" :style="{ height, '--len': title?.length }">
-    <img :src="src" alt="cover" />
+    <img
+      class="lazyload"
+      :data-src="src"
+      alt="cover"
+      :style="{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 1.05 }"
+      @load="loaded = true" />
     <div class="slot">
       <h1>{{ temp.join('') }}<span class="caret">_</span></h1>
       <slot></slot>
@@ -53,6 +64,8 @@ watch(
   color: var(--white);
   font-size: 16px;
   margin-bottom: -100px;
+  background-color: var(--nav);
+  overflow: hidden;
 
   img {
     position: absolute;
@@ -63,7 +76,7 @@ watch(
     object-fit: cover;
     object-position: center;
     filter: brightness(var(--brightness));
-    transition: all 0.3s ease;
+    transition: opacity 1s ease-out, scale 1.2s ease, filter 0.5s ease;
     -webkit-user-drag: none;
   }
 

@@ -7,7 +7,7 @@ import Button from '@/components/Button.vue'
 
 import api from '@/api'
 import { Blog, Res } from '@/type'
-import { computed, ref } from 'vue'
+import { computed, onActivated, ref } from 'vue'
 import dayjs from 'dayjs'
 import coverImg from '@/assets/img/4.jpg'
 import router from '@/router'
@@ -34,7 +34,9 @@ function getBlog() {
     }
   )
 }
-getBlog()
+onActivated(() => {
+  getBlog()
+})
 
 // 计算文本量
 const wordCount = computed(() => {
@@ -191,6 +193,7 @@ section {
         display: none;
       }
     }
+
     .btn-container {
       margin-top: 50px;
       margin-left: 30px;
@@ -215,11 +218,14 @@ section {
     }
 
     .catalog-container {
+      width: fit-content;
+      min-width: 10vw;
       margin-top: 40px;
-      margin-right: 50px;
+      margin-left: 10px;
+      margin-right: 10px;
+      float: right;
       display: flex;
       flex-flow: column nowrap;
-      align-items: flex-end;
       position: sticky;
       top: 80px;
       color: var(--text);

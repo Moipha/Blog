@@ -14,6 +14,8 @@ import '@/assets/styles/github-highlight.css'
 // lodash
 import _ from 'lodash'
 window._ = _
+// lazysizes
+import 'lazysizes'
 
 // 创建app
 const app = createApp(App)

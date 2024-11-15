@@ -29,7 +29,17 @@ const router = createRouter({
         },
         {
           path: '/tags',
-          component: () => import('@/views/Tags.vue')
+          children: [
+            {
+              path: ':id',
+              component: () => import('@/views/Tag.vue'),
+              props: true
+            },
+            {
+              path: '',
+              component: () => import('@/views/Tags.vue')
+            }
+          ]
         },
         {
           path: '/about',

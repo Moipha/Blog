@@ -27,7 +27,7 @@ window.addEventListener('scroll', () => {
 // 导航栏渲染
 const items = [
   { name: 'home', link: '/home', label: '主页' },
-  { name: 'blog', link: '/blog', label: '博客' },
+  { name: 'blog', link: '/blog', label: '归档' },
   { name: 'tag', link: '/tags', label: '标签' },
   { name: 'about', link: '/about', label: '关于' }
 ]
@@ -51,13 +51,6 @@ onBeforeUnmount(() => {
       backgroundColor: isTop ? 'transparent' : 'var(--nav)',
       height: isTop ? '72px' : '48px'
     }">
-    <!-- 移动端 -->
-    <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
-      <Button class="close" @click="showLeft = false">
-        <Icon name="close" />
-      </Button>
-    </section>
-    <Mask v-model="showLeft" to="body" />
     <div class="menu" @click="showLeft = true">
       <Button>
         <Icon class="icon" name="menu" />
@@ -102,6 +95,18 @@ onBeforeUnmount(() => {
       </a>
     </div>
   </header>
+  <!-- 移动端窗口 -->
+  <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
+    <Button class="close" @click="showLeft = false">
+      <Icon name="close" />
+    </Button>
+    <ul>
+      <li v-for="item of items" :key="item.name">
+        <RouterLink @click="showLeft = false" :to="item.link">{{ item.label }}</RouterLink>
+      </li>
+    </ul>
+  </section>
+  <Mask v-model="showLeft" to="body" />
 </template>
 
 <style lang="scss" scoped>
@@ -114,7 +119,7 @@ header {
   align-items: center;
   color: var(--white);
   top: 0;
-  z-index: 10;
+  z-index: 4;
   transition: 0.4s all ease;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 
@@ -196,10 +201,6 @@ header {
     cursor: pointer;
     transition: all 0.2s ease;
 
-    .icon {
-      font-size: 20px;
-    }
-
     .text {
       font-size: 14px;
     }
@@ -225,27 +226,45 @@ header {
     gap: clamp(5px, 1vw, 10px);
     margin-left: 5%;
     align-items: center;
-
-    .icon {
-      font-size: 20px;
-      color: var(--white);
-    }
   }
 
-  .left {
-    width: 320px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background-color: var(--back);
-    transition: all 0.3s ease;
+  .icon {
+    font-size: 20px;
+    color: var(--white);
+  }
+}
 
-    .close {
-      font-size: 20px;
-      position: absolute;
-      top: 10px;
-      right: 20px;
+.left {
+  min-width: min(320px, 100%);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: var(--back);
+  transition: all 0.3s ease;
+  z-index: 6;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .close {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    gap: 5vh;
+    a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 24px;
+      font-weight: bold;
     }
   }
 }

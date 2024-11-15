@@ -124,10 +124,12 @@ function onEnterJump() {
   font-family: consolas;
   color: var(--light-text);
   font-size: 14px;
+  flex-flow: row wrap;
 
   .left {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     span {
       font-weight: bold;
@@ -143,6 +145,7 @@ function onEnterJump() {
     .container {
       display: flex;
       gap: 5px;
+      flex-wrap: wrap;
       align-items: center;
 
       .input {
