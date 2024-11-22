@@ -6,6 +6,7 @@ import CreateTag from '@/layouts/admin/CreateTag.vue'
 import Switch from '@/components/admin/Switch.vue'
 import Confirm from '@/layouts/admin/Confirm.vue'
 import Textarea from '@/components/admin/Textarea.vue'
+import Upload from '@/components/admin/Upload.vue'
 import { Editor } from '@bytemd/vue-next'
 
 import highlight from '@bytemd/plugin-highlight'
@@ -30,7 +31,8 @@ function getBlog() {
       tags: [...res.data.tags.map((item: { _id: any }) => item._id)],
       enable: res.data.enable || true,
       author: res.data.author || 'Moipha',
-      desc: res.data.desc || ''
+      desc: res.data.desc || '',
+      cover: res.data.cover || ''
     }
   })
 }
@@ -88,6 +90,7 @@ const dialogReset = ref<boolean>(false)
 
 // 修改博客
 function edit() {
+  console.dir(blog.value)
   api.blog.update(
     blog.value,
     (res: Res) => {
@@ -99,12 +102,30 @@ function edit() {
     }
   )
 }
+
+// 定义ref
+const uploader = ref(null)
+
+// 触发上传窗口
+function triggerUpload() {
+  uploader.value.upload()
+}
 </script>
 
 <template>
   <form onsubmit="return false">
     <Input v-model="blog.title" label="标题" placeholder="请输入标题" />
     <Input readonly v-model="blog.author" label="作者" placeholder="请输入作者" />
+    <label>封面</label>
+    <div class="select-container">
+      <Input v-model="blog.cover" placeholder="请输入图片链接 或 上传本地图片" />
+      <Button
+        @click="triggerUpload"
+        label="上传图片"
+        icon="upload"
+        :style="{ width: 'fit-content', height: 'fit-content' }" />
+      <Upload ref="uploader" v-model="blog.cover" />
+    </div>
     <label>标签</label>
     <div class="select-container">
       <Select

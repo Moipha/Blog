@@ -16,6 +16,7 @@ import _ from 'lodash'
 window._ = _
 // lazysizes
 import 'lazysizes'
+// 骨架屏
 
 // 创建app
 const app = createApp(App)
@@ -24,7 +25,6 @@ const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPersist)
 app.use(pinia)
-
 app.use(router)
 
 // 注册全局组件

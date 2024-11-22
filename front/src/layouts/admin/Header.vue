@@ -2,7 +2,7 @@
 import avatar from '@/assets/img/avatar.webp'
 import Avatar from '@/components/Avatar.vue'
 import Button from '@/components/admin/Button.vue'
-import { useSettingStore } from '@/utils/setting'
+import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'

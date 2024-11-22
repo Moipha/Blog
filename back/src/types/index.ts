@@ -28,6 +28,7 @@ export interface IBlog extends Document {
   content: string
   enable: boolean
   desc: string
+  cover: string
   createdTime: Date
   updatedTime: Date
 }
@@ -38,6 +39,7 @@ export interface BlogDTO {
   tags: string[]
   content: string
   desc: string
+  cover: string
 }
 
 export interface BlogVO {
@@ -48,6 +50,7 @@ export interface BlogVO {
   content: string
   enable: boolean
   desc: string
+  cover: string
   createdTime: Date
   updatedTime: Date
 }

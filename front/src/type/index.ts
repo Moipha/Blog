@@ -25,6 +25,7 @@ export interface Blog {
   desc: string
   createdTime: string
   updatedTime: string
+  cover: string
 }
 
 export interface BlogDTO {
@@ -35,4 +36,5 @@ export interface BlogDTO {
   enable: boolean
   tags: string[]
   desc: string
+  cover: string
 }

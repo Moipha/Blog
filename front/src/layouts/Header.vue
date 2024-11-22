@@ -2,7 +2,7 @@
 import Button from '@/components/Button.vue'
 import Mask from '@/components/Mask.vue'
 
-import { useSettingStore } from '@/utils/setting'
+import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'

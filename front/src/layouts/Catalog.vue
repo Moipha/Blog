@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { generateCatalog } from '@/utils/catalogUtil'
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   data: String
@@ -33,22 +33,17 @@ function bindId() {
   }
 }
 
-onMounted(() => {
-  // 根据内容生成目录
+// 更新目录的方法
+function updateCatalog() {
   const result = generateCatalog(props.data)
   if (result) {
     catalog.value = result.catalog
     minLevel.value = result.minLevel
   }
-  // 绑定id
-  bindId()
-
-  // 添加滚动事件监听
-  document.addEventListener('scroll', onScroll)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('scroll', onScroll)
-})
+  nextTick(() => {
+    bindId()
+  })
+}
 
 // 滚动事件回调：更新当前激活的目录项
 const onScroll = window._.throttle(() => {
@@ -83,6 +78,21 @@ function locateHead(index: number) {
     }
   })
 }
+
+onMounted(() => {
+  updateCatalog()
+  document.addEventListener('scroll', onScroll)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('scroll', onScroll)
+})
+
+watch(
+  () => props.data,
+  () => {
+    updateCatalog()
+  }
+)
 </script>
 
 <template>
@@ -107,6 +117,10 @@ function locateHead(index: number) {
     color: var(--light-text);
     cursor: pointer;
     width: fit-content;
+
+    &:hover {
+      color: var(--text);
+    }
   }
 
   @for $i from 1 through 3 {
@@ -130,6 +144,10 @@ function locateHead(index: number) {
       background-color: var(--active);
       border-radius: 3px;
       top: 20%;
+    }
+
+    &:hover {
+      color: var(--active);
     }
   }
 }

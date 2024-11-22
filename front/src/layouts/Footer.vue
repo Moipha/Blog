@@ -13,7 +13,7 @@ const runningTime = computed(() => {
   const days = now.diff(startTime, 'day')
   const hours = now.diff(startTime, 'hour') % 24
   const minutes = now.diff(startTime, 'minute') % 60
-  return ` ${days} 天 ${hours} 小时 ${minutes} 分`
+  return ` ${days} 天 ${hours} 小时 ${minutes} 分钟`
 })
 </script>
 

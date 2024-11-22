@@ -7,6 +7,8 @@ import Switch from '@/components/admin/Switch.vue'
 import Confirm from '@/layouts/admin/Confirm.vue'
 import Textarea from '@/components/admin/Textarea.vue'
 import { Editor } from '@bytemd/vue-next'
+import Image from '@/components/Image.vue'
+import Upload from '@/components/admin/Upload.vue'
 
 import gfm from '@bytemd/plugin-gfm'
 import highlight from '@bytemd/plugin-highlight'
@@ -18,6 +20,8 @@ import { Blog, BlogDTO, Res, Tag } from '@/type'
 import { useTempStore } from '@/stores/temp'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+const { VITE_FILE_PROTOCOL, VITE_FILE_PORT, VITE_FILE_IP } = import.meta.env
 
 // store
 const { newBlog } = storeToRefs(useTempStore())
@@ -103,12 +107,58 @@ const dialogCreate = ref<boolean>(false)
 
 // 刚创建的博客信息
 const createdBlog = ref<Blog>({} as Blog)
+
+// 上传封面
+async function uploadFile(event) {
+  const file = event.target.files[0] // 获取用户选择的文件
+  if (!file) {
+    return
+  }
+
+  try {
+    // 构造 FormData 对象
+    const formData = new FormData()
+    formData.append('media', file)
+    // 调用上传接口
+    const response = await axios.post(
+      `${VITE_FILE_PROTOCOL}://${VITE_FILE_IP}:${VITE_FILE_PORT}/pic/upload`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+
+    blog.value.cover = response.data.msg
+    console.log('上传成功:', response.data)
+  } catch (error) {
+    console.error('上传失败:', error)
+  }
+}
+
+// 触发上传窗口
+function triggerUpload() {
+  uploader.value.upload()
+}
+// 定义ref
+const uploader = ref(null)
 </script>
 
 <template>
   <form onsubmit="return false">
     <Input v-model="blog.title" label="标题" placeholder="请输入标题" />
-    <Input readonly v-model="blog.author" label="作者" placeholder="请输入作者" />
+    <Input v-model="blog.author" label="作者" placeholder="请输入作者" width="30%" readonly />
+    <label>封面</label>
+    <div class="select-container">
+      <Input v-model="blog.cover" placeholder="请输入图片链接 或 上传本地图片" />
+      <Button
+        @click="triggerUpload"
+        label="上传图片"
+        icon="upload"
+        :style="{ width: 'fit-content', height: 'fit-content' }" />
+      <Upload ref="uploader" v-model="blog.cover" />
+    </div>
     <label>标签</label>
     <div class="select-container">
       <Select
@@ -174,7 +224,7 @@ form {
 
   .select-container {
     display: grid;
-    grid-template-columns: 60% 1fr;
+    grid-template-columns: 70% 1fr;
     gap: 10px;
 
     .select {

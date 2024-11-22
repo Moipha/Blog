@@ -46,6 +46,7 @@ class BlogApi {
       tags: string[]
       enable: boolean
       desc: string
+      cover: string
     },
     callback: Function,
     errorCallback: Function

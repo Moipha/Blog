@@ -90,7 +90,12 @@ function onEnterJump() {
         </div>
         <div class="container">
           <span>跳转至</span>
-          <Input @keydown.enter="onEnterJump" v-model="jumpTo" class="input" type="number" />
+          <Input
+            width="50px"
+            @keydown.enter="onEnterJump"
+            v-model.number="jumpTo"
+            class="input"
+            type="number" />
           <span>页</span>
         </div>
       </template>
@@ -104,7 +109,7 @@ function onEnterJump() {
             borderRadius: '4px'
           }"
           width="60px"
-          v-model="pageSize"
+          v-model.number="pageSize"
           :options="[
             { value: 10, label: '10' },
             { value: 20, label: '20' },
@@ -150,7 +155,6 @@ function onEnterJump() {
 
       .input {
         :deep(input) {
-          width: 50px;
           height: 30px;
           border-radius: 4px;
         }

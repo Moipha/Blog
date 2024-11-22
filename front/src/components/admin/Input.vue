@@ -20,6 +20,10 @@ defineProps({
   readonly: {
     type: Boolean,
     default: false
+  },
+  width: {
+    type: String,
+    default: '100%'
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -32,13 +36,12 @@ const emit = defineEmits(['update:modelValue'])
       :readonly="readonly"
       :style="{
         border: noBorder ? 'none' : '',
-        paddingLeft: icon ? '36px' : ''
+        paddingLeft: icon ? '36px' : '',
+        width: width
       }"
       :placeholder="placeholder"
       :value="modelValue"
-      @input="
-        emit('update:modelValue', ($event.target as HTMLInputElement).value)
-      " />
+      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" />
     <Icon v-if="icon" :name="icon" class="icon" />
   </div>
 </template>

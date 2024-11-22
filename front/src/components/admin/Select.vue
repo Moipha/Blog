@@ -71,26 +71,6 @@ function selectOption(option: { label: string; value: number | string }) {
 
 const menuHeight = ref<number>(0)
 
-// 点击事件
-onMounted(() => {
-  // 绑定点击事件：点击页面其他地方关闭下拉菜单
-  document.addEventListener('click', handleClick)
-  // 判断下拉菜单弹出位置
-  isMenuVisible.value = true
-  nextTick(() => {
-    // 隐藏菜单
-    menu.value.style.visibility = 'hidden'
-
-    menuHeight.value = menu.value.offsetHeight
-    isMenuVisible.value = false
-    menu.value.style.visibility = 'visible'
-  })
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClick)
-})
-
 function handleClick(e: Event) {
   if (!menu.value?.contains(e.target as Node) && !input.value?.contains(e.target as Node)) {
     isMenuVisible.value = false
@@ -139,6 +119,7 @@ watch(
   () => props.options,
   (newOptions) => {
     filteredOptions.value = [...newOptions]
+    calcMenuHeight()
   },
   { immediate: true }
 )
@@ -164,6 +145,28 @@ function checkMenuPosition() {
     }
   })
 }
+
+// 点击事件
+onMounted(() => {
+  // 绑定点击事件：点击页面其他地方关闭下拉菜单
+  document.addEventListener('click', handleClick)
+})
+
+function calcMenuHeight() {
+  // 判断下拉菜单弹出位置
+  isMenuVisible.value = true
+  nextTick(() => {
+    // 隐藏菜单
+    menu.value.style.visibility = 'hidden'
+    menuHeight.value = menu.value.offsetHeight
+    isMenuVisible.value = false
+    menu.value.style.visibility = 'visible'
+  })
+}
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClick)
+})
 </script>
 
 <template>

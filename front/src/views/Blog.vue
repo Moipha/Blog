@@ -75,7 +75,13 @@ const plugins = [highlight()]
     <Cover class="cover-bg" :src="coverImg" :title="blog.title">
       <div class="tags">
         <Icon class="icon" name="tags" />
-        <span class="tag" v-for="tag in blog.tags" :key="tag._id">{{ tag.name }}</span>
+        <RouterLink
+          v-for="tag in blog.tags"
+          :key="tag._id"
+          class="tag"
+          :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
+          {{ tag.name }}
+        </RouterLink>
       </div>
       <div class="time">
         <Icon name="date" />
@@ -166,16 +172,29 @@ section {
       }
 
       .tag {
-        cursor: default;
         font-family: consolas;
         font-size: 14px;
         align-items: center;
         display: flex;
+        text-decoration: none;
+        color: var(--white);
+        position: relative;
 
         &::before {
           content: '#';
           font-size: 20px;
           margin-right: 2px;
+        }
+
+        &:hover {
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            border-bottom: 1.5px solid var(--white);
+            z-index: 2;
+            width: 100%;
+          }
         }
       }
     }

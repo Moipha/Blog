@@ -15,6 +15,7 @@ async function fn(blog: IBlog): Promise<BlogVO> {
     createdTime: blog.createdTime,
     updatedTime: blog.updatedTime,
     tags: [] as ITag[],
+    cover: blog.cover,
     _id: blog._id as string
   }
   // 获取标签对象

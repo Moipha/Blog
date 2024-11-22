@@ -2,6 +2,7 @@
 import Cover from '@/layouts/Cover.vue'
 import Board from '@/layouts/Board.vue'
 import Pagination from '@/components/admin/Pagination.vue'
+import Image from '@/components/Image.vue'
 
 import cover1 from '@/assets/img/summer1.png'
 import cover2 from '@/assets/img/summer2.png'
@@ -15,12 +16,15 @@ const pageNum = ref<number>(1)
 const pageSize = ref<number>(10)
 const total = ref<number>(0)
 
+// 获取博客列表
+const loading = ref<boolean>(true)
 function getBlogs() {
   api.blog.get(
     { pageNum: pageNum.value, pageSize: pageSize.value, enable: true, title: '' },
     (res: Res) => {
       blogs.value = res.data.record
       total.value = res.data.total
+      loading.value = false
     }
   )
 }
@@ -33,21 +37,17 @@ onMounted(() => {
 })
 
 // 随机封面
-const coverChoose = Math.random() > 0.5
+const coverChoose = Math.random() > 0.5 ? cover1 : cover2
 </script>
 
 <template>
   <section>
-    <Cover
-      class="cover"
-      :src="coverChoose ? cover1 : cover2"
-      height="100vh"
-      title="Hi！欢迎来到漾春的博客站点" />
+    <Cover class="cover" :src="coverChoose" height="100vh" title="Hi！欢迎来到漾春的博客站点" />
 
     <Board class="board">
       <div class="blog" v-for="blog of blogs">
         <RouterLink class="img-link" :to="`/blog/${blog._id}`">
-          <img class="lazyload" :data-src="cover1" alt="封面" />
+          <Image class="img" :src="blog.cover || coverChoose" />
         </RouterLink>
         <div class="info">
           <RouterLink class="link" :to="`/blog/${blog._id}`">
@@ -110,7 +110,7 @@ section {
         align-items: center;
         justify-content: center;
 
-        img {
+        .img {
           width: 240px;
           object-fit: cover;
           aspect-ratio: 16/10;
