@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { generateCatalog } from '@/utils/catalogUtil'
 import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { cloneDeep, findIndex, throttle } from 'lodash'
 
 const props = defineProps({
   data: String
@@ -13,14 +14,14 @@ const active = ref<number>(0)
 
 // 给Viewer中的标题绑定id
 function bindId() {
-  let tempCatalog = window._.cloneDeep(catalog.value)
+  let tempCatalog = cloneDeep(catalog.value)
   const dom = document.querySelector('.markdown-body')
   let children = dom.children
   if (children.length > 0) {
     for (let i = 0; i < children.length; i += 1) {
       const tagName = children[i].tagName
       if (tagName === 'H1' || tagName === 'H2' || tagName === 'H3') {
-        const index = window._.findIndex(
+        const index = findIndex(
           tempCatalog,
           (v: any) => v.text === children[i].textContent && v.level !== 0
         )
@@ -46,7 +47,7 @@ function updateCatalog() {
 }
 
 // 滚动事件回调：更新当前激活的目录项
-const onScroll = window._.throttle(() => {
+const onScroll = throttle(() => {
   const dom = document.querySelector('.markdown-body')
   if (dom) {
     const headings = Array.from(dom.querySelectorAll('h1, h2, h3'))

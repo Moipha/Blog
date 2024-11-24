@@ -20,8 +20,7 @@ import { Blog, BlogDTO, Res, Tag } from '@/type'
 import { useTempStore } from '@/stores/temp'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
-const { VITE_FILE_PROTOCOL, VITE_FILE_PORT, VITE_FILE_IP } = import.meta.env
+import { cloneDeep } from 'lodash'
 
 // store
 const { newBlog } = storeToRefs(useTempStore())
@@ -58,7 +57,7 @@ const blog = ref<BlogDTO>({
   author: 'Moipha'
 } as BlogDTO)
 if (newBlog.value) {
-  blog.value = window._.cloneDeep(newBlog.value)
+  blog.value = cloneDeep(newBlog.value)
 }
 
 // 编辑器插件
@@ -81,7 +80,7 @@ const dialogReset = ref<boolean>(false)
 
 // 临时保存
 function save() {
-  newBlog.value = window._.cloneDeep(blog.value)
+  newBlog.value = cloneDeep(blog.value)
   alert('保存成功')
 }
 
@@ -108,35 +107,6 @@ const dialogCreate = ref<boolean>(false)
 // 刚创建的博客信息
 const createdBlog = ref<Blog>({} as Blog)
 
-// 上传封面
-async function uploadFile(event) {
-  const file = event.target.files[0] // 获取用户选择的文件
-  if (!file) {
-    return
-  }
-
-  try {
-    // 构造 FormData 对象
-    const formData = new FormData()
-    formData.append('media', file)
-    // 调用上传接口
-    const response = await axios.post(
-      `${VITE_FILE_PROTOCOL}://${VITE_FILE_IP}:${VITE_FILE_PORT}/pic/upload`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-
-    blog.value.cover = response.data.msg
-    console.log('上传成功:', response.data)
-  } catch (error) {
-    console.error('上传失败:', error)
-  }
-}
-
 // 触发上传窗口
 function triggerUpload() {
   uploader.value.upload()
@@ -151,11 +121,15 @@ const uploader = ref(null)
     <Input v-model="blog.author" label="作者" placeholder="请输入作者" width="30%" readonly />
     <label>封面</label>
     <div class="select-container">
-      <Input v-model="blog.cover" placeholder="请输入图片链接 或 上传本地图片" />
+      <Input
+        v-model="blog.cover"
+        placeholder="请输入图片链接 或 上传本地图片"
+        :readonly="uploader?.loading" />
       <Button
         @click="triggerUpload"
         label="上传图片"
         icon="upload"
+        :disabled="uploader?.loading"
         :style="{ width: 'fit-content', height: 'fit-content' }" />
       <Upload ref="uploader" v-model="blog.cover" />
     </div>

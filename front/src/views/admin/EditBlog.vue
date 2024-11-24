@@ -13,7 +13,7 @@ import highlight from '@bytemd/plugin-highlight'
 import gfm from '@bytemd/plugin-gfm'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
-import { ref } from 'vue'
+import { onActivated, onMounted, ref } from 'vue'
 import api from '@/api'
 import { BlogDTO, Res, Tag } from '@/type'
 import { useRouter } from 'vue-router'
@@ -36,7 +36,6 @@ function getBlog() {
     }
   })
 }
-getBlog()
 // 新建博客
 const blog = ref<BlogDTO>({
   title: '',
@@ -70,7 +69,6 @@ function getTags() {
     }
   )
 }
-getTags()
 
 // 编辑器插件
 const plugins = [gfm(), highlight()]
@@ -110,6 +108,14 @@ const uploader = ref(null)
 function triggerUpload() {
   uploader.value.upload()
 }
+
+onMounted(() => {
+  getTags()
+})
+
+onActivated(() => {
+  getBlog()
+})
 </script>
 
 <template>

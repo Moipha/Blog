@@ -9,8 +9,9 @@ class TagApi {
     method: 'get' | 'post' | 'put' | 'delete',
     url: string,
     dataOrParams: any,
-    callback: Function,
-    errorCallback: Function
+    callback: Function = () => {},
+    errorCallback: Function = () => {},
+    finallyCallback: Function = () => {}
   ) {
     try {
       const res = await request[method](url, dataOrParams)
@@ -21,6 +22,8 @@ class TagApi {
       }
     } catch (e) {
       errorCallback(e)
+    } finally {
+      finallyCallback()
     }
   }
 
@@ -32,34 +35,56 @@ class TagApi {
       pageSize: number
     },
     callback: Function,
-    errorCallback: Function
+    errorCallback: Function,
+    finallyCallback: Function
   ) {
-    await this.requestHandler('get', baseURL, { params: condition }, callback, errorCallback)
+    await this.requestHandler(
+      'get',
+      baseURL,
+      { params: condition },
+      callback,
+      errorCallback,
+      finallyCallback
+    )
   }
 
   async create(
     data: { name: string; type: string; icon?: string },
     callback: Function,
-    errorCallback: Function
+    errorCallback: Function,
+    finallyCallback: Function
   ) {
-    await this.requestHandler('post', baseURL, data, callback, errorCallback)
+    await this.requestHandler('post', baseURL, data, callback, errorCallback, finallyCallback)
   }
 
-  async update(data: Tag, callback: Function, errorCallback: Function) {
-    await this.requestHandler('put', baseURL, data, callback, errorCallback)
+  async update(data: Tag, callback: Function, errorCallback: Function, finallyCallback: Function) {
+    await this.requestHandler('put', baseURL, data, callback, errorCallback, finallyCallback)
   }
 
-  async delete(id: string, callback: Function, errorCallback: Function) {
-    await this.requestHandler('delete', baseURL, { params: { id } }, callback, errorCallback)
+  async delete(id: string, callback: Function, errorCallback: Function, finallyCallback: Function) {
+    await this.requestHandler(
+      'delete',
+      baseURL,
+      { params: { id } },
+      callback,
+      errorCallback,
+      finallyCallback
+    )
   }
 
-  async getAll(types: string[], callback: Function, errorCallback: Function) {
+  async getAll(
+    types: string[],
+    callback: Function,
+    errorCallback: Function,
+    finallyCallback: Function
+  ) {
     await this.requestHandler(
       'get',
       `${baseURL}/get-all`,
       { params: { types } },
       callback,
-      errorCallback
+      errorCallback,
+      finallyCallback
     )
   }
 }

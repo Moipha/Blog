@@ -11,9 +11,7 @@ import piniaPersist from 'pinia-plugin-persist'
 import 'bytemd/dist/index.css'
 import '@/assets/styles/github-markdown.css'
 import '@/assets/styles/github-highlight.css'
-// lodash
-import _ from 'lodash'
-window._ = _
+
 // lazysizes
 import 'lazysizes'
 // 骨架屏

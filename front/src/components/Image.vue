@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import errImg from '@/assets/img/err.png'
 
-defineProps({
+const props = defineProps({
   src: {
     type: String,
     required: true
@@ -16,17 +17,32 @@ defineProps({
   }
 })
 const isLoaded = ref<boolean>(false)
+const error = ref<boolean>(false)
+
+function onLoadError() {
+  error.value = true
+}
+watch(
+  () => props.src,
+  () => {
+    error.value = false
+    isLoaded.value = false
+  }
+)
 </script>
 
 <template>
   <div class="container">
-    <div v-show="!isLoaded" class="loader"></div>
+    <div v-show="!isLoaded && !error" class="loader"></div>
     <img
+      v-if="!error"
+      @error="onLoadError"
       @load="isLoaded = true"
       class="lazyload"
       :style="{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.05 }"
       :class="$attrs.class"
       :data-src="src" />
+    <img v-else :src="errImg" alt="加载失败" :class="$attrs.class" :style="{ scale: 1.1 }" />
   </div>
 </template>
 

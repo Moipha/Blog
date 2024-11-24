@@ -17,12 +17,17 @@ defineProps({
   hoverColor: {
     type: String,
     default: 'var(--hover)'
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
 
 <template>
   <button
+    :disabled="disabled"
     :style="{ backgroundColor: bgColor, color: textColor, '--hc': hoverColor }"
     type="button">
     <Icon v-if="icon" class="icon" :name="icon" />
@@ -49,6 +54,11 @@ button {
 
   &:hover {
     background-color: var(--hc) !important;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 </style>

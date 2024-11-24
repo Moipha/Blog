@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
       <span class="label">Ctrl K</span>
     </div>
     <div class="btn-container">
-      <Button @click="changeTheme">
+      <Button @click="changeTheme($event)">
         <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
         <Icon v-else class="icon" name="theme-light" />
       </Button>

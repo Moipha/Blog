@@ -40,7 +40,7 @@ const breadcrumbs = computed(() => {
     </nav>
     <Button
       class="theme"
-      @click="changeTheme"
+      @click="changeTheme($event)"
       :icon="theme === 'dark' ? 'theme-dark' : 'theme-light'"
       bg-color="var(--bg)"
       text-color="var(--text)"

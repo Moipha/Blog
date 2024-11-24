@@ -7,9 +7,8 @@ import Button from '@/components/Button.vue'
 
 import api from '@/api'
 import { Blog, Res } from '@/type'
-import { computed, onActivated, ref } from 'vue'
+import { computed, onActivated, ref, watch } from 'vue'
 import dayjs from 'dayjs'
-import coverImg from '@/assets/img/4.jpg'
 import router from '@/router'
 import highlight from '@bytemd/plugin-highlight'
 
@@ -20,10 +19,15 @@ const props = defineProps({
   }
 })
 
+// 博客信息
 const blog = ref<Blog>({} as Blog)
+
+// 加载中
+const loading = ref(true)
 
 // 获取博客详情
 function getBlog() {
+  loading.value = true
   api.blog.getById(
     props.id,
     (res: Res) => {
@@ -31,6 +35,9 @@ function getBlog() {
     },
     (err: Error) => {
       console.log(err)
+    },
+    () => {
+      loading.value = false
     }
   )
 }
@@ -72,7 +79,11 @@ const plugins = [highlight()]
 
 <template>
   <section>
-    <Cover class="cover-bg" :src="coverImg" :title="blog.title">
+    <Cover
+      :key="loading ? '' : blog._id"
+      class="cover-bg"
+      :src="loading ? '' : blog.cover"
+      :title="loading ? '' : blog.title">
       <div class="tags">
         <Icon class="icon" name="tags" />
         <RouterLink

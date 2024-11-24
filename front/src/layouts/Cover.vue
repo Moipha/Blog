@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { onActivated, ref, watch } from 'vue'
+import { onActivated, ref, watch, watchEffect } from 'vue'
+import cover from '@/assets/img/4.jpg'
 
 const props = defineProps({
   src: String,
@@ -16,9 +17,14 @@ let timer = null
 
 onActivated(() => {
   temp.value = ['']
-  setTimeout(() => {
+  typeTitle(props.title)
+})
+
+watchEffect(() => {
+  temp.value = ['']
+  if (props.title) {
     typeTitle(props.title)
-  }, 500)
+  }
 })
 // 键入标题
 function typeTitle(val: string) {
@@ -44,7 +50,7 @@ function typeTitle(val: string) {
   <div class="cover-bg" :style="{ height, '--len': title?.length }">
     <img
       class="lazyload"
-      :data-src="src"
+      :data-src="src || cover"
       alt="cover"
       :style="{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 1.05 }"
       @load="loaded = true" />
@@ -93,6 +99,7 @@ function typeTitle(val: string) {
       text-align: center;
       position: relative;
       user-select: none;
+      text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5), 1px 1px 5px rgba(0, 0, 0, 0.2);
 
       @media (max-width: 660px) {
         font-size: calc(5vw + 8px);
