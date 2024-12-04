@@ -74,7 +74,7 @@ function onEnterJump() {
     </div>
     <div class="right">
       <template v-if="totalPage > 1">
-        <div class="container">
+        <div class="right-container">
           <div @click="changePage(false)" class="block"><</div>
           <div
             @click="jumpPage(num)"
@@ -88,7 +88,7 @@ function onEnterJump() {
           </div>
           <div @click="changePage(true)" class="block">></div>
         </div>
-        <div class="container">
+        <div class="right-container">
           <span>跳转至</span>
           <Input
             width="50px"
@@ -100,7 +100,7 @@ function onEnterJump() {
         </div>
       </template>
 
-      <div class="container">
+      <div class="right-container">
         <span>每页条数</span>
         <Select
           :style="{
@@ -147,7 +147,7 @@ function onEnterJump() {
     align-items: center;
     gap: 20px;
 
-    .container {
+    .right-container {
       display: flex;
       gap: 5px;
       flex-wrap: wrap;

@@ -1,5 +1,13 @@
 <script lang="ts" setup>
+import Loading from '@/components/Loading.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
+
+defineProps({
+  loading: {
+    type: Boolean,
+    default: false
+  }
+})
 
 // 上边距
 const marginTop = ref<number>(64 - window.scrollY * 0.2 > 0 ? 64 - window.scrollY * 0.2 : 0)
@@ -20,7 +28,8 @@ onUnmounted(() => {
 
 <template>
   <div class="board" :style="{ marginTop: marginTop + 'px' }">
-    <slot />
+    <Loading class="loading" v-if="loading" />
+    <slot v-else />
   </div>
 </template>
 
@@ -37,6 +46,10 @@ onUnmounted(() => {
     width: 100% !important;
     padding: 30px 20px;
     border-radius: 0;
+  }
+
+  .loading {
+    margin-bottom: 10vh;
   }
 }
 </style>

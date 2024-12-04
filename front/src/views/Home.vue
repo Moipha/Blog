@@ -38,13 +38,22 @@ onMounted(() => {
 
 // 随机封面
 const coverChoose = Math.random() > 0.5 ? cover1 : cover2
+
+// 下移
+function clickDown() {
+  window.scrollTo({
+    top: window.innerHeight * 1 - 111,
+    behavior: 'smooth'
+  })
+}
 </script>
 
 <template>
   <section>
-    <Cover class="cover" :src="coverChoose" height="100vh" title="Hi！欢迎来到漾春的博客站点" />
-
-    <Board class="board">
+    <Cover class="cover" :src="coverChoose" height="100vh" title="Hi！欢迎来到漾春的博客站点">
+      <Icon @click="clickDown" class="down" name="solid-down" />
+    </Cover>
+    <Board class="board" :loading="blogs.length === 0">
       <div class="blog" v-for="blog of blogs">
         <RouterLink class="img-link" :to="`/blog/${blog._id}`">
           <Image class="img" :src="blog.cover || coverChoose" />
@@ -96,6 +105,7 @@ section {
     flex-flow: column nowrap;
     gap: 10vh;
     padding: 10vh 8vw 5vh;
+    z-index: 2;
 
     .blog {
       display: flex;
@@ -187,41 +197,62 @@ section {
         }
       }
     }
+  }
+  .page {
+    margin-top: 5vh;
+    padding: 0;
 
-    .page {
-      margin-top: 5vh;
-      padding: 0;
+    &::v-deep(input),
+    &::v-deep(.input) {
+      background-color: var(--content);
+      border-color: var(--back);
+    }
 
-      &::v-deep(input),
-      &::v-deep(.input) {
-        background-color: var(--content);
-        border-color: var(--back);
+    &::v-deep(.active) {
+      background-color: var(--active) !important;
+    }
+    &::v-deep(.block:not(.active)) {
+      background-color: var(--content);
+      border-color: var(--back);
+
+      &:hover {
+        background-color: var(--content-hover) !important;
       }
+    }
+    &::v-deep(.drop-menu) {
+      background-color: var(--content);
 
-      &::v-deep(.active) {
-        background-color: var(--active) !important;
-      }
-      &::v-deep(.block:not(.active)) {
-        background-color: var(--content);
-        border-color: var(--back);
+      .option-container {
+        padding: 0;
 
-        &:hover {
-          background-color: var(--content-hover) !important;
-        }
-      }
-      &::v-deep(.drop-menu) {
-        background-color: var(--content);
-
-        .option-container {
-          padding: 0;
-
-          .option {
-            &:hover {
-              background-color: var(--content-hover);
-            }
+        .option {
+          &:hover {
+            background-color: var(--content-hover);
           }
         }
       }
+    }
+  }
+  .down {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    animation: swing 1s infinite ease-in-out;
+    color: var(--white);
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 20px;
+    z-index: 1;
+  }
+  @keyframes swing {
+    0%,
+    100% {
+      bottom: 10px;
+    }
+    50% {
+      bottom: 30px;
     }
   }
 }

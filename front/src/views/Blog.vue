@@ -11,6 +11,7 @@ import { computed, onActivated, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import router from '@/router'
 import highlight from '@bytemd/plugin-highlight'
+import gfm from '@bytemd/plugin-gfm'
 
 const props = defineProps({
   id: {
@@ -74,7 +75,7 @@ function goFoot() {
 }
 
 // 插件
-const plugins = [highlight()]
+const plugins = [highlight(), gfm()]
 </script>
 
 <template>
@@ -120,7 +121,7 @@ const plugins = [highlight()]
         </div>
       </div>
 
-      <Board class="board">
+      <Board class="board" :loading="blog._id == undefined">
         <Viewer :value="blog.content" :plugins="plugins" />
         <div class="footer">
           <span>本文最后更新于 {{ dayjs(blog.updatedTime).format('YYYY年M月D日HH时mm分') }}</span>
@@ -138,7 +139,7 @@ const plugins = [highlight()]
         </div>
       </div>
     </div>
-    <Board id="comment" class="board comment-container">
+    <Board id="comment" class="board comment-container" :loading="blog._id == undefined">
       <h1>评论</h1>
     </Board>
   </section>

@@ -178,15 +178,41 @@ header {
         font-size: 14px;
         padding: 8px 16px;
         text-decoration: none;
+        position: relative;
 
         &:hover {
           color: var(--active);
+
+          &::before {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          translate: -50%;
+          bottom: 3px;
+          width: calc(100% - 40px);
+          height: 3px;
+          background-color: var(--active);
+          border-radius: 2px;
+          transition: 0.25s;
+          transform: scale(0);
+          opacity: 0;
         }
       }
 
       .active {
         color: var(--active);
         font-weight: bold;
+
+        &::before {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
     }
   }
@@ -206,18 +232,27 @@ header {
     }
 
     .label {
-      border: 1px solid var(--color);
       border-radius: 4px;
       font-size: 12px;
       padding: 0 5px;
+      background-color: var(--color);
+      color: black;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      filter: brightness(0.9);
 
       @media (max-width: 1024px) {
         display: none;
       }
     }
 
+    .icon {
+      transition: all 0.2s ease;
+      color: var(--color);
+    }
+
     &:hover {
-      filter: brightness(0.8);
+      --color: var(--active);
     }
   }
 

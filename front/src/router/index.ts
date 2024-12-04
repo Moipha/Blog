@@ -29,6 +29,7 @@ const router = createRouter({
         },
         {
           path: '/tags',
+          component: () => import('@/views/TagBase.vue'),
           children: [
             {
               path: ':id',

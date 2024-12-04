@@ -37,7 +37,7 @@ watch(show, (val) => {
   top: 0;
   left: 0;
   background-color: black;
-  z-index: 5;
+  z-index: 10;
   opacity: 0.5;
 }
 

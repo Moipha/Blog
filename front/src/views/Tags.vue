@@ -1,32 +1,51 @@
 <script lang="ts" setup>
-import Cover from '@/layouts/Cover.vue'
 import Board from '@/layouts/Board.vue'
 
-import coverImg from '@/assets/img/summer4.png'
 import api from '@/api'
 import { Res, Tag } from '@/type'
-import { ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 
+// 标签列表
 const tags = ref<Tag[]>([])
+const loading = ref<boolean>(true)
+
 function getTags() {
-  api.tag.getAll(['blog', 'code', 'general'], (res: Res) => {
-    tags.value = res.data
-  })
+  loading.value = true
+  api.tag.getAll(
+    ['blog', 'code', 'general'],
+    (res: Res) => {
+      tags.value = res.data
+    },
+    (err: Error) => {
+      console.log(err)
+    },
+    () => {
+      loading.value = false
+    }
+  )
 }
-getTags()
+
+// 更新标题
+const updateTitle = inject<(val: string) => void>('updateTitle')
+
+onMounted(() => {
+  getTags()
+  updateTitle('标签')
+})
 </script>
 
-<template>
-  <section>
-    <Cover class="cover" :src="coverImg" height="80vh" title="标签" />
-    <Board class="board">
-      <div class="tag-container">
-        <RouterLink class="tag" v-for="tag of tags" :key="tag._id" :to="'/tags/' + tag._id">
-          {{ tag.name }}
-        </RouterLink>
-      </div>
-    </Board>
-  </section>
+<template> 
+  <Board class="board" :loading="loading">
+    <div class="tag-container">
+      <RouterLink
+        class="tag"
+        v-for="tag of tags"
+        :key="tag._id"
+        :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
+        {{ tag.name }}
+      </RouterLink>
+    </div>
+  </Board>
 </template>
 
 <style lang="scss" scoped>

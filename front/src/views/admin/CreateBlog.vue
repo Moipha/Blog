@@ -113,6 +113,12 @@ function triggerUpload() {
 }
 // 定义ref
 const uploader = ref(null)
+
+// 成功创建回调
+function created(path: string) {
+  dialogCreate.value = false
+  router.push(path)
+}
 </script>
 
 <template>
@@ -179,8 +185,8 @@ const uploader = ref(null)
       <p>博客创建成功</p>
     </template>
     <template #btn>
-      <Button @click="router.push('/blog/' + createdBlog._id)" icon="eye">查看详情</Button>
-      <Button @click="router.push('/admin/blogs')" icon="exit">返回博客管理</Button>
+      <Button @click="created('/blog/' + createdBlog._id)" icon="eye">查看详情</Button>
+      <Button @click="created('/admin/blogs')" icon="exit">返回博客管理</Button>
     </template>
   </Confirm>
 </template>

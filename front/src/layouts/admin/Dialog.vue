@@ -39,9 +39,6 @@ watch(
 
 <style lang="scss" scoped>
 section {
-  // height: 90vh;
-  // max-height: 680px;
-  // min-height: 500px;
   width: 40vw;
   max-width: 580px;
   min-width: 400px;
@@ -52,7 +49,7 @@ section {
   top: 50%;
   left: 50%;
   color: var(--text);
-  background-color: var(--table-hover);
+  background-color: var(--bg);
   transform: translate(-50%, -50%) scale(1);
   z-index: 20;
   display: flex;

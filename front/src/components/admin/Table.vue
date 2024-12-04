@@ -71,6 +71,7 @@ const VNode = defineComponent({
       </tr>
     </thead>
     <tbody :style="{ maxHeight: height }">
+      <!-- 用于加载插槽中的TableColumn以注册各个列，实际不渲染任何标签 -->
       <slot></slot>
       <tr v-for="item in data" :key="item._id">
         <td
@@ -81,7 +82,9 @@ const VNode = defineComponent({
             minWidth: column.width + 'px'
           }"
           :align="align">
+          <!-- 如果该列有插槽函数就加载插槽函数，否则直接渲染属性值 -->
           <template v-if="column.slots">
+            <!-- 传入整个对象作为插槽函数的参数 -->
             <VNode :content="column.slots(item) as any" />
           </template>
           <template v-else>{{ item[column.prop] }}</template>
