@@ -140,6 +140,10 @@ function onEnterJump() {
       font-weight: bold;
       margin: 0 5px;
     }
+
+    @media (max-width: 660px) {
+      display: none;
+    }
   }
   .right {
     margin-left: auto;

@@ -277,7 +277,7 @@ header {
   top: 0;
   background-color: var(--back);
   transition: all 0.3s ease;
-  z-index: 6;
+  z-index: 11;
 
   display: flex;
   justify-content: center;

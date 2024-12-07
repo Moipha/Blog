@@ -91,6 +91,7 @@ function typeTitle(val: string) {
     flex-direction: column;
     align-items: center;
     z-index: 1;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5), 1px 1px 5px rgba(0, 0, 0, 0.2);
 
     h1 {
       font-size: 36px;
@@ -99,7 +100,6 @@ function typeTitle(val: string) {
       text-align: center;
       position: relative;
       user-select: none;
-      text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5), 1px 1px 5px rgba(0, 0, 0, 0.2);
 
       @media (max-width: 660px) {
         font-size: calc(5vw + 8px);
