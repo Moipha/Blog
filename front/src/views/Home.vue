@@ -10,6 +10,9 @@ import api from '@/api'
 import { Res, Blog } from '@/type'
 import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
+import { useSessionStore } from '@/stores/session'
+
+const { setCurBlog } = useSessionStore()
 
 // 分页信息
 const pageNum = ref<number>(1)
@@ -55,14 +58,14 @@ function clickDown() {
     </Cover>
     <Board class="board" :loading="blogs.length === 0">
       <div class="blog" v-for="blog of blogs">
-        <RouterLink class="img-link" :to="`/blog/${blog._id}`">
+        <RouterLink @click="setCurBlog(blog)" class="img-link" :to="`/blog/${blog._id}`">
           <Image class="img" :src="blog.cover || coverChoose" />
         </RouterLink>
         <div class="info">
-          <RouterLink class="link" :to="`/blog/${blog._id}`">
+          <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
             <h2>{{ blog.title }}</h2>
           </RouterLink>
-          <RouterLink class="link" :to="`/blog/${blog._id}`">
+          <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
             <p>{{ blog.desc }}</p>
           </RouterLink>
           <div class="detail">

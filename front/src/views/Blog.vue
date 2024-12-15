@@ -12,6 +12,10 @@ import dayjs from 'dayjs'
 import router from '@/router'
 import highlight from '@bytemd/plugin-highlight'
 import gfm from '@bytemd/plugin-gfm'
+import { useSessionStore } from '@/stores/session'
+import { storeToRefs } from 'pinia'
+
+const { curBlog } = storeToRefs(useSessionStore())
 
 const props = defineProps({
   id: {
@@ -42,10 +46,6 @@ function getBlog() {
     }
   )
 }
-onActivated(() => {
-  getBlog()
-})
-
 // 计算文本量
 const wordCount = computed(() => {
   let content: string = ''
@@ -76,6 +76,17 @@ function goFoot() {
 
 // 插件
 const plugins = [highlight(), gfm()]
+
+onActivated(() => {
+  // 当未通过点击链接（即store中未存储curBlog信息时）跳转至该页面时，发送请求获取该博客详情
+  if (!curBlog.value) {
+    getBlog()
+  } else {
+    loading.value = true
+    blog.value = curBlog.value
+    loading.value = false
+  }
+})
 </script>
 
 <template>

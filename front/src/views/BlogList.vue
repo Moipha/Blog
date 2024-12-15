@@ -6,6 +6,8 @@ import api from '@/api'
 import { Blog, Res } from '@/type'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref } from 'vue'
+import { useSessionStore } from '@/stores/session.ts'
+const { setCurBlog } = useSessionStore()
 
 const props = defineProps({
   conditions: {
@@ -85,6 +87,7 @@ onMounted(() => {
       <div class="blog-item" v-for="group in groupedBlogs" :key="group.year">
         <h1>{{ group.year }}</h1>
         <RouterLink
+          @click="setCurBlog(blog)"
           v-for="blog in group.blogs"
           :key="blog._id"
           class="blog"
