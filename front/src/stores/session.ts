@@ -1,4 +1,4 @@
-import { BlogDTO } from '@/type'
+import { Blog } from '@/type'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -10,10 +10,10 @@ export const useSessionStore = defineStore(
   'session',
   () => {
     // 当前要访问的博客信息
-    const curBlog = ref<BlogDTO>(null as BlogDTO)
+    const curBlog = ref<Blog>(null as Blog)
 
     // 设置当前将访问的博客
-    function setCurBlog(blog: BlogDTO) {
+    function setCurBlog(blog: Blog) {
       curBlog.value = blog
     }
 

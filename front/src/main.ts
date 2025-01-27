@@ -14,7 +14,9 @@ import '@/assets/styles/github-highlight.css'
 
 // lazysizes
 import 'lazysizes'
-// 骨架屏
+
+// 进度条样式
+import 'nprogress/nprogress.css'
 
 // 创建app
 const app = createApp(App)

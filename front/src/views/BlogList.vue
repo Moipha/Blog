@@ -6,7 +6,7 @@ import api from '@/api'
 import { Blog, Res } from '@/type'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref } from 'vue'
-import { useSessionStore } from '@/stores/session.ts'
+import { useSessionStore } from '@/stores/session'
 const { setCurBlog } = useSessionStore()
 
 const props = defineProps({

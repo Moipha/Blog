@@ -74,6 +74,17 @@ function goFoot() {
   }
 }
 
+// 返回
+function handleReturn() {
+  if (window.history.state?.back) {
+    // 如果有上一个路由，则返回上一个路由
+    router.back()
+  } else {
+    // 如果没有上一个路由，则跳转到 /blog
+    router.push('/blog')
+  }
+}
+
 // 插件
 const plugins = [highlight(), gfm()]
 
@@ -123,15 +134,15 @@ onActivated(() => {
     </Cover>
     <div class="content">
       <div class="aside">
-        <div class="catalog-container">
-          <div class="title">
-            <Icon class="icon" name="catalog" />
-            <span>目录</span>
-          </div>
-          <Catalog v-if="blog.content" :data="blog.content" />
+        <div class="btn-container">
+          <Button @click="handleReturn" class="btn" icon="return" />
+          <Button v-if="Math.random() > 0.5" class="btn" icon="like" />
+          <Button v-else class="btn" icon="liked" />
+          <Button @click="goFoot" class="btn" icon="comment" />
+          <Button class="btn" icon="share" />
+          <Button @click="goTop" class="btn" icon="top" />
         </div>
       </div>
-
       <Board class="board" :loading="blog._id == undefined">
         <Viewer :value="blog.content" :plugins="plugins" />
         <div class="footer">
@@ -139,14 +150,14 @@ onActivated(() => {
           <span>by {{ blog.author }}</span>
         </div>
       </Board>
+
       <div class="aside">
-        <div class="btn-container">
-          <Button @click="router.go(-1)" class="btn" icon="return" />
-          <Button v-if="Math.random() > 0.5" class="btn" icon="like" />
-          <Button v-else class="btn" icon="liked" />
-          <Button @click="goFoot" class="btn" icon="comment" />
-          <Button class="btn" icon="share" />
-          <Button @click="goTop" class="btn" icon="top" />
+        <div class="catalog-container">
+          <div class="title">
+            <Icon class="icon" name="catalog" />
+            <span>目录</span>
+          </div>
+          <Catalog v-if="blog.content" :data="blog.content" />
         </div>
       </div>
     </div>
@@ -237,13 +248,14 @@ section {
     }
 
     .btn-container {
-      margin-top: 50px;
-      margin-left: 30px;
+      margin-top: calc(75px + 50%);
+      margin-right: 30px;
       display: flex;
       flex-flow: column nowrap;
-      align-items: flex-start;
+      align-items: flex-end;
       position: sticky;
-      top: 25vh;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--text);
       gap: 20px;
 
@@ -260,11 +272,10 @@ section {
     }
 
     .catalog-container {
-      width: fit-content;
+      width: 100%;
       min-width: 10vw;
-      margin-top: 40px;
-      margin-left: 10px;
-      margin-right: 10px;
+      margin-top: 50px;
+      padding-left: 30px;
       float: right;
       display: flex;
       flex-flow: column nowrap;
@@ -272,6 +283,7 @@ section {
       top: 80px;
       color: var(--text);
       gap: 10px;
+      user-select: none;
 
       .title {
         display: flex;

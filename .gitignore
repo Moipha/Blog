@@ -31,3 +31,4 @@ coverage
 
 /front/.env.development
 /front/.env.production
+private.key

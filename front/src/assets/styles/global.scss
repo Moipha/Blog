@@ -133,3 +133,18 @@ html {
     clip-path: circle(var(--r) at var(--x) var(--y));
   }
 }
+
+/* 修改进度条颜色 */
+#nprogress .bar {
+  background: var(--active) !important;
+}
+
+/* 修改进度条高度 */
+#nprogress .bar {
+  height: 3px !important;
+}
+
+/* 禁用进度条的旋转动画 */
+#nprogress .spinner {
+  display: none !important;
+}
