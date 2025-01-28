@@ -50,6 +50,11 @@ class BlogService {
     const res = (await iToVO([blog]))[0]
     return res
   }
+
+  // 增加浏览量+1
+  async addViews(id: string): Promise<void> {
+    await BlogModel.updateOne({ _id: id }, { $inc: { viewCount: 1 } })
+  }
 }
 
 export default new BlogService()

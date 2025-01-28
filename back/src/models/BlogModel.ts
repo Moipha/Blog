@@ -15,7 +15,9 @@ const BlogSchema = new Schema({
   desc: { type: String, default: '' }, // 描述
   createdTime: { type: Date, default: () => Date.now() },
   updatedTime: { type: Date, default: () => Date.now() },
-  cover: { type: String } // 封面
+  cover: { type: String }, // 封面
+  viewCount: { type: Number, default: 0 }, // 浏览次数字段
+  likeCount: { type: Number, default: 0 } // 点赞次数字段
 })
 
 // 创建文档模型

@@ -28,7 +28,5 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-
-/front/.env.development
-/front/.env.production
+.env.*
 private.key

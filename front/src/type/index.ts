@@ -26,6 +26,8 @@ export interface Blog {
   createdTime: string
   updatedTime: string
   cover: string
+  viewCount: number
+  likeCount: number
 }
 
 export interface BlogDTO {
@@ -37,4 +39,6 @@ export interface BlogDTO {
   tags: string[]
   desc: string
   cover: string
+  viewCount: number
+  likeCount: number
 }

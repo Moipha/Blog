@@ -73,4 +73,11 @@ router.get(
   }
 )
 
+// 增长浏览记录
+router.put('/:id', async (req: express.Request, res: express.Response): Promise<void> => {
+  const id = req.params.id
+  await service.addViews(id)
+  res.status(200).json(Result.success())
+})
+
 export default router

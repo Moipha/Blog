@@ -31,6 +31,8 @@ export interface IBlog extends Document {
   cover: string
   createdTime: Date
   updatedTime: Date
+  viewCount: number
+  likeCount: number
 }
 
 export interface BlogDTO {
@@ -40,6 +42,8 @@ export interface BlogDTO {
   content: string
   desc: string
   cover: string
+  viewCount: number
+  likeCount: number
 }
 
 export interface BlogVO {
@@ -53,4 +57,6 @@ export interface BlogVO {
   cover: string
   createdTime: Date
   updatedTime: Date
+  viewCount: number
+  likeCount: number
 }

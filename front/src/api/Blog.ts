@@ -96,6 +96,10 @@ class BlogApi {
       finallyCallback
     )
   }
+
+  async view(id: string, callback: Function) {
+    await this.requestHandler('put', `${baseURL}/${id}`, {}, callback)
+  }
 }
 
 export default new BlogApi()

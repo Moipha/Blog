@@ -7,7 +7,7 @@ import Button from '@/components/Button.vue'
 
 import api from '@/api'
 import { Blog, Res } from '@/type'
-import { computed, onActivated, ref, watch } from 'vue'
+import { computed, onActivated, ref } from 'vue'
 import dayjs from 'dayjs'
 import router from '@/router'
 import highlight from '@bytemd/plugin-highlight'
@@ -85,6 +85,14 @@ function handleReturn() {
   }
 }
 
+// 添加访问次数
+function addView() {
+  api.blog.view(props.id, (res: Res) => {
+    if (res.code === 200)
+      curBlog.value.viewCount ? curBlog.value.viewCount++ : (curBlog.value.viewCount = 1)
+  })
+}
+
 // 插件
 const plugins = [highlight(), gfm()]
 
@@ -97,6 +105,7 @@ onActivated(() => {
     blog.value = curBlog.value
     loading.value = false
   }
+  addView()
 })
 </script>
 
@@ -129,7 +138,7 @@ onActivated(() => {
         <Icon name="timer" />
         <span>{{ (wordCount / RPM).toFixed(0) }} 分钟</span>
         <Icon name="eye" />
-        <span>99 次</span>
+        <span>{{ blog.viewCount || 0 }} 次</span>
       </div>
     </Cover>
     <div class="content">
@@ -248,7 +257,7 @@ section {
     }
 
     .btn-container {
-      margin-top: calc(75px + 50%);
+      margin-top: 215px;
       margin-right: 30px;
       display: flex;
       flex-flow: column nowrap;
