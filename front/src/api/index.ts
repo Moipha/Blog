@@ -16,6 +16,7 @@ interface Api {
     delete: Function
     getById: Function
     view: Function
+    changeLike: Function
   }
 }
 

@@ -55,6 +55,14 @@ class BlogService {
   async addViews(id: string): Promise<void> {
     await BlogModel.updateOne({ _id: id }, { $inc: { viewCount: 1 } })
   }
+
+  // 增减点赞数
+  async minusLikes(id: string): Promise<void> {
+    await BlogModel.updateOne({ _id: id }, { $inc: { likeCount: -1 } })
+  }
+  async addLikes(id: string): Promise<void> {
+    await BlogModel.updateOne({ _id: id }, { $inc: { likeCount: 1 } })
+  }
 }
 
 export default new BlogService()

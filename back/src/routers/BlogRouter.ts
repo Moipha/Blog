@@ -74,10 +74,30 @@ router.get(
 )
 
 // 增长浏览记录
-router.put('/:id', async (req: express.Request, res: express.Response): Promise<void> => {
+router.put('/view/:id', async (req: express.Request, res: express.Response): Promise<void> => {
   const id = req.params.id
   await service.addViews(id)
   res.status(200).json(Result.success())
 })
+
+// 修改点赞数
+router.put(
+  '/like',
+  [
+    body('id').isMongoId().withMessage('提供的文章ID无效'),
+    body('plus').isBoolean().withMessage('提供的参数无效')
+  ],
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    // 增加或减少一个点赞量
+    const { id, plus } = req.body
+    if (plus) {
+      await service.addLikes(id)
+    } else {
+      await service.minusLikes(id)
+    }
+    res.status(200).json(Result.success())
+  }
+)
 
 export default router

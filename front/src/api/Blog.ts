@@ -98,7 +98,11 @@ class BlogApi {
   }
 
   async view(id: string, callback: Function) {
-    await this.requestHandler('put', `${baseURL}/${id}`, {}, callback)
+    await this.requestHandler('put', `${baseURL}/view/${id}`, {}, callback)
+  }
+
+  async changeLike(id: string, plus: boolean, callback: Function) {
+    await this.requestHandler('put', `${baseURL}/like`, { plus, id }, callback)
   }
 }
 

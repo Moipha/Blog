@@ -13,9 +13,11 @@ import router from '@/router'
 import highlight from '@bytemd/plugin-highlight'
 import gfm from '@bytemd/plugin-gfm'
 import { useSessionStore } from '@/stores/session'
+import { useTempStore } from '@/stores/temp'
 import { storeToRefs } from 'pinia'
 
 const { curBlog } = storeToRefs(useSessionStore())
+const { viewBlog, isViewed, likeBlog, unlikeBlog, isLiked } = useTempStore()
 
 const props = defineProps({
   id: {
@@ -93,6 +95,30 @@ function addView() {
   })
 }
 
+// 点击点赞按钮
+function handleClickLike() {
+  // 如果点过赞，取消点赞，否则点赞
+  const id = props.id
+  const flag = isLiked(id)
+  if (flag) {
+    unlikeBlog(id)
+  } else {
+    likeBlog(id)
+  }
+
+  // 发送请求给服务器修改点赞数
+  api.blog.changeLike(id, !flag, (res: Res) => {
+    console.log(res)
+    if (res.code === 200) {
+      if (flag) {
+        curBlog.value.likeCount ? curBlog.value.likeCount-- : (curBlog.value.likeCount = 0)
+      } else {
+        curBlog.value.likeCount ? curBlog.value.likeCount++ : (curBlog.value.likeCount = 1)
+      }
+    }
+  })
+}
+
 // 插件
 const plugins = [highlight(), gfm()]
 
@@ -105,7 +131,11 @@ onActivated(() => {
     blog.value = curBlog.value
     loading.value = false
   }
-  addView()
+  // 如果限定时长前未访问过该博客，在本地store记录该博客已访问并通知服务器该博客浏览次数加一
+  if (!isViewed(props.id)) {
+    addView()
+    viewBlog(props.id)
+  }
 })
 </script>
 
@@ -145,9 +175,16 @@ onActivated(() => {
       <div class="aside">
         <div class="btn-container">
           <Button @click="handleReturn" class="btn" icon="return" />
-          <Button v-if="Math.random() > 0.5" class="btn" icon="like" />
-          <Button v-else class="btn" icon="liked" />
-          <Button @click="goFoot" class="btn" icon="comment" />
+          <Button
+            @click="handleClickLike"
+            class="btn"
+            :icon="isLiked(id) ? 'liked' : 'like'"
+            :class="{ active: isLiked(id) }">
+            <div class="badge">{{ blog.likeCount }}</div>
+          </Button>
+          <Button @click="goFoot" class="btn" icon="comment">
+            <div class="badge">0</div>
+          </Button>
           <Button class="btn" icon="share" />
           <Button @click="goTop" class="btn" icon="top" />
         </div>
@@ -273,10 +310,15 @@ section {
         width: fit-content;
         color: var(--light-text);
         background-color: var(--content);
+        position: relative;
 
         &:hover {
           color: var(--active);
         }
+      }
+
+      .active {
+        color: var(--active);
       }
     }
 
@@ -330,6 +372,12 @@ section {
         top: 0px;
       }
     }
+    .footer-btn-group {
+      display: flex;
+      justify-content: center;
+      margin-top: 10vh;
+      font-size: 50px;
+    }
   }
   .board {
     width: 62vw;
@@ -343,12 +391,23 @@ section {
   .comment-container {
     display: flex;
     flex-flow: column nowrap;
-    margin-bottom: 0;
 
     h1 {
       font-size: 30px;
       font-weight: bold;
     }
   }
+}
+.badge {
+  position: absolute;
+  left: 75%;
+  top: 0;
+  transform: translateY(-25%);
+  font-size: 12px;
+  background-color: var(--active);
+  padding: 1px 4px;
+  color: var(--bg);
+  font-weight: bold;
+  border-radius: 5px;
 }
 </style>

@@ -39,6 +39,4 @@ export interface BlogDTO {
   tags: string[]
   desc: string
   cover: string
-  viewCount: number
-  likeCount: number
 }

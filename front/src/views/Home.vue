@@ -65,24 +65,30 @@ function clickDown() {
           <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
             <h2>{{ blog.title }}</h2>
           </RouterLink>
+          <div class="tag-container">
+            <span class="tag" v-for="tag of blog.tags" :key="tag._id">
+              <RouterLink
+                class="link"
+                :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
+                {{ tag.name }}
+              </RouterLink>
+            </span>
+          </div>
           <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
             <p>{{ blog.desc }}</p>
           </RouterLink>
           <div class="detail">
             <div class="date-container">
+              <Icon name="eye" />
+              <span>{{ blog.viewCount }}</span>
+            </div>
+            <div class="date-container">
+              <Icon name="liked" />
+              <span>{{ blog.likeCount }}</span>
+            </div>
+            <div class="date-container">
               <Icon name="date" />
               <span>{{ dayjs(blog.createdTime).format('YYYY-MM-DD') }}</span>
-            </div>
-            <div class="tag-container">
-              <Icon name="tag" />
-
-              <span class="tag" v-for="tag of blog.tags" :key="tag._id">
-                <RouterLink
-                  class="link"
-                  :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
-                  {{ tag.name }}
-                </RouterLink>
-              </span>
             </div>
           </div>
         </div>
@@ -172,30 +178,31 @@ section {
           .date-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             font-family: consolas;
           }
-          .tag-container {
-            display: flex;
-            align-items: center;
-            flex-flow: row wrap;
-            gap: 0 8px;
-            font-family: consolas;
-            font-size: 18px;
+        }
+      }
 
-            .tag {
-              cursor: default;
-              font-family: consolas;
-              font-size: 14px;
-              align-items: center;
-              display: flex;
+      .tag-container {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        gap: 0 8px;
+        font-family: consolas;
+        font-size: 18px;
 
-              &::before {
-                content: '#';
-                font-size: 20px;
-                margin-right: 2px;
-              }
-            }
+        .tag {
+          cursor: default;
+          font-family: consolas;
+          font-size: 14px;
+          align-items: center;
+          display: flex;
+
+          &::before {
+            content: '#';
+            font-size: 20px;
+            margin-right: 2px;
           }
         }
       }
