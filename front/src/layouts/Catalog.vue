@@ -112,6 +112,23 @@ watch(
 .container {
   padding-left: 20px;
   font-size: 15px;
+  height: calc(100vh - 48px - 80px);
+  overflow-y: scroll;
+  border-top: 1.5px solid var(--border);
+
+  // 滚动条整体部分
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: var(--back);
+  }
+
+  // 滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--active);
+    cursor: pointer;
+    border-radius: 4px;
+  }
 
   .option {
     list-style: none;
