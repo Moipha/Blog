@@ -14,7 +14,7 @@ import gfm from '@bytemd/plugin-gfm'
 import highlight from '@bytemd/plugin-highlight'
 // @ts-ignore
 import zhHans from 'bytemd/locales/zh_Hans'
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import api from '@/api'
 import { Blog, BlogDTO, Res, Tag } from '@/type'
 import { useTempStore } from '@/stores/temp'
@@ -84,6 +84,14 @@ function save() {
   alert('保存成功')
 }
 
+// 键盘事件处理函数
+function handleKeydown(event: KeyboardEvent) {
+  if ((event.ctrlKey && event.key === 's') || (event.ctrlKey && event.key === 'S')) {
+    event.preventDefault()
+    save()
+  }
+}
+
 // 上传博客
 function upload() {
   api.blog.create(
@@ -119,6 +127,15 @@ function created(path: string) {
   dialogCreate.value = false
   router.push(path)
 }
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+// 在组件卸载时移除键盘事件监听器
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>

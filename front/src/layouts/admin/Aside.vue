@@ -40,8 +40,8 @@ const nav = [
   { name: '首页', icon: 'home', path: '/home' },
   { name: '统计', icon: 'graph', path: '/graphs' },
   { name: '标签', icon: 'tag', path: '/tags' },
-  { name: '博客', icon: 'blog', path: '/blogs' },
-  { name: '代码', icon: 'code', path: '/codes' }
+  { name: '博客', icon: 'blog', path: '/blogs' }
+  // { name: '代码', icon: 'code', path: '/codes' }
 ]
 active.value = router.currentRoute.value.path.slice(6)
 
