@@ -26,6 +26,7 @@
   --brightness: 0.8;
   --active: dodgerblue;
   --scroll-thumb: rgba(47, 65, 84, 0.7);
+  --back-hover: rgb(190, 193, 197);
 }
 
 [data-theme='dark'] {
@@ -47,6 +48,7 @@
   --brightness: 0.6;
   --active: #77cdff;
   --scroll-thumb: #364151;
+  --back-hover: #394555;
 }
 
 body {

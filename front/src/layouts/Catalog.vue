@@ -110,7 +110,6 @@ watch(
 
 <style lang="scss" scoped>
 .container {
-  padding-left: 20px;
   font-size: 15px;
   height: calc(100vh - 48px - 80px);
   overflow-y: hidden;
@@ -136,38 +135,43 @@ watch(
     list-style: none;
     color: var(--light-text);
     cursor: pointer;
-    width: fit-content;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 20px;
+    border-radius: 4px;
 
     &:hover {
       color: var(--text);
+      background-color: var(--back-hover);
     }
   }
 
   @for $i from 1 through 3 {
     .level-#{$i} {
-      margin-left: ($i - 1) * 10px;
-      // font-size: calc(16px - ($i - 1) * 1.5px);
+      padding-left: ($i - 1) * 15px + 20px;
+      font-size: calc(16px - ($i - 1) * 1px);
       margin-bottom: 2px - ($i - 1) * 1px;
     }
-  }
-  .active {
-    color: var(--active);
-    position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: -10px;
-      z-index: 1;
-      width: 2px;
-      height: 60%;
-      background-color: var(--active);
-      border-radius: 3px;
-      top: 20%;
-    }
-
-    &:hover {
+    .level-#{$i}.active {
       color: var(--active);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: (($i - 1) * 15 + 5px);
+        top: 20%;
+        z-index: 1;
+        width: 2px;
+        height: 100%;
+        height: 60%;
+        background-color: var(--active);
+        border-radius: 3px;
+      }
+
+      &:hover {
+        color: var(--active);
+      }
     }
   }
 }
