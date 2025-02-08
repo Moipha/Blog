@@ -22,6 +22,7 @@ const total = ref<number>(0)
 // 获取博客列表
 const loading = ref<boolean>(true)
 function getBlogs() {
+  loading.value = true
   api.blog.get(
     { pageNum: pageNum.value, pageSize: pageSize.value, enable: true, title: '' },
     (res: Res) => {
@@ -56,49 +57,54 @@ function clickDown() {
     <Cover class="cover" :src="coverChoose" height="100vh" title="Hi！欢迎来到漾春的博客站点">
       <Icon @click="clickDown" class="down" name="solid-down" />
     </Cover>
-    <Board class="board" :loading="blogs.length === 0">
-      <div class="blog" v-for="blog of blogs">
-        <RouterLink @click="setCurBlog(blog)" class="img-link" :to="`/blog/${blog._id}`">
-          <Image class="img" :src="blog.cover || coverChoose" />
-        </RouterLink>
-        <div class="info">
-          <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
-            <h2>{{ blog.title }}</h2>
+    <Board class="board" :loading="loading">
+      <template #load>
+        <div class="blog" v-for="blog of blogs" :key="blog._id">
+          <RouterLink @click="setCurBlog(blog)" class="img-link" :to="`/blog/${blog._id}`">
+            <Image class="img" :src="blog.cover || coverChoose" />
           </RouterLink>
-          <div class="tag-container">
-            <span class="tag" v-for="tag of blog.tags" :key="tag._id">
-              <RouterLink
-                class="link"
-                :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
-                {{ tag.name }}
-              </RouterLink>
-            </span>
-          </div>
-          <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
-            <p>{{ blog.desc }}</p>
-          </RouterLink>
-          <div class="detail">
-            <div class="date-container">
-              <Icon name="eye" />
-              <span>{{ blog.viewCount }}</span>
+          <div class="info">
+            <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
+              <h2>{{ blog.title }}</h2>
+            </RouterLink>
+            <div class="tag-container">
+              <span class="tag" v-for="tag of blog.tags" :key="tag._id">
+                <RouterLink
+                  class="link"
+                  :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }">
+                  {{ tag.name }}
+                </RouterLink>
+              </span>
             </div>
-            <div class="date-container">
-              <Icon name="liked" />
-              <span>{{ blog.likeCount }}</span>
-            </div>
-            <div class="date-container">
-              <Icon name="date" />
-              <span>{{ dayjs(blog.createdTime).format('YYYY-MM-DD') }}</span>
+            <RouterLink @click="setCurBlog(blog)" class="link" :to="`/blog/${blog._id}`">
+              <p>{{ blog.desc }}</p>
+            </RouterLink>
+            <div class="detail">
+              <div class="date-container">
+                <Icon name="eye" />
+                <span>{{ blog.viewCount }}</span>
+              </div>
+              <div class="date-container">
+                <Icon name="liked" />
+                <span>{{ blog.likeCount }}</span>
+              </div>
+              <div class="date-container">
+                <Icon name="date" />
+                <span>{{ dayjs(blog.createdTime).format('YYYY-MM-DD') }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <Pagination
-        class="page"
-        v-model:current-page="pageNum"
-        v-model:page-size="pageSize"
-        :total="total"
-        @callback="getBlogs" />
+      </template>
+
+      <template #footer>
+        <Pagination
+          class="page"
+          v-model:current-page="pageNum"
+          v-model:page-size="pageSize"
+          :total="total"
+          @callback="getBlogs" />
+      </template>
     </Board>
   </section>
 </template>

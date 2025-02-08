@@ -108,7 +108,6 @@ function handleClickLike() {
 
   // 发送请求给服务器修改点赞数
   api.blog.changeLike(id, !flag, (res: Res) => {
-    console.log(res)
     if (res.code === 200) {
       if (flag) {
         curBlog.value.likeCount ? curBlog.value.likeCount-- : (curBlog.value.likeCount = 0)

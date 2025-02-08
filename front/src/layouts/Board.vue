@@ -28,8 +28,13 @@ onUnmounted(() => {
 
 <template>
   <div class="board" :style="{ marginTop: marginTop + 'px' }">
+    <slot name="header" />
     <Loading class="loading" v-if="loading" />
-    <slot v-else />
+    <template v-else>
+      <slot name="load" />
+      <slot name="default" />
+    </template>
+    <slot name="footer" />
   </div>
 </template>
 

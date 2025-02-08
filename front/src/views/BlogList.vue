@@ -79,30 +79,36 @@ onMounted(() => {
 
 <template>
   <Board :class="$attrs.class" class="board" :loading="loading">
-    <h1>
-      共计 <span class="num">{{ total }}</span
-      >篇博客
-    </h1>
-    <ul>
-      <div class="blog-item" v-for="group in groupedBlogs" :key="group.year">
-        <h1>{{ group.year }}</h1>
-        <RouterLink
-          @click="setCurBlog(blog)"
-          v-for="blog in group.blogs"
-          :key="blog._id"
-          class="blog"
-          :to="`/blog/${blog._id}`">
-          <span class="time">{{ dayjs(blog.createdTime).format('MM-DD') }}</span>
-          <span>{{ blog.title }}</span>
-        </RouterLink>
-      </div>
-    </ul>
-    <Pagination
-      class="page"
-      v-model:current-page="pageNum"
-      v-model:page-size="pageSize"
-      :total="total"
-      @callback="getBlogs" />
+    <template #header>
+      <h1>
+        共计 <span class="num">{{ total }}</span
+        >篇博客
+      </h1>
+    </template>
+    <template #load>
+      <ul>
+        <div class="blog-item" v-for="group in groupedBlogs" :key="group.year">
+          <h1>{{ group.year }}</h1>
+          <RouterLink
+            @click="setCurBlog(blog)"
+            v-for="blog in group.blogs"
+            :key="blog._id"
+            class="blog"
+            :to="`/blog/${blog._id}`">
+            <span class="time">{{ dayjs(blog.createdTime).format('MM-DD') }}</span>
+            <span>{{ blog.title }}</span>
+          </RouterLink>
+        </div>
+      </ul>
+    </template>
+    <template #footer>
+      <Pagination
+        class="page"
+        v-model:current-page="pageNum"
+        v-model:page-size="pageSize"
+        :total="total"
+        @callback="getBlogs" />
+    </template>
   </Board>
 </template>
 
