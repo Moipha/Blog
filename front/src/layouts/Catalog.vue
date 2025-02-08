@@ -113,13 +113,12 @@ watch(
   padding-left: 20px;
   font-size: 15px;
   height: calc(100vh - 48px - 80px);
-  overflow-y: scroll;
+  overflow-y: hidden;
   border-top: 1.5px solid var(--border);
 
   // 滚动条整体部分
   &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
     background-color: var(--back);
   }
 
@@ -128,6 +127,9 @@ watch(
     background-color: var(--active);
     cursor: pointer;
     border-radius: 4px;
+  }
+  &:hover {
+    overflow-y: auto;
   }
 
   .option {
