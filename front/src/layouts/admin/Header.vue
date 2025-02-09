@@ -63,6 +63,10 @@ header {
   margin-bottom: 10px;
   padding: 20px 20px 0 50px;
 
+  @media (max-width: 768px) {
+    padding: 0px 10px;
+  }
+
   .theme {
     margin: 0 1vw 0 auto;
     padding: 10px;
@@ -87,6 +91,10 @@ header {
     display: flex;
     align-items: center;
     align-self: flex-end;
+
+    @media (max-width: 768px) {
+      align-self: center;
+    }
 
     .container {
       height: 25px;
@@ -115,6 +123,10 @@ header {
         font-family: consolas;
         color: var(--light-text);
         font-size: 16px;
+
+        @media (max-width: 768px) {
+          margin-right: 10px;
+        }
       }
     }
   }

@@ -160,7 +160,6 @@ function calcMenuHeight() {
     menu.value.style.visibility = 'hidden'
     menuHeight.value = menu.value.offsetHeight
     isMenuVisible.value = false
-    menu.value.style.visibility = 'visible'
   })
 }
 

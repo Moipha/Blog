@@ -93,7 +93,12 @@ function openDelete(blog: Blog) {
         <Button label="新建博客" icon="add" />
       </RouterLink>
     </form>
-    <Table class="table" height="calc(100vh - 340px)" :data="blogs" align="left">
+    <Table
+      class="table"
+      width="calc(80vw - 270px + max(0, 20vw - 200px))"
+      height="calc(100vh - 340px)"
+      :data="blogs"
+      align="left">
       <TableColumn label="标题" prop="title" :width="250" />
       <TableColumn label="作者" prop="author" :width="80" />
       <TableColumn label="标签" prop="tags" :width="220">
@@ -201,6 +206,7 @@ function openDelete(blog: Blog) {
         padding: 10px 11px;
       }
     }
+
     .table-icon-container {
       display: flex;
       align-items: center;

@@ -1,28 +1,3 @@
-<template>
-  <aside>
-    <RouterLink class="logo" to="/">
-      <img :src="logo" alt="logo" />
-      <p class="text">后台管理</p>
-    </RouterLink>
-    <ul>
-      <RouterLink
-        v-for="item of nav"
-        :key="item.name"
-        :to="'/admin' + item.path"
-        :class="{ active: active === item.path }"
-        class="item">
-        <Button class="btn">
-          <Icon :name="item.icon" />
-        </Button>
-        <span>{{ item.name }}</span>
-      </RouterLink>
-    </ul>
-    <Btn class="exit" icon="exit">
-      <span class="text">退出登录</span>
-    </Btn>
-  </aside>
-</template>
-
 <script lang="ts" setup>
 import Button from '@/components/Button.vue'
 import Btn from '@/components/admin/Button.vue'
@@ -52,6 +27,31 @@ onBeforeUnmount(() => {
   bus.off('change-admin-nav')
 })
 </script>
+
+<template>
+  <aside>
+    <RouterLink class="logo app-hide" to="/">
+      <img :src="logo" alt="logo" />
+      <p class="text">后台管理</p>
+    </RouterLink>
+    <ul>
+      <RouterLink
+        v-for="item of nav"
+        :key="item.name"
+        :to="'/admin' + item.path"
+        :class="{ active: active === item.path }"
+        class="item">
+        <Button class="btn">
+          <Icon :name="item.icon" />
+        </Button>
+        <span class="app-hide">{{ item.name }}</span>
+      </RouterLink>
+    </ul>
+    <Btn class="exit app-hide" icon="exit">
+      <span class="text">退出登录</span>
+    </Btn>
+  </aside>
+</template>
 
 <style lang="scss" scoped>
 aside {
@@ -163,6 +163,21 @@ aside {
 
     &:hover {
       background-color: var(--hover);
+    }
+  }
+  @media (max-width: 768px) {
+    flex-direction: row;
+    position: fixed;
+    height: auto;
+    width: 100%;
+    bottom: 0;
+    z-index: 10;
+
+    ul {
+      flex-direction: row;
+    }
+    .app-hide {
+      display: none;
     }
   }
 }

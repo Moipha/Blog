@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import Aside from '@/layouts/admin/Aside.vue'
+import Header from '@/layouts/admin/Header.vue'
+</script>
+
 <template>
   <main>
     <Aside />
@@ -14,15 +19,11 @@
   </main>
 </template>
 
-<script lang="ts" setup>
-import Aside from '@/layouts/admin/Aside.vue'
-import Header from '@/layouts/admin/Header.vue'
-</script>
-
 <style lang="scss" scoped>
 main {
   background-color: var(--text);
   display: flex;
+  min-height: 100vh;
 
   section {
     display: flex;
@@ -40,6 +41,20 @@ main {
     padding: 0 20px 0 50px;
     scrollbar-width: thin;
     scrollbar-color: var(--hover) var(--border);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    background-color: var(--bg);
+
+    section {
+      border-radius: 0;
+      margin-bottom: 60px;
+    }
+
+    .right-wrapper {
+      padding: 0 10px;
+    }
   }
 }
 </style>

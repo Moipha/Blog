@@ -130,7 +130,7 @@ function deleteTag() {
         v-model="condition.name"
         placeholder="请输入名称" />
       <Select
-        width="18vw"
+        width="200px"
         :style="{ marginRight: '5px' }"
         @change="search"
         v-model="condition.type"
