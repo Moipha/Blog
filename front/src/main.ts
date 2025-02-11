@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import '@/assets/styles/global.scss'
 
-import Icon from '@/components/Icon.vue'
+import Icon from '@/components/Base/Icon.vue'
 import App from './App.vue'
 import router from './router'
 // pinia持久化插件
