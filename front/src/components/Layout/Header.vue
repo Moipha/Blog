@@ -97,12 +97,34 @@ onBeforeUnmount(() => {
   </header>
   <!-- 移动端窗口 -->
   <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
+    <img class="logo" :src="logo" />
     <Button class="close" @click="showLeft = false">
       <Icon name="close" />
     </Button>
     <ul>
-      <li v-for="item of items" :key="item.name">
+      <li
+        v-for="item of items"
+        :key="item.name"
+        :class="{ active: activeItem === item.link, link: true }">
         <RouterLink @click="showLeft = false" :to="item.link">{{ item.label }}</RouterLink>
+      </li>
+    </ul>
+    <ul class="items">
+      <li class="btn" @click="changeTheme($event)">
+        <a>
+          <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
+          <Icon v-else class="icon" name="theme-light" />
+        </a>
+      </li>
+      <li class="btn">
+        <a href="https://github.com/Moipha/Blog" target="_blank">
+          <Icon class="icon" name="github" />
+        </a>
+      </li>
+      <li class="btn">
+        <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
+          <Icon class="icon" name="manager" />
+        </a>
       </li>
     </ul>
   </section>
@@ -204,16 +226,6 @@ header {
           opacity: 0;
         }
       }
-
-      .active {
-        color: var(--active);
-        font-weight: bold;
-
-        &::before {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
     }
   }
 
@@ -261,6 +273,10 @@ header {
     gap: clamp(5px, 1vw, 10px);
     margin-left: 5%;
     align-items: center;
+
+    @media (max-width: 660px) {
+      display: none;
+    }
   }
 
   .icon {
@@ -280,7 +296,8 @@ header {
   z-index: 11;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
 
   .close {
@@ -301,6 +318,44 @@ header {
       font-size: 24px;
       font-weight: bold;
     }
+  }
+
+  .logo {
+    width: 100px;
+    aspect-ratio: 1;
+  }
+
+  .items {
+    flex-direction: row;
+
+    .icon {
+      font-size: 36px;
+    }
+  }
+}
+
+.active {
+  color: var(--active) !important;
+  font-weight: bold;
+  a {
+    color: var(--active) !important;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 4px;
+      border-radius: 5px;
+      background-color: var(--active);
+      width: 70%;
+      bottom: -6px;
+      left: 15%;
+    }
+  }
+
+  &::before {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 </style>

@@ -88,7 +88,7 @@ function onEnterJump() {
           </div>
           <div @click="changePage(true)" class="block">></div>
         </div>
-        <div class="right-container">
+        <div class="right-container jump">
           <span>跳转至</span>
           <Input
             width="50px"
@@ -151,11 +151,24 @@ function onEnterJump() {
     align-items: center;
     gap: 20px;
 
+    @media (max-width: 660px) {
+      gap: 10px;
+      margin: auto;
+
+      .jump {
+        display: none !important;
+      }
+    }
+
     .right-container {
       display: flex;
       gap: 5px;
       flex-wrap: wrap;
       align-items: center;
+
+      @media (max-width: 425px) {
+        gap: 0px;
+      }
 
       .input {
         :deep(input) {
@@ -180,6 +193,7 @@ function onEnterJump() {
           background-color: var(--border);
         }
       }
+
       .active {
         background-color: var(--text);
         color: var(--bg);
