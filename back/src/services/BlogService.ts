@@ -1,6 +1,7 @@
 import BlogModel from '../models/BlogModel.ts'
 import type { BlogDTO, BlogVO, IBlog } from '../types/index.ts'
 import { iToVO } from '../utils/BlogUtil.ts'
+import tagService from '../services/TagService.ts'
 
 class BlogService {
   // 新建博客
@@ -37,10 +38,29 @@ class BlogService {
   }
   // 更新博客
   async update(body: any): Promise<void> {
+    const { _id, tags: newTags } = body
+    // 获取旧文章的标签列表
+    const oldBlog = await BlogModel.findById(_id)
+    const oldTags = oldBlog.tags
+
+    // 比较新旧标签列表
+    const addedTags = newTags.filter((tagId: string) => !oldTags.includes(tagId))
+    const removedTags = oldTags.filter((tagId: string) => !newTags.includes(tagId))
+
+    // 更新标签引用次数
+    await Promise.all([
+      ...addedTags.map((tagId: string) => tagService.updateTagTimes(tagId, true)),
+      ...removedTags.map((tagId: string) => tagService.updateTagTimes(tagId, false))
+    ])
+
     await BlogModel.updateOne({ _id: body._id }, { $set: { ...body, updatedTime: new Date() } })
   }
   // 删除博客
   async delete(id: string): Promise<void> {
+    const blog = await BlogModel.findById(id)
+    if (blog.tags && blog.tags.length > 0) {
+      await Promise.all(blog.tags.map((tagId: string) => tagService.updateTagTimes(tagId, false)))
+    }
     await BlogModel.deleteOne({ _id: id })
   }
 

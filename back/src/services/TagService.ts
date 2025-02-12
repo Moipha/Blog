@@ -33,10 +33,7 @@ class TagService {
   }
   // 更新标签
   async update(body: any): Promise<void> {
-    await TagModel.updateOne(
-      { _id: body._id },
-      { $set: { ...body, updatedTime: new Date() } }
-    )
+    await TagModel.updateOne({ _id: body._id }, { $set: { ...body, updatedTime: new Date() } })
   }
   // 删除标签
   async delete(id: string): Promise<void> {
@@ -55,6 +52,11 @@ class TagService {
       createdTime: -1
     })
     return tags
+  }
+
+  async updateTagTimes(tagId: string, increment: boolean) {
+    const update = increment ? { $inc: { times: 1 } } : { $inc: { times: -1 } }
+    await TagModel.findByIdAndUpdate(tagId, update)
   }
 }
 

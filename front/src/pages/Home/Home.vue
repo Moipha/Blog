@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Cover from '@/Components/Layout/Cover.vue'
-import Board from '@/Components/Layout/Board.vue'
-import Pagination from '@/Components/Layout/Admin/Pagination.vue'
+import Cover from '@/components/Layout/Cover.vue'
+import Board from '@/components/Layout/Board.vue'
+import Pagination from '@/components/Layout/Admin/Pagination.vue'
 import Image from '@/components/Base/Image.vue'
 
 import cover1 from '@/assets/img/summer1.png'

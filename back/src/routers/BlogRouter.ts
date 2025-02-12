@@ -2,6 +2,7 @@ import express from 'express'
 import { body, param, query } from 'express-validator'
 import argsCheck from '../utils/argsCheck.ts'
 import service from '../services/BlogService.ts'
+import tagService from '../services/TagService.ts'
 import Result from '../types/Result.ts'
 
 const router = express.Router()
@@ -18,6 +19,11 @@ router.post(
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
     const newBlog = await service.add(req.body)
+    if (req.body.tags && req.body.tags.length > 0) {
+      await Promise.all(
+        req.body.tags.map((tagId: string) => tagService.updateTagTimes(tagId, true))
+      )
+    }
     res.status(200).json(Result.success(newBlog))
   }
 )
@@ -55,9 +61,9 @@ router.put(
 router.delete(
   '/',
   [query('id').isMongoId().withMessage('提供的文章ID无效')],
-  (req: express.Request, res: express.Response): void => {
+  async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
-    service.delete(req.query.id as string)
+    await service.delete(req.query.id as string)
     res.status(200).json(Result.success())
   }
 )

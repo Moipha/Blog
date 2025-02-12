@@ -9,6 +9,7 @@ export interface ITag extends Document {
   name: string
   type: TagType
   icon?: string
+  times: number
   createdTime: Date
   updatedTime: Date
 }
@@ -16,6 +17,7 @@ export interface TagDTO {
   name: string
   type: TagType
   icon?: string
+  times: number
 }
 
 /**

@@ -11,6 +11,7 @@ export interface Tag {
   name: string
   type: TagType
   icon?: string
+  times: number
   createdTime: string
   updatedTime: string
 }

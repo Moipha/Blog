@@ -10,6 +10,7 @@ const TagSchema = new Schema({
   name: { type: String, required: true }, // 标签名称
   type: { type: String, enum: ['blog', 'code', 'general'], default: 'general' }, // 标签类型
   icon: { type: String, required: false }, // 标签图标
+  times: { type: Number, default: 0 },
   createdTime: { type: Date, default: () => Date.now() }, // 创建时间
   updatedTime: { type: Date, default: () => Date.now() } // 更新时间
 })

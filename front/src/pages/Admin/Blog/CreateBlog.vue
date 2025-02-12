@@ -7,7 +7,6 @@ import Switch from '@/components/Base/Admin/Switch.vue'
 import Confirm from '@/components/Base/Admin/Confirm.vue'
 import Textarea from '@/components/Base/Admin/Textarea.vue'
 import { Editor } from '@bytemd/vue-next'
-import Image from '@/components/Image.vue'
 import Upload from '@/components/Base/Admin/Upload.vue'
 
 import gfm from '@bytemd/plugin-gfm'
