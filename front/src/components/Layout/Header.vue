@@ -59,7 +59,6 @@ onBeforeUnmount(() => {
     <!-- pc端 -->
     <RouterLink to="/home" class="logo" @click="activeItem = '/home'">
       <img :src="logo" />
-      <h3 class="title">漾春</h3>
     </RouterLink>
     <nav>
       <ul>
@@ -164,11 +163,6 @@ header {
     text-decoration: none;
     gap: 5px;
 
-    .title {
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
     @media (max-width: 660px) {
       display: none;
     }
@@ -196,11 +190,11 @@ header {
         margin: 0;
         cursor: pointer;
         color: var(--white);
-        transition: all 0.2s ease;
         font-size: 14px;
         padding: 8px 16px;
         text-decoration: none;
         position: relative;
+        font-weight: bold;
 
         &:hover {
           color: var(--active);
@@ -336,7 +330,7 @@ header {
 
 .active {
   color: var(--active) !important;
-  font-weight: bold;
+
   a {
     color: var(--active) !important;
     position: relative;

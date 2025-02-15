@@ -89,6 +89,11 @@ body {
   &::-webkit-resizer {
     display: none;
   }
+
+  ::selection {
+    background-color: var(--active);
+    color: var(--bg);
+  }
 }
 html {
   --normal-border: 1.5px solid var(--border);

@@ -40,6 +40,35 @@ const contacts = [
           <Button :icon="contact.icon" />
         </a>
       </div>
+      <hr />
+      <div class="content">
+        <h2>我</h2>
+        <p>一个热爱技术的前端开发者。自23年春学完 Vue 后决定从后端转到前端。将于25年夏毕业。</p>
+        <p>
+          平时的乐趣就是用代码去实现自己的想法。闲暇时的爱好有台球和骑行。有成为独立游戏开发者的梦想，这也是我在报考大学时选择计算机的原因。
+          喜欢听纯音乐，也常听各种游戏或番剧里的 OST。是东方众，从高二开始接触 STG。
+        </p>
+        <p>
+          是一个非常怀旧的人。珍藏了许多能让我回忆起曾经的事物，在我睡不着的时候会看着这些回想过去的时光。
+        </p>
+        <p></p>
+        <p>没测过 MBTI。</p>
+        <h2>博客</h2>
+        <p>
+          在22年春开始学 Web
+          课程的时候就有搭建一个属于自己的博客的想法，不过直到两年半后的24年秋才正式开始。参考了许多许多博主的博客，有一段时间常在各位的站点上寻找灵感。
+        </p>
+        <p>
+          使用 Vue3 + Node 搭建。开始写这个项目一段时间之后才了解到了 Nuxt
+          这个东西。未来我会用它来把本项目重构。
+        </p>
+        <p>
+          没使用 WordPress 或者 Hexo 这样的博客框架，也没使用 ElementUI 或者 QuasarUI
+          这样的UI框架。既然不是给别人写的，我更希望按自己的意愿来自由地搭建。看着一个页面从无到有会让我感到愉悦。
+        </p>
+        <hr />
+        <h2>作品</h2>
+      </div>
     </Board>
   </section>
 </template>
@@ -68,6 +97,10 @@ const contacts = [
     margin-top: 50px;
   }
 
+  hr {
+    margin: 30px 0;
+  }
+
   .btn-container {
     display: flex;
     gap: 10px;
@@ -76,6 +109,20 @@ const contacts = [
 
     &::v-deep(.icon) {
       font-size: 20px;
+    }
+  }
+
+  .content {
+    margin-top: 10vh;
+
+    h2 {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 60px;
+    }
+    p {
+      font-size: 15px;
+      margin: 10px 0;
     }
   }
 }

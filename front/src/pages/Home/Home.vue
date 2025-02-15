@@ -68,6 +68,7 @@ function clickDown() {
               <h2>{{ blog.title }}</h2>
             </RouterLink>
             <div class="tag-container">
+              <Icon class="icon" name="tags" />
               <span class="tag" v-for="tag of blog.tags" :key="tag._id">
                 <RouterLink
                   class="link"
@@ -210,6 +211,10 @@ section {
             font-size: 20px;
             margin-right: 2px;
           }
+        }
+
+        .icon {
+          font-size: 22px;
         }
       }
     }
