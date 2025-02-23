@@ -133,11 +133,12 @@ section {
 
       .img-link {
         display: flex;
-        align-items: center;
         justify-content: center;
 
         .img {
           width: 240px;
+          height: 150px;
+          margin-top: 10px;
           object-fit: cover;
           aspect-ratio: 16/10;
           object-position: center;

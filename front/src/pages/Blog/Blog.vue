@@ -144,7 +144,8 @@ onActivated(() => {
       :key="loading ? '' : blog._id"
       class="cover-bg"
       :src="loading ? '' : blog.cover"
-      :title="loading ? '' : blog.title">
+      :title="loading ? '' : blog.title"
+      mask>
       <div class="tags">
         <Icon class="icon" name="tags" />
         <RouterLink

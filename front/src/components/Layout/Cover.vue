@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { onActivated, ref, watch, watchEffect } from 'vue'
 import cover from '@/assets/img/4.jpg'
+import digitalMask from '@/assets/img/digital_mask.svg'
 
 const props = defineProps({
   src: String,
   height: { type: String, default: '70vh' },
-  title: String
+  title: String,
+  mask: { type: Boolean, default: false }
 })
 
 // 图片加载
@@ -48,6 +50,7 @@ function typeTitle(val: string) {
 
 <template>
   <div class="cover-bg" :style="{ height, '--len': title?.length }">
+    <em v-if="mask" class="digital_mask" :style="{ background: `url(${digitalMask})` }"></em>
     <img
       class="lazyload"
       :data-src="src || cover"
@@ -120,5 +123,18 @@ function typeTitle(val: string) {
       }
     }
   }
+}
+
+em.digital_mask {
+  content: '';
+  width: 100%;
+  height: 100%;
+  /* background: url('https://img.2broear.com/svg/digital_mask.svg') repeat center center /3px 3px; */
+  background-size: 3px 3px !important;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
 }
 </style>
