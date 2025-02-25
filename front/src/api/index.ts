@@ -17,6 +17,7 @@ interface Api {
     getById: Function
     view: Function
     changeLike: Function
+    search: Function
   }
 }
 

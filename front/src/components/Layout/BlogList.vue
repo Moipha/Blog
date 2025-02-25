@@ -33,7 +33,7 @@ function getBlogs() {
   api.blog.get(
     { ...props.conditions, pageSize: pageSize.value, pageNum: pageNum.value },
     (res: Res) => {
-      blogs.value = res.data.record || []
+      blogs.value = res.data.records || []
       total.value = res.data.total
     },
     (err: Error) => {

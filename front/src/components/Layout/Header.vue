@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Button from '@/components/Base/Button.vue'
 import Mask from '@/components/Layout/Mask.vue'
+import Search from '@/components/Layout/Search.vue'
 
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
@@ -71,11 +72,8 @@ onBeforeUnmount(() => {
         </RouterLink>
       </ul>
     </nav>
-    <div class="search">
-      <Icon class="icon" name="search" />
-      <span class="text">搜索</span>
-      <span class="label">Ctrl K</span>
-    </div>
+    <Search />
+
     <div class="btn-container">
       <Button @click="changeTheme($event)">
         <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
@@ -143,6 +141,7 @@ header {
   z-index: 4;
   transition: 0.4s all ease;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  user-select: none;
 
   @media (max-width: 768px) {
     padding: 10px 5%;
@@ -220,46 +219,6 @@ header {
           opacity: 0;
         }
       }
-    }
-  }
-
-  .search {
-    --color: var(--white);
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color);
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    .text {
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .label {
-      border-radius: 4px;
-      font-size: 12px;
-      padding: 0 5px;
-      background-color: var(--color);
-      color: black;
-      font-weight: bold;
-      transition: all 0.2s ease;
-      filter: brightness(0.9);
-
-      @media (max-width: 1024px) {
-        display: none;
-      }
-    }
-
-    .icon {
-      transition: all 0.2s ease;
-      color: var(--color);
-    }
-
-    &:hover {
-      --color: var(--active);
     }
   }
 

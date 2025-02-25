@@ -83,6 +83,18 @@ class BlogService {
   async addLikes(id: string): Promise<void> {
     await BlogModel.updateOne({ _id: id }, { $inc: { likeCount: 1 } })
   }
+
+  // 根据关键词搜索文章，标题、内容、摘要模糊查询
+  async search(keyword: string): Promise<BlogVO[]> {
+    const blogs = await BlogModel.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } },
+        { content: { $regex: keyword, $options: 'i' } },
+        { desc: { $regex: keyword, $options: 'i' } }
+      ]
+    })
+    return iToVO(blogs)
+  }
 }
 
 export default new BlogService()

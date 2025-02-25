@@ -39,7 +39,7 @@ function search() {
       pageNum: pageNum.value
     },
     (res: Res) => {
-      tags.value = res.data.record
+      tags.value = res.data.records
       total.value = res.data.total
     },
     (err: Res) => {

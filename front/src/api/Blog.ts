@@ -104,6 +104,26 @@ class BlogApi {
   async changeLike(id: string, plus: boolean, callback: Function) {
     await this.requestHandler('put', `${baseURL}/like`, { plus, id }, callback)
   }
+
+  // 检索信息
+  async search(
+    params: {
+      keyword: string
+      pageNum: number
+      pageSize: number
+    },
+    callback: Function,
+    finallyCallback: Function
+  ) {
+    await this.requestHandler(
+      'get',
+      `${baseURL}/search`,
+      { params },
+      callback,
+      () => {},
+      finallyCallback
+    )
+  }
 }
 
 export default new BlogApi()

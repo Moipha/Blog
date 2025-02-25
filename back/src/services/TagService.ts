@@ -54,9 +54,16 @@ class TagService {
     return tags
   }
 
+  // 更新标签的引用次数
   async updateTagTimes(tagId: string, increment: boolean) {
     const update = increment ? { $inc: { times: 1 } } : { $inc: { times: -1 } }
     await TagModel.findByIdAndUpdate(tagId, update)
+  }
+
+  // 根据关键词模糊查询获取标签列表
+  async getTagsByKeyword(keyword: string): Promise<ITag[]> {
+    const tags = await TagModel.find({ name: { $regex: keyword, $options: 'i' } })
+    return tags
   }
 }
 

@@ -38,7 +38,7 @@ function search() {
       pageSize: pageSize.value
     },
     (res: Res) => {
-      blogs.value = res.data.record
+      blogs.value = res.data.records
       total.value = res.data.total
     },
     (err: Res) => {

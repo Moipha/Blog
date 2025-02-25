@@ -39,7 +39,7 @@ router.get(
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
     const [blogs, total] = await service.list(req.query as any)
-    res.status(200).json(Result.success({ record: blogs, total }))
+    res.status(200).json(Result.success({ records: blogs, total }))
   }
 )
 // 更新文章
@@ -65,6 +65,35 @@ router.delete(
     if (!argsCheck(req, res)) return
     await service.delete(req.query.id as string)
     res.status(200).json(Result.success())
+  }
+)
+
+// 检索信息
+router.get(
+  '/search',
+  [
+    query('keyword').notEmpty().withMessage('未提供关键字'),
+    query('pageNum').isInt().withMessage('提供的页数无效'),
+    query('pageSize').isInt().withMessage('提供的页大小无效')
+  ],
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    if (!argsCheck(req, res)) return
+    const { keyword, pageSize, pageNum } = req.query as any
+    // 检索文章内容、文章标题、文章摘要、文章标签、标签名称
+    const ans = []
+    // 标签
+    const tags = await tagService.getTagsByKeyword(keyword)
+    ans.push(...tags)
+    // 文章
+    const blogs = await service.search(keyword)
+    ans.push(...blogs)
+    // 返回对应页的数据
+    res.status(200).json(
+      Result.success({
+        records: ans.slice((pageNum - 1) * pageSize, pageNum * pageSize),
+        total: ans.length
+      })
+    )
   }
 )
 

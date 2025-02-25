@@ -31,7 +31,7 @@ router.get(
   async (req: express.Request, res: express.Response): Promise<void> => {
     if (!argsCheck(req, res)) return
     const [tag, total] = await service.list(req.query as any)
-    res.status(200).json(Result.success({ record: tag, total }))
+    res.status(200).json(Result.success({ records: tag, total }))
   }
 )
 

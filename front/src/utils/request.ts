@@ -24,10 +24,12 @@ request.interceptors.response.use(
       router.push('/login')
     }
     console.error('错误的响应: ' + err.response.data.msg)
-    alert('错误的响应: ' + err.response.data.msg)
+    let msg = ''
     for (let item of err.response.data.data) {
       console.error(item.msg)
+      msg += item.msg + '\n'
     }
+    alert(msg)
 
     return Promise.reject(err.response.data)
   }

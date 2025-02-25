@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onActivated, ref, watch, watchEffect } from 'vue'
+import { onActivated, ref, watchEffect } from 'vue'
 import cover from '@/assets/img/4.jpg'
 import digitalMask from '@/assets/img/digital_mask.svg'
 
@@ -50,7 +50,7 @@ function typeTitle(val: string) {
 
 <template>
   <div class="cover-bg" :style="{ height, '--len': title?.length }">
-    <em v-if="mask" class="digital_mask" :style="{ background: `url(${digitalMask})` }"></em>
+    <em v-if="mask" class="digital_mask"></em>
     <img
       class="lazyload"
       :data-src="src || cover"
@@ -129,8 +129,8 @@ em.digital_mask {
   content: '';
   width: 100%;
   height: 100%;
-  /* background: url('https://img.2broear.com/svg/digital_mask.svg') repeat center center /3px 3px; */
-  background-size: 3px 3px !important;
+  background: url('https://fafafafa.site:8082/pic/file/1740306643096_digital_mask.svg') repeat
+    center center / 3px 3px;
   position: absolute;
   bottom: 0;
   left: 0;

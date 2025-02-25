@@ -45,14 +45,19 @@ db(
       errorMiddleware(err, req, res, next)
     })
 
-    // 创建https服务器
-    const sslOptions = {
-      key: fs.readFileSync('./public/ssl/private.key'),
-      cert: fs.readFileSync('./public/ssl/public.pem')
-    }
-    const server = https.createServer(sslOptions, app)
+    // // 创建https服务器
+    // const sslOptions = {
+    //   key: fs.readFileSync('./public/ssl/private.key'),
+    //   cert: fs.readFileSync('./public/ssl/public.pem')
+    // }
+    // const server = https.createServer(sslOptions, app)
+    // // 启动服务器
+    // server.listen(PORT, () => {
+    //   console.log(`Node 服务已在 ${PORT} 端口上运行`)
+    // })
+
     // 启动服务器
-    server.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`Node 服务已在 ${PORT} 端口上运行`)
     })
   },
