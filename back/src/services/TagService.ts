@@ -60,9 +60,11 @@ class TagService {
     await TagModel.findByIdAndUpdate(tagId, update)
   }
 
-  // 根据关键词模糊查询获取标签列表
+  // 根据关键词模糊查询获取标签列表，根据createdTime倒序排序
   async getTagsByKeyword(keyword: string): Promise<ITag[]> {
-    const tags = await TagModel.find({ name: { $regex: keyword, $options: 'i' } })
+    const tags = await TagModel.find({ name: { $regex: keyword, $options: 'i' } }).sort({
+      createdTime: -1
+    })
     return tags
   }
 }

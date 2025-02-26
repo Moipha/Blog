@@ -92,7 +92,7 @@ class BlogService {
         { content: { $regex: keyword, $options: 'i' } },
         { desc: { $regex: keyword, $options: 'i' } }
       ]
-    })
+    }).sort({ createdTime: -1 })
     return iToVO(blogs)
   }
 }

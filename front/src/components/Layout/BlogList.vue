@@ -151,7 +151,6 @@ onMounted(() => {
       .blog {
         display: flex;
         text-decoration: none;
-        transition: all 0.2s;
         padding: 10px 20px;
         border-radius: 6px;
         color: var(--light-text);

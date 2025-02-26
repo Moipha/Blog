@@ -76,36 +76,87 @@ onActivated(() => {
 </script>
 
 <template>
-  <div>
-    <Cover
-      :src="searchGif"
-      :title="`已搜索到 ${total} 个有关 “${keyword}” 的内容`"
-      height="80vh"
-      mask />
-    <Board :loading="loading" v-if="blogs.length > 0" class="board">
-      <template #load>
-        <div v-if="tags.length > 0" class="tags">
-          <div class="tag" v-for="tag in tags" :id="tag._id">
-            {{ tag.name }}
-          </div>
+  <Cover
+    :src="searchGif"
+    :title="`已搜索到 ${total} 个有关 “${keyword}” 的内容`"
+    height="80vh"
+    mask />
+  <Board :loading="loading" v-if="blogs.length > 0" class="board">
+    <template #load>
+      <template v-if="tags.length > 0">
+        <h1>相关标签</h1>
+        <div class="tags">
+          <RouterLink
+            :to="{ path: `/tags/${tag._id}`, query: { name: tag.name } }"
+            class="tag"
+            v-for="tag in tags"
+            :id="tag._id">
+            <Icon name="tags" />
+            <span class="name">{{ tag.name }}</span>
+            <span class="times">共计 {{ tag.times }} 篇文章</span>
+          </RouterLink>
         </div>
+      </template>
+      <template v-if="blogs.length > 0">
+        <h1>相关文章</h1>
         <BlogViewList class="blogs" :blogs="blogs" />
       </template>
-      <template #footer>
-        <Pagination
-          class="page"
-          v-model:current-page="pageNum"
-          v-model:page-size="pageSize"
-          :total="total"
-          @callback="search" />
-      </template>
-    </Board>
-  </div>
+    </template>
+    <template #footer>
+      <Pagination
+        class="page"
+        v-model:current-page="pageNum"
+        v-model:page-size="pageSize"
+        :total="total"
+        @callback="search" />
+    </template>
+  </Board>
 </template>
 
 <style lang="scss" scoped>
 .board {
   width: 70vw;
+  color: var(--light-text);
+  user-select: none;
+
+  h1 {
+    font-weight: bold;
+    margin: 5vh -1vw 3vh;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+
+  .icon {
+    font-size: 30px;
+  }
+
+  .tag {
+    display: flex;
+    width: 100%;
+    color: var(--light-text);
+    text-decoration: none;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    border-radius: 4px;
+
+    .name {
+      flex: 1;
+    }
+    .times {
+      flex: 5;
+      font-family: consolas;
+    }
+
+    &:hover {
+      background-color: var(--content-hover);
+      color: var(--active);
+    }
+  }
 }
 
 .page {
