@@ -2,6 +2,7 @@
 import Button from '@/components/Base/Button.vue'
 import Mask from '@/components/Layout/Mask.vue'
 import Search from '@/components/Layout/Search.vue'
+import Fab from '@/components/Base/Fab.vue'
 
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
@@ -20,9 +21,13 @@ const showLeft = ref(false)
 // 滚动条是否在顶部
 const isTop = ref(true)
 
+// 滚动条进度
+const progress = ref(0)
+
 // 监听滚动条
 window.addEventListener('scroll', () => {
   isTop.value = window.pageYOffset < 64 ? true : false
+  progress.value = window.pageYOffset / (document.body.scrollHeight - window.innerHeight)
 })
 
 // 导航栏渲染
@@ -73,24 +78,6 @@ onBeforeUnmount(() => {
       </ul>
     </nav>
     <Search />
-
-    <div class="btn-container">
-      <Button @click="changeTheme($event)">
-        <Icon v-if="theme === 'dark'" class="icon" name="theme-dark" />
-        <Icon v-else class="icon" name="theme-light" />
-      </Button>
-      <a href="https://github.com/Moipha/Blog" target="_blank">
-        <Button>
-          <Icon class="icon" name="github" />
-        </Button>
-      </a>
-
-      <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
-        <Button>
-          <Icon class="icon" name="manager" />
-        </Button>
-      </a>
-    </div>
   </header>
   <!-- 移动端窗口 -->
   <section class="left" :style="{ left: showLeft ? '0' : '-320px' }">
@@ -126,6 +113,7 @@ onBeforeUnmount(() => {
     </ul>
   </section>
   <Mask v-model="showLeft" to="body" />
+  <Fab :class="{ hide: isTop }" :progress="progress" />
 </template>
 
 <style lang="scss" scoped>
