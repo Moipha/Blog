@@ -43,19 +43,6 @@ const contacts = [
       </div>
       <hr />
       <div class="content">
-        <div class="btn-container">
-          <a href="https://github.com/Moipha/Blog" target="_blank">
-            <Button>
-              <Icon class="icon" name="github" />
-            </Button>
-          </a>
-
-          <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
-            <Button>
-              <Icon class="icon" name="manager" />
-            </Button>
-          </a>
-        </div>
         <h2>关于我</h2>
         <p>一个热爱技术的前端开发者。自23年春学完 Vue 后决定从后端转到前端。将于25年夏毕业。</p>
         <p>

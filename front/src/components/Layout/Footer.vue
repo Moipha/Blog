@@ -3,6 +3,7 @@ import img from '@/assets/img/gongan.png'
 
 import dayjs from 'dayjs'
 import { computed } from 'vue'
+import router from '@/router'
 
 // 定义启动时间
 const startTime = dayjs('2024-11-11 11:11:11')
@@ -20,6 +21,17 @@ const runningTime = computed(() => {
 <template>
   <footer>
     <p class="time">本站已运行了{{ runningTime }}</p>
+    <div class="links">
+      <a href="https://github.com/Moipha/Blog" target="_blank">
+        <Icon class="icon" name="github" />
+        <span class="text">项目地址</span>
+      </a>
+
+      <a :href="router.resolve({ path: '/admin' }).href" target="_blank">
+        <Icon class="icon" name="manager" />
+        <span class="text">后台管理</span>
+      </a>
+    </div>
     <div class="ba">
       <a target="_blank" href="https://beian.miit.gov.cn/">
         <img :src="img" alt="备案" />
@@ -75,8 +87,32 @@ footer {
       align-items: center;
       gap: 3px;
 
+      display: flex;
+
       img {
         width: 18px;
+      }
+
+      &:hover {
+        color: var(--text);
+      }
+    }
+  }
+
+  .links {
+    display: flex;
+    gap: 10px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      color: var(--light-text);
+      text-decoration: none;
+
+      .icon {
+        font-size: 16px;
       }
 
       &:hover {

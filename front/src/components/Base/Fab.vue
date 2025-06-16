@@ -103,7 +103,7 @@ function scrollBottom() {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 11;
+  z-index: 10;
 
   background: linear-gradient(
     to top,
